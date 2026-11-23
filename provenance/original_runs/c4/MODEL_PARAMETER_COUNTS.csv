@@ -1,0 +1,8 @@
+Control,Model,Params,Trainable,Effective,Experts,Router
+C0,moe_phase_m/d0b_original,522269,522269,522269,0,0
+C1,moe_phase_m/pred_global_static,550049,550049,550049,36032,4
+C2,moe_phase_m/pred_short_long_static,550053,550053,550053,36032,8
+C3,moe_phase_m/pred_horizon_static,550061,550061,550061,36032,16
+C4,moe_phase_m/pred_global_dynamic,567169,567169,567169,36032,17124
+C5,moe_phase_m/pred_horizon_dynamic,567457,567457,567457,36032,17412
+C6,moe_phase_m/rep_horizon_dynamic,567457,567457,567457,36032,17412

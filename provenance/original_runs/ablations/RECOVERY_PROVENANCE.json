@@ -1,0 +1,7 @@
+{
+  "previous_attempt": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_c4_ablation/seed42_20261026",
+  "failure": "CSV writer rejected empty pre-TEST table",
+  "new_training_updates_in_previous_attempt": 0,
+  "training_function_AST_unchanged": true,
+  "model_definition_unchanged": true
+}

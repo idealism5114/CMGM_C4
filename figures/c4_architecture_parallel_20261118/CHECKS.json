@@ -1,0 +1,42 @@
+{
+  "layout_version": 2,
+  "source_unchanged": true,
+  "training": false,
+  "TEST_access": false,
+  "languages": {
+    "en": {
+      "SVG_XML_valid": true,
+      "all_components_in_one_MoE": true,
+      "final_output_outside_MoE": true,
+      "one_shared_head": true,
+      "both_backbone_panels_pixel_identical_to_v1": true,
+      "comparison_region_svg_x": [
+        0,
+        1850
+      ],
+      "PNG_size": [
+        5940,
+        2700
+      ],
+      "PDF_header_valid": true,
+      "visual_inspection": "PASS"
+    },
+    "zh": {
+      "SVG_XML_valid": true,
+      "all_components_in_one_MoE": true,
+      "final_output_outside_MoE": true,
+      "one_shared_head": true,
+      "both_backbone_panels_pixel_identical_to_v1": true,
+      "comparison_region_svg_x": [
+        0,
+        1850
+      ],
+      "PNG_size": [
+        5940,
+        2700
+      ],
+      "PDF_header_valid": true,
+      "visual_inspection": "PASS"
+    }
+  }
+}

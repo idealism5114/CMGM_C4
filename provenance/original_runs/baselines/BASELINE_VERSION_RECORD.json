@@ -1,0 +1,13 @@
+{
+  "version": "CMGM_DEEP_V3_C4_VAL5_MACRO_SEED42_V1",
+  "baseline_architecture": "current CMGM Deep V3, exact old architecture/source hashes preserved",
+  "old_run": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/baseline_comparison_deep_v3_triweave/20261022_184258_600773",
+  "new_run": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/baselines_deep_v3_c4_val5/seed42_20261109",
+  "C4_model_id": "moe_phase_m/pred_global_dynamic",
+  "C4_checkpoint_sha256": "952dd88da6fb9be867c48bd089383ab12f4a55cc76fe38be7626d5bf4e6a612a",
+  "selection": "VAL_5D_COMMODITY_MACRO_MAE",
+  "formal_fits": 8,
+  "seed": 42,
+  "data_manifest_sha256": "8c6180ca12a7fce3478a83733d8c5d0da88ab124c53e8ab99aa20ca00b24a1fc",
+  "old_files_preserved": true
+}

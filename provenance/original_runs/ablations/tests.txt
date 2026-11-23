@@ -1,0 +1,2 @@
+21 passed in 9.06s. Synthetic CPU mechanism and pre-TEST report checks.
+Command: OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 ../.venv/bin/python -m pytest tests/test_phase_m_c4_ablation.py -q

@@ -1,0 +1,6 @@
+{
+  "suite": "ablations",
+  "key": "no_adaptive_graph",
+  "project": "../project.json",
+  "selector": "VAL_5D_COMMODITY_MACRO_MAE"
+}

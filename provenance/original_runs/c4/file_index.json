@@ -1,0 +1,218 @@
+{
+  "output": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381",
+  "models": {
+    "C0": {
+      "control": "C0",
+      "model_id": "moe_phase_m/d0b_original",
+      "best_epoch": 46,
+      "best_VAL5_macro_MAE": 0.024297144480448948,
+      "parameters": {
+        "total": 522269,
+        "trainable": 522269,
+        "backbone_and_head": 522269,
+        "experts": {},
+        "router": 0
+      },
+      "training_seconds": 481.4449775889516,
+      "checkpoint": "/home/yangxiaotong/projects/myresearch/Commedities/checkpoints/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/C0/best.pt",
+      "checkpoint_sha256": "1a5a4aeb1f672f8bba648c26488c75da4c2557980eb4e9fa7882e9f1d98d8f3a",
+      "latest_checkpoint": "/home/yangxiaotong/projects/myresearch/Commedities/checkpoints/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/C0/latest.pt",
+      "strict_load": true,
+      "status": "COMPLETE",
+      "test_evaluated": false
+    },
+    "C1": {
+      "control": "C1",
+      "model_id": "moe_phase_m/pred_global_static",
+      "best_epoch": 28,
+      "best_VAL5_macro_MAE": 0.024323703984933727,
+      "parameters": {
+        "total": 550049,
+        "trainable": 550049,
+        "backbone_and_head": 514013,
+        "experts": {
+          "recent_change": 12352,
+          "long_memory": 16448,
+          "spatial_structure": 4160,
+          "st_interaction": 3072
+        },
+        "router": 4
+      },
+      "training_seconds": 331.6402397081256,
+      "checkpoint": "/home/yangxiaotong/projects/myresearch/Commedities/checkpoints/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/C1/best.pt",
+      "checkpoint_sha256": "a7c252978309678f356f32781d57b2e76948ee13d6a058e53b2ab4d11bdaa7ae",
+      "latest_checkpoint": "/home/yangxiaotong/projects/myresearch/Commedities/checkpoints/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/C1/latest.pt",
+      "strict_load": true,
+      "status": "COMPLETE",
+      "test_evaluated": false
+    },
+    "C2": {
+      "control": "C2",
+      "model_id": "moe_phase_m/pred_short_long_static",
+      "best_epoch": 28,
+      "best_VAL5_macro_MAE": 0.02433747343104691,
+      "parameters": {
+        "total": 550053,
+        "trainable": 550053,
+        "backbone_and_head": 514013,
+        "experts": {
+          "recent_change": 12352,
+          "long_memory": 16448,
+          "spatial_structure": 4160,
+          "st_interaction": 3072
+        },
+        "router": 8
+      },
+      "training_seconds": 337.55634159594774,
+      "checkpoint": "/home/yangxiaotong/projects/myresearch/Commedities/checkpoints/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/C2/best.pt",
+      "checkpoint_sha256": "f80bd54c912ac1c22a6ad3be144e1acf50f0d1acb10c9a7e685ea747c522740a",
+      "latest_checkpoint": "/home/yangxiaotong/projects/myresearch/Commedities/checkpoints/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/C2/latest.pt",
+      "strict_load": true,
+      "status": "COMPLETE",
+      "test_evaluated": false
+    },
+    "C3": {
+      "control": "C3",
+      "model_id": "moe_phase_m/pred_horizon_static",
+      "best_epoch": 25,
+      "best_VAL5_macro_MAE": 0.02431286350365897,
+      "parameters": {
+        "total": 550061,
+        "trainable": 550061,
+        "backbone_and_head": 514013,
+        "experts": {
+          "recent_change": 12352,
+          "long_memory": 16448,
+          "spatial_structure": 4160,
+          "st_interaction": 3072
+        },
+        "router": 16
+      },
+      "training_seconds": 306.75389655679464,
+      "checkpoint": "/home/yangxiaotong/projects/myresearch/Commedities/checkpoints/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/C3/best.pt",
+      "checkpoint_sha256": "7769a433a1bc2676f4ffba119ed1b4feccd4c1294609207f63541a2e780c2647",
+      "latest_checkpoint": "/home/yangxiaotong/projects/myresearch/Commedities/checkpoints/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/C3/latest.pt",
+      "strict_load": true,
+      "status": "COMPLETE",
+      "test_evaluated": false
+    },
+    "C4": {
+      "control": "C4",
+      "model_id": "moe_phase_m/pred_global_dynamic",
+      "best_epoch": 35,
+      "best_VAL5_macro_MAE": 0.024297203261564152,
+      "parameters": {
+        "total": 567169,
+        "trainable": 567169,
+        "backbone_and_head": 514013,
+        "experts": {
+          "recent_change": 12352,
+          "long_memory": 16448,
+          "spatial_structure": 4160,
+          "st_interaction": 3072
+        },
+        "router": 17124
+      },
+      "training_seconds": 767.5993170961738,
+      "checkpoint": "/home/yangxiaotong/projects/myresearch/Commedities/checkpoints/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/C4/best.pt",
+      "checkpoint_sha256": "952dd88da6fb9be867c48bd089383ab12f4a55cc76fe38be7626d5bf4e6a612a",
+      "latest_checkpoint": "/home/yangxiaotong/projects/myresearch/Commedities/checkpoints/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/C4/latest.pt",
+      "strict_load": true,
+      "status": "COMPLETE",
+      "test_evaluated": false
+    },
+    "C5": {
+      "control": "C5",
+      "model_id": "moe_phase_m/pred_horizon_dynamic",
+      "best_epoch": 42,
+      "best_VAL5_macro_MAE": 0.024309116030885543,
+      "parameters": {
+        "total": 567457,
+        "trainable": 567457,
+        "backbone_and_head": 514013,
+        "experts": {
+          "recent_change": 12352,
+          "long_memory": 16448,
+          "spatial_structure": 4160,
+          "st_interaction": 3072
+        },
+        "router": 17412
+      },
+      "training_seconds": 453.9908264502883,
+      "checkpoint": "/home/yangxiaotong/projects/myresearch/Commedities/checkpoints/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/C5/best.pt",
+      "checkpoint_sha256": "063865a6342f8af671db33e63e56d061516362636d1cff4d7d4e5a383a11f398",
+      "latest_checkpoint": "/home/yangxiaotong/projects/myresearch/Commedities/checkpoints/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/C5/latest.pt",
+      "strict_load": true,
+      "status": "COMPLETE",
+      "test_evaluated": false
+    },
+    "C6": {
+      "control": "C6",
+      "model_id": "moe_phase_m/rep_horizon_dynamic",
+      "best_epoch": 40,
+      "best_VAL5_macro_MAE": 0.024302827567956813,
+      "parameters": {
+        "total": 567457,
+        "trainable": 567457,
+        "backbone_and_head": 514013,
+        "experts": {
+          "recent_change": 12352,
+          "long_memory": 16448,
+          "spatial_structure": 4160,
+          "st_interaction": 3072
+        },
+        "router": 17412
+      },
+      "training_seconds": 433.8943264335394,
+      "checkpoint": "/home/yangxiaotong/projects/myresearch/Commedities/checkpoints/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/C6/best.pt",
+      "checkpoint_sha256": "42c817ad4ff83006006cb54111b4076d9ec07726cb002fb0fc7b61903e221909",
+      "latest_checkpoint": "/home/yangxiaotong/projects/myresearch/Commedities/checkpoints/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/C6/latest.pt",
+      "strict_load": true,
+      "status": "COMPLETE",
+      "test_evaluated": false
+    }
+  },
+  "reports": {
+    "launch.json": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/launch.json",
+    "STATUS.json": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/STATUS.json",
+    "CHECKPOINT_AUDIT.json": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/CHECKPOINT_AUDIT.json",
+    "models_frozen.json": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/models_frozen.json",
+    "COMMON_INITIALIZATION_AUDIT.json": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/COMMON_INITIALIZATION_AUDIT.json",
+    "PREREGISTERED_PROTOCOL.md": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/PREREGISTERED_PROTOCOL.md",
+    "PER_COMMODITY_5D_RESULTS.csv": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/PER_COMMODITY_5D_RESULTS.csv",
+    "REPORT.md": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/REPORT.md",
+    "EXPERT_OUTPUT_NORMS.csv": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/EXPERT_OUTPUT_NORMS.csv",
+    "training_index.json": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/training_index.json",
+    "CMGM_D0B_SOURCE_AUDIT.md": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/CMGM_D0B_SOURCE_AUDIT.md",
+    "KEY_MECHANISM_COMPARISONS.csv": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/KEY_MECHANISM_COMPARISONS.csv",
+    "tests.txt": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/tests.txt",
+    "MODEL_PARAMETER_COUNTS.csv": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/MODEL_PARAMETER_COUNTS.csv",
+    "EXPERT_FORECAST_COMPETENCE.csv": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/EXPERT_FORECAST_COMPETENCE.csv",
+    "AUDIT_RESULTS.json": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/AUDIT_RESULTS.json",
+    "ENVIRONMENT.json": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/ENVIRONMENT.json",
+    "HORIZON_ROUTING_DIFFERENCE.csv": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/HORIZON_ROUTING_DIFFERENCE.csv",
+    "EXPERT_PREDICTION_CORRELATION.csv": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/EXPERT_PREDICTION_CORRELATION.csv",
+    "launch_gpu0_resume.json": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/launch_gpu0_resume.json",
+    "ROUTER_INTERVENTION_RESULTS.csv": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/ROUTER_INTERVENTION_RESULTS.csv",
+    "MODEL_REGISTRY.json": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/MODEL_REGISTRY.json",
+    "BOOTSTRAP_EXPLORATORY.json": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/BOOTSTRAP_EXPLORATORY.json",
+    "ALL_CONTROL_COMPARISONS.csv": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/ALL_CONTROL_COMPARISONS.csv",
+    "TRAINING_HISTORY.csv": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/TRAINING_HISTORY.csv",
+    "VAL_5D_RANKING.csv": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/VAL_5D_RANKING.csv",
+    "DATA_FINGERPRINT_AUDIT.json": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/DATA_FINGERPRINT_AUDIT.json",
+    "EXPERT_ROUTING_BY_HORIZON.csv": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/EXPERT_ROUTING_BY_HORIZON.csv",
+    "VAL_METRICS.json": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/VAL_METRICS.json",
+    "TRAINING_CONFIG.json": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/TRAINING_CONFIG.json",
+    "WORKSPACE_BEFORE.json": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/WORKSPACE_BEFORE.json",
+    "ROUTER_ARCHITECTURE.md": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/ROUTER_ARCHITECTURE.md",
+    "PROVENANCE.json": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/PROVENANCE.json",
+    "EXPERT_ARCHITECTURE.md": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/EXPERT_ARCHITECTURE.md",
+    "VAL_ALL_HORIZONS.csv": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/VAL_ALL_HORIZONS.csv",
+    "FINAL_VERIFICATION.json": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/FINAL_VERIFICATION.json",
+    "FINAL_ANSWERS.md": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/FINAL_ANSWERS.md",
+    "HORIZON_CHANNEL_PARAMETER_AUDIT.json": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/HORIZON_CHANNEL_PARAMETER_AUDIT.json",
+    "REPORT_GENERATED.md": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/REPORT_GENERATED.md"
+  },
+  "test_evaluated": false,
+  "resource_migration_audit": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/resource_migration_gpu1_to_gpu0/audit.json"
+}

@@ -1,0 +1,35 @@
+{
+  "git_commit": "981de35aa9a0472e6974d5a6e4f98e1c5242e465",
+  "source_hashes": {
+    "cmgm/models/phase_m_new_data.py": "7cc5d12eb72be5fd379587a69a939478c541dd8f0f4bfb866c8ce323fd26d501",
+    "cmgm/models/phase_m_prediction_moe.py": "7dc055b95cec0d855aafffcd2b97f51ce17213a0b1ec2ac417ee018bab041526",
+    "cmgm/models/formal_d0b_main_ablation.py": "017867e4261080f07145b9b8f75fcfe4b129c15924b9ebf67984185cf0a97da7",
+    "cmgm/models/four_task_moe.py": "5388604c142131b6804051156ffde6743321e79145b60130029cb5dd4c22e051",
+    "cmgm/models/horizon_tensor_fusion.py": "bf0f087c772e8f19d83d1ca7373380a40f4baef34f90e3cc16a6c15300f7a2a0",
+    "cmgm/models/frozen_d0b_task_experts.py": "dfed3d65a5a6c38be1d96f8a6ad44813410fc419a8781abd10b54734b9c051f5",
+    "cmgm/scripts/phase_m_new_data.py": "cdd1b8a7c78583ee1f7b5c3c69a23177996aa1e70f7503da1e5476decad6f3b7",
+    "cmgm/scripts/phase_m_analysis.py": "3940fc81cf84e680d1df0f39f4d50d755b1a1bef2dbe9ac49f1edbf4209382e3",
+    "cmgm/scripts/phase_m_horizon_prediction_moe.py": "19d2969aa1f55802b1401c490e5a227a160d925217a5058c4909f7c456d1d807",
+    "cmgm/scripts/formal_main_innovation_ablation.py": "93e2861d91e0d04076417161d6a8ed1ebb3e015f101fbb7103a3e981f9ce82cd",
+    "tests/test_phase_m_new_data.py": "ee0b4728e9ce3932f30ac4d402b7956fdc5e5707a67ce5bffdc0228f14caa741",
+    "tests/test_phase_m_prediction_moe.py": "45eda3e0fa84d2e564757efe1356713a6bf76821adff280692e861e22891efd3"
+  },
+  "prior_workspace": {
+    "git_sha": "981de35aa9a0472e6974d5a6e4f98e1c5242e465\n",
+    "git_status": " M README.md\n M cmgm/models/baselines/crossgnn.py\n M cmgm/models/baselines/graph_wavenet.py\n M cmgm/models/baselines/msgnet.py\n M cmgm/models/comparison_baselines.py\n M cmgm/scripts/baseline_comparison.py\n M cmgm/scripts/baseline_report.py\n?? cmgm/data/causal_data_loader.py\n?? cmgm/data/causal_feature_builder.py\n?? cmgm/models/formal_d0b_main_ablation.py\n?? cmgm/models/frozen_d0b_multiscale_task_experts.py\n?? cmgm/models/phase_m_prediction_moe.py\n?? cmgm/models/source_task_moe.py\n?? cmgm/models/staged_source_task_moe.py\n?? cmgm/models/task_query_readout.py\n?? cmgm/models/task_segment_experts.py\n?? cmgm/models/triweave_baseline_adapter.py\n?? cmgm/scripts/d0b_multiscale_task_experts.py\n?? cmgm/scripts/d0b_source_task_moe.py\n?? cmgm/scripts/d0b_source_task_staged.py\n?? cmgm/scripts/d0b_task_query_readout.py\n?? cmgm/scripts/d0b_task_segment_experts.py\n?? cmgm/scripts/formal_main_innovation_ablation.py\n?? cmgm/scripts/phase_a_audit.py\n?? cmgm/scripts/phase_a_fix.py\n?? cmgm/scripts/phase_a_gate.py\n?? cmgm/scripts/phase_m_analysis.py\n?? cmgm/scripts/phase_m_horizon_prediction_moe.py\n?? cmgm/scripts/source_task_failure_diagnostics.py\n?? cmgm/scripts/triweave_baseline_benchmark.py\n?? cmgm/training/clean_d0b_adapter.py\n?? docs/CURRENT_EXPERIMENT_VERSIONS.md\n?? docs/DeepBaselineTriWeaveV3.md\n?? docs/Sep17D0BTriWeave.md\n?? docs/causal_data_protocol_v1.md\n?? docs/current_experiment_versions.json\n?? docs/d0b_multiscale_task_experts.md\n?? docs/d0b_source_task_moe.md\n?? docs/d0b_source_task_staged.md\n?? docs/d0b_task_query_readout.md\n?? docs/d0b_task_segment_experts.md\n?? docs/phase_a_gate.md\n?? tests/test_frozen_d0b_multiscale_task_experts.py\n?? tests/test_phase_a_fix.py\n?? tests/test_phase_a_gate.py\n?? tests/test_phase_a_protocol_audit.py\n?? tests/test_phase_m_prediction_moe.py\n?? tests/test_sep17_triweave_ablation.py\n?? tests/test_source_task_moe.py\n?? tests/test_staged_source_task_moe.py\n?? tests/test_task_query_readout.py\n?? tests/test_task_segment_experts.py\n?? tests/test_triweave_baselines.py\n",
+    "git_diff_stat": " README.md                              |  9 ++++++++\n cmgm/models/baselines/crossgnn.py      |  8 +++----\n cmgm/models/baselines/graph_wavenet.py | 10 ++++-----\n cmgm/models/baselines/msgnet.py        | 25 +++++++++++----------\n cmgm/models/comparison_baselines.py    | 40 ++++++++++++++++++----------------\n cmgm/scripts/baseline_comparison.py    |  7 +++++-\n cmgm/scripts/baseline_report.py        | 20 ++++++++++++++++-\n 7 files changed, 77 insertions(+), 42 deletions(-)\n",
+    "prior_file_hashes": {
+      "cmgm/models/phase_m_prediction_moe.py": "7dc055b95cec0d855aafffcd2b97f51ce17213a0b1ec2ac417ee018bab041526",
+      "cmgm/scripts/phase_m_horizon_prediction_moe.py": "9391b358fa44f305cdf1048faed36616c6b54f7fae1675820c506a73628fdd6f",
+      "cmgm/scripts/phase_m_analysis.py": "9cf54b099499dfe979dec6b435ed1796b35f6697b89e5f63f81f6658f03ac78c",
+      "tests/test_phase_m_prediction_moe.py": "d90a22492a5a0610b051ca9058be19cc77b5817ad4251b7864b1d686a55cd898"
+    },
+    "data_decision": "Explicit user answer: use new311/26/23 data and preserve original D0B structure; no Legacy24 data"
+  },
+  "historical_source_manifest_sha256": "b11d8779a9ae21899b4917908df8b5bdbb7440addfdc9fbab2c37b2708fa2184",
+  "initial_states_sha256": "75201c1b80344ce502d92d92e03f5ccec678f742c128fb61dc330fb38074506f",
+  "independent_trained_D0B_used_only_for_audit": true,
+  "historical_TEST_summary_seen_during_version_document_review": true,
+  "TEST_numeric_arrays_read": false,
+  "TEST_used_for_selection": false
+}

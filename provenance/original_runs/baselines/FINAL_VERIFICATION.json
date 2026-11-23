@@ -1,0 +1,132 @@
+{
+  "status": "PASS",
+  "models": {
+    "RNN": {
+      "PASS": true,
+      "strict_best_latest": true,
+      "best_epoch": 87,
+      "last_epoch": 97,
+      "full_TRAIN_coverage": true,
+      "epochs": 97,
+      "scheduler_replayed": true,
+      "selection": "VAL_5D_COMMODITY_MACRO_MAE",
+      "metric_recomputation": {
+        "train": 0.026176137826480084,
+        "val": 0.02463537949724859,
+        "test": 0.025197956912032454
+      }
+    },
+    "GRU": {
+      "PASS": true,
+      "strict_best_latest": true,
+      "best_epoch": 48,
+      "last_epoch": 58,
+      "full_TRAIN_coverage": true,
+      "epochs": 58,
+      "scheduler_replayed": true,
+      "selection": "VAL_5D_COMMODITY_MACRO_MAE",
+      "metric_recomputation": {
+        "train": 0.024427516309795855,
+        "val": 0.03243312086509994,
+        "test": 0.037314456849854995
+      }
+    },
+    "LSTM": {
+      "PASS": true,
+      "strict_best_latest": true,
+      "best_epoch": 13,
+      "last_epoch": 23,
+      "full_TRAIN_coverage": true,
+      "epochs": 23,
+      "scheduler_replayed": true,
+      "selection": "VAL_5D_COMMODITY_MACRO_MAE",
+      "metric_recomputation": {
+        "train": 0.026016110784896965,
+        "val": 0.025868768559906434,
+        "test": 0.027390357017662768
+      }
+    },
+    "VanillaTransformer": {
+      "PASS": true,
+      "strict_best_latest": true,
+      "best_epoch": 12,
+      "last_epoch": 22,
+      "full_TRAIN_coverage": true,
+      "epochs": 22,
+      "scheduler_replayed": true,
+      "selection": "VAL_5D_COMMODITY_MACRO_MAE",
+      "metric_recomputation": {
+        "train": 0.03966630019077411,
+        "val": 0.03827390188872563,
+        "test": 0.04422393095260295
+      }
+    },
+    "GraphWaveNet": {
+      "PASS": true,
+      "strict_best_latest": true,
+      "best_epoch": 23,
+      "last_epoch": 33,
+      "full_TRAIN_coverage": true,
+      "epochs": 33,
+      "scheduler_replayed": true,
+      "selection": "VAL_5D_COMMODITY_MACRO_MAE",
+      "metric_recomputation": {
+        "train": 0.026391913235474393,
+        "val": 0.024525201052771485,
+        "test": 0.024636481930769692
+      }
+    },
+    "MTGNN": {
+      "PASS": true,
+      "strict_best_latest": true,
+      "best_epoch": 154,
+      "last_epoch": 164,
+      "full_TRAIN_coverage": true,
+      "epochs": 164,
+      "scheduler_replayed": true,
+      "selection": "VAL_5D_COMMODITY_MACRO_MAE",
+      "metric_recomputation": {
+        "train": 0.026372031367764736,
+        "val": 0.024667354104830418,
+        "test": 0.025395517624066798
+      }
+    },
+    "MSGNet": {
+      "PASS": true,
+      "strict_best_latest": true,
+      "best_epoch": 128,
+      "last_epoch": 138,
+      "full_TRAIN_coverage": true,
+      "epochs": 138,
+      "scheduler_replayed": true,
+      "selection": "VAL_5D_COMMODITY_MACRO_MAE",
+      "metric_recomputation": {
+        "train": 0.026668974260597864,
+        "val": 0.024316032473768897,
+        "test": 0.0244490854283557
+      }
+    },
+    "CrossGNN": {
+      "PASS": true,
+      "strict_best_latest": true,
+      "best_epoch": 59,
+      "last_epoch": 69,
+      "full_TRAIN_coverage": true,
+      "epochs": 69,
+      "scheduler_replayed": true,
+      "selection": "VAL_5D_COMMODITY_MACRO_MAE",
+      "metric_recomputation": {
+        "train": 0.027079264321045793,
+        "val": 0.024744105747404953,
+        "test": 0.024685976452012735
+      }
+    }
+  },
+  "baselines_complete": 8,
+  "historical_sources_results_checkpoints_unchanged": true,
+  "existing_tracked_user_diff_unchanged": true,
+  "all_models_frozen_before_TEST": true,
+  "all_three_selection_monitors": "VAL_5D_COMMODITY_MACRO_MAE",
+  "total_epochs": 604,
+  "total_training_seconds": 974.6813565269113
+}

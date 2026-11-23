@@ -1,0 +1,7 @@
+{
+  "command": "CUDA_VISIBLE_DEVICES=0 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4 ../.venv/bin/python -u -m cmgm.scripts.baselines_val5_macro --output experiments/baselines_deep_v3_c4_val5/seed42_20261109 --resume --run --device cuda:0",
+  "gpu_physical": 0,
+  "tool_session_id": 30772,
+  "started_at": "2026-11-09T17:36:33.749095+08:00",
+  "user_authorized": true
+}

@@ -1,0 +1,14 @@
+Key,Variant,Total_registered,Trainable,Inactive_frozen,Experts,Router
+full_c4,Full C4 Global Dynamic Prediction MoE,567169,567169,0,36032,17124
+no_spatial,w/o Spatial Branch,567169,473387,93782,36032,17124
+no_temporal,w/o Temporal Branch,567169,100850,466319,36032,17124
+no_spatial_temporal_attention,w/o Spatial Temporal Attention,567169,567104,65,36032,17124
+no_adaptive_graph,w/o Adaptive Graph,567169,560748,6421,36032,17124
+no_edge_attn_mixhop,w/o EdgeAttnMixHop,592129,533889,58240,36032,17124
+no_rpe,w/o Relative Position Encoding,567169,567013,156,36032,17124
+no_adaptive_regime_routing,w/o Adaptive Regime Routing,567169,566773,396,36032,17124
+no_regime_specific_transition,w/o Regime-Specific Transitions,567169,501249,65920,36032,17124
+no_microstate,w/o Microstate,567169,562881,4288,36032,17124
+no_balanced_readout,w/o Balanced Readout,567169,566913,256,36032,17124
+no_dynamic_routing,w/o Dynamic Routing (uniform experts),567169,550045,17124,36032,17124
+no_moe,w/o MoE (original D0B gate),522269,522269,0,0,0

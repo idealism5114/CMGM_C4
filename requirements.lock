@@ -1,0 +1,5 @@
+# Verified local environment. Install the correct CUDA build for your system.
+torch==2.7.1+cu118
+numpy==2.5.3
+pytest==9.1.1
+setuptools==84.0.0

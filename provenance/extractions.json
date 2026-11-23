@@ -1,0 +1,282 @@
+[
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/sep17_d0b_triweave/20261022_153322_689200/historical_source/cmgm_sep17_frozen/models/hetero_mixhop_model.py",
+    "source_sha256": "81471d840b9bf8fee3540460767061ef4fa4c766e034ef214c6a66c21a2d4a6c",
+    "symbol": "_TypeInputProjection",
+    "first_line": 62,
+    "last_line": 77
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/sep17_d0b_triweave/20261022_153322_689200/historical_source/cmgm_sep17_frozen/models/hetero_mixhop_model.py",
+    "source_sha256": "81471d840b9bf8fee3540460767061ef4fa4c766e034ef214c6a66c21a2d4a6c",
+    "symbol": "EdgeAttnMixHop",
+    "first_line": 95,
+    "last_line": 271
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/sep17_d0b_triweave/20261022_153322_689200/historical_source/cmgm_sep17_frozen/models/hetero_mixhop_model.py",
+    "source_sha256": "81471d840b9bf8fee3540460767061ef4fa4c766e034ef214c6a66c21a2d4a6c",
+    "symbol": "_TypeMeanPool",
+    "first_line": 706,
+    "last_line": 731
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/sep17_d0b_triweave/20261022_153322_689200/historical_source/cmgm_sep17_frozen/models/switching_transformer.py",
+    "source_sha256": "02ce1e7aa08435c9fb903a933dd08577629d3462b4dab4ef9bf9dd3b3ad6b0c3",
+    "symbol": "MarketAwareTemporalEncoder",
+    "first_line": 14,
+    "last_line": 153
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/sep17_d0b_triweave/20261022_153322_689200/historical_source/cmgm_sep17_frozen/models/model.py",
+    "source_sha256": "86f2cb0da1bf6d650f6ccd01bf0093555a4c1ae0613529ac5bc64b87f02329ce",
+    "symbol": "MixHopPropagation",
+    "first_line": 29,
+    "last_line": 65
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/formal_d0b_main_ablation.py",
+    "source_sha256": "017867e4261080f07145b9b8f75fcfe4b129c15924b9ebf67984185cf0a97da7",
+    "symbol": "NAMES",
+    "first_line": 18,
+    "last_line": 21
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/formal_d0b_main_ablation.py",
+    "source_sha256": "017867e4261080f07145b9b8f75fcfe4b129c15924b9ebf67984185cf0a97da7",
+    "symbol": "KEY",
+    "first_line": 22,
+    "last_line": 24
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/formal_d0b_main_ablation.py",
+    "source_sha256": "017867e4261080f07145b9b8f75fcfe4b129c15924b9ebf67984185cf0a97da7",
+    "symbol": "DEFINITIONS",
+    "first_line": 25,
+    "last_line": 37
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/formal_d0b_main_ablation.py",
+    "source_sha256": "017867e4261080f07145b9b8f75fcfe4b129c15924b9ebf67984185cf0a97da7",
+    "symbol": "masked_softmax",
+    "first_line": 50,
+    "last_line": 54
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/formal_d0b_main_ablation.py",
+    "source_sha256": "017867e4261080f07145b9b8f75fcfe4b129c15924b9ebf67984185cf0a97da7",
+    "symbol": "zero",
+    "first_line": 57,
+    "last_line": 58
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/formal_d0b_main_ablation.py",
+    "source_sha256": "017867e4261080f07145b9b8f75fcfe4b129c15924b9ebf67984185cf0a97da7",
+    "symbol": "MainInnovationAblation",
+    "first_line": 61,
+    "last_line": 246
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/phase_m_new_data.py",
+    "source_sha256": "7cc5d12eb72be5fd379587a69a939478c541dd8f0f4bfb866c8ce323fd26d501",
+    "symbol": "PhaseMLiveBackbone",
+    "first_line": 18,
+    "last_line": 69
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/four_task_moe.py",
+    "source_sha256": "5388604c142131b6804051156ffde6743321e79145b60130029cb5dd4c22e051",
+    "symbol": "LongMemoryExpert",
+    "first_line": 38,
+    "last_line": 48
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/four_task_moe.py",
+    "source_sha256": "5388604c142131b6804051156ffde6743321e79145b60130029cb5dd4c22e051",
+    "symbol": "SpatialStructureExpert",
+    "first_line": 51,
+    "last_line": 59
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/four_task_moe.py",
+    "source_sha256": "5388604c142131b6804051156ffde6743321e79145b60130029cb5dd4c22e051",
+    "symbol": "LowRankInteractionExpert",
+    "first_line": 62,
+    "last_line": 72
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/phase_m_prediction_moe.py",
+    "source_sha256": "7dc055b95cec0d855aafffcd2b97f51ce17213a0b1ec2ac417ee018bab041526",
+    "symbol": "MeanAugmentedRecentExpert",
+    "first_line": 36,
+    "last_line": 51
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/phase_m_prediction_moe.py",
+    "source_sha256": "7dc055b95cec0d855aafffcd2b97f51ce17213a0b1ec2ac417ee018bab041526",
+    "symbol": "PureLowRankInteractionExpert",
+    "first_line": 54,
+    "last_line": 57
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/phase_m_prediction_moe.py",
+    "source_sha256": "7dc055b95cec0d855aafffcd2b97f51ce17213a0b1ec2ac417ee018bab041526",
+    "symbol": "ExpertBank",
+    "first_line": 60,
+    "last_line": 70
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/phase_m_prediction_moe.py",
+    "source_sha256": "7dc055b95cec0d855aafffcd2b97f51ce17213a0b1ec2ac417ee018bab041526",
+    "symbol": "expert_forecasts",
+    "first_line": 113,
+    "last_line": 126
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/phase_m_prediction_moe.py",
+    "source_sha256": "7dc055b95cec0d855aafffcd2b97f51ce17213a0b1ec2ac417ee018bab041526",
+    "symbol": "checked_weights",
+    "first_line": 129,
+    "last_line": 135
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/phase_m_new_data.py",
+    "source_sha256": "7cc5d12eb72be5fd379587a69a939478c541dd8f0f4bfb866c8ce323fd26d501",
+    "symbol": "NewDataPhaseMModel",
+    "first_line": 72,
+    "last_line": 123
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/comparison_baselines.py",
+    "source_sha256": "4aa4cdf7b59651c8c2943a4d67a6f6157a87fba0309ccfc975d1914768acb5eb",
+    "symbol": "HORIZONS",
+    "first_line": 9,
+    "last_line": 9
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/comparison_baselines.py",
+    "source_sha256": "4aa4cdf7b59651c8c2943a4d67a6f6157a87fba0309ccfc975d1914768acb5eb",
+    "symbol": "TRAINABLE",
+    "first_line": 10,
+    "last_line": 10
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/comparison_baselines.py",
+    "source_sha256": "4aa4cdf7b59651c8c2943a4d67a6f6157a87fba0309ccfc975d1914768acb5eb",
+    "symbol": "ORDER",
+    "first_line": 11,
+    "last_line": 11
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/comparison_baselines.py",
+    "source_sha256": "4aa4cdf7b59651c8c2943a4d67a6f6157a87fba0309ccfc975d1914768acb5eb",
+    "symbol": "BaselineMultimodalAdapter",
+    "first_line": 14,
+    "last_line": 25
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/comparison_baselines.py",
+    "source_sha256": "4aa4cdf7b59651c8c2943a4d67a6f6157a87fba0309ccfc975d1914768acb5eb",
+    "symbol": "Base",
+    "first_line": 28,
+    "last_line": 35
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/comparison_baselines.py",
+    "source_sha256": "4aa4cdf7b59651c8c2943a4d67a6f6157a87fba0309ccfc975d1914768acb5eb",
+    "symbol": "GRUBaseline",
+    "first_line": 47,
+    "last_line": 53
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/comparison_baselines.py",
+    "source_sha256": "4aa4cdf7b59651c8c2943a4d67a6f6157a87fba0309ccfc975d1914768acb5eb",
+    "symbol": "VanillaTransformerBaseline",
+    "first_line": 56,
+    "last_line": 68
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/comparison_baselines.py",
+    "source_sha256": "4aa4cdf7b59651c8c2943a4d67a6f6157a87fba0309ccfc975d1914768acb5eb",
+    "symbol": "GraphTemporalBlock",
+    "first_line": 88,
+    "last_line": 99
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/comparison_baselines.py",
+    "source_sha256": "4aa4cdf7b59651c8c2943a4d67a6f6157a87fba0309ccfc975d1914768acb5eb",
+    "symbol": "MTGNNBaseline",
+    "first_line": 102,
+    "last_line": 112
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/comparison_baselines.py",
+    "source_sha256": "4aa4cdf7b59651c8c2943a4d67a6f6157a87fba0309ccfc975d1914768acb5eb",
+    "symbol": "RNNBaseline",
+    "first_line": 115,
+    "last_line": 121
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/comparison_baselines.py",
+    "source_sha256": "4aa4cdf7b59651c8c2943a4d67a6f6157a87fba0309ccfc975d1914768acb5eb",
+    "symbol": "LSTMBaseline",
+    "first_line": 124,
+    "last_line": 130
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/comparison_baselines.py",
+    "source_sha256": "4aa4cdf7b59651c8c2943a4d67a6f6157a87fba0309ccfc975d1914768acb5eb",
+    "symbol": "GraphWaveNetBaseline",
+    "first_line": 133,
+    "last_line": 144
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/comparison_baselines.py",
+    "source_sha256": "4aa4cdf7b59651c8c2943a4d67a6f6157a87fba0309ccfc975d1914768acb5eb",
+    "symbol": "MSGNetBaseline",
+    "first_line": 147,
+    "last_line": 162
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/comparison_baselines.py",
+    "source_sha256": "4aa4cdf7b59651c8c2943a4d67a6f6157a87fba0309ccfc975d1914768acb5eb",
+    "symbol": "CrossGNNBaseline",
+    "first_line": 165,
+    "last_line": 179
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/comparison_baselines.py",
+    "source_sha256": "4aa4cdf7b59651c8c2943a4d67a6f6157a87fba0309ccfc975d1914768acb5eb",
+    "symbol": "MODELS",
+    "first_line": 182,
+    "last_line": 183
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/comparison_baselines.py",
+    "source_sha256": "4aa4cdf7b59651c8c2943a4d67a6f6157a87fba0309ccfc975d1914768acb5eb",
+    "symbol": "make_model",
+    "first_line": 186,
+    "last_line": 188
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/models/model.py",
+    "source_sha256": "4b58f8e7a7675dae3510ee2ad57b0a02e61f501b6a6efad51b7363991505d020",
+    "symbol": "MixHopPropagation",
+    "first_line": 28,
+    "last_line": 64
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/scripts/phase_m_analysis.py",
+    "source_sha256": "3940fc81cf84e680d1df0f39f4d50d755b1a1bef2dbe9ac49f1edbf4209382e3",
+    "symbol": "HORIZONS",
+    "first_line": 5,
+    "last_line": 5
+  },
+  {
+    "source": "/home/yangxiaotong/projects/myresearch/Commedities/cmgm/scripts/phase_m_analysis.py",
+    "source_sha256": "3940fc81cf84e680d1df0f39f4d50d755b1a1bef2dbe9ac49f1edbf4209382e3",
+    "symbol": "population",
+    "first_line": 9,
+    "last_line": 33
+  }
+]

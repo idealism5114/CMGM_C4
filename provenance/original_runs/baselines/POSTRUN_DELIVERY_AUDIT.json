@@ -1,0 +1,67 @@
+{
+  "PASS": true,
+  "independent_all_horizon_metric_max_abs_difference": 0.0,
+  "models": {
+    "RNN": {
+      "first_epoch_training_Huber_difference_vs_old": 0.0,
+      "train_independent_all_horizon_metrics": true,
+      "val_independent_all_horizon_metrics": true,
+      "test_independent_all_horizon_metrics": true
+    },
+    "GRU": {
+      "first_epoch_training_Huber_difference_vs_old": 0.0,
+      "train_independent_all_horizon_metrics": true,
+      "val_independent_all_horizon_metrics": true,
+      "test_independent_all_horizon_metrics": true
+    },
+    "LSTM": {
+      "first_epoch_training_Huber_difference_vs_old": 0.0,
+      "train_independent_all_horizon_metrics": true,
+      "val_independent_all_horizon_metrics": true,
+      "test_independent_all_horizon_metrics": true
+    },
+    "VanillaTransformer": {
+      "first_epoch_training_Huber_difference_vs_old": 0.0,
+      "train_independent_all_horizon_metrics": true,
+      "val_independent_all_horizon_metrics": true,
+      "test_independent_all_horizon_metrics": true
+    },
+    "GraphWaveNet": {
+      "first_epoch_training_Huber_difference_vs_old": -4.2234395841722616e-10,
+      "train_independent_all_horizon_metrics": true,
+      "val_independent_all_horizon_metrics": true,
+      "test_independent_all_horizon_metrics": true
+    },
+    "MTGNN": {
+      "first_epoch_training_Huber_difference_vs_old": -3.248799666788482e-11,
+      "train_independent_all_horizon_metrics": true,
+      "val_independent_all_horizon_metrics": true,
+      "test_independent_all_horizon_metrics": true
+    },
+    "MSGNet": {
+      "first_epoch_training_Huber_difference_vs_old": -2.1658664445256548e-10,
+      "train_independent_all_horizon_metrics": true,
+      "val_independent_all_horizon_metrics": true,
+      "test_independent_all_horizon_metrics": true
+    },
+    "CrossGNN": {
+      "first_epoch_training_Huber_difference_vs_old": 0.0,
+      "train_independent_all_horizon_metrics": true,
+      "val_independent_all_horizon_metrics": true,
+      "test_independent_all_horizon_metrics": true
+    }
+  },
+  "models_retrained": 8,
+  "training_restarts": 0,
+  "selector": "VAL_5D_COMMODITY_MACRO_MAE",
+  "scheduler_monitor": "VAL_5D_COMMODITY_MACRO_MAE",
+  "early_stopping_monitor": "VAL_5D_COMMODITY_MACRO_MAE",
+  "old_artifacts_unchanged": true,
+  "all_sources_match_frozen_snapshot": true,
+  "TEST_evaluated_after_all_models_frozen": true,
+  "synthetic_regression_tests_passed": 27,
+  "preflight_only_issues": "New checker canonical -1 padding handling and pytest temp-path false positive fixed before formal training; previous attempt retained in sibling directory.",
+  "index_finalization": "Refresh delivery file hashes after COMPLETE status; no numeric results, checkpoints or frozen training sources changed.",
+  "verification_script_sha256": "1a035f8987bc8beea1a04e32d821a17979610bef0c594a29a5726a0f91aa6952",
+  "verification_script": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/baselines_deep_v3_c4_val5/seed42_20261109/audit_tools/verify_delivery.py"
+}

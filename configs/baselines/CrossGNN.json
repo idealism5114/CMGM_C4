@@ -1,0 +1,6 @@
+{
+  "suite": "baselines",
+  "key": "CrossGNN",
+  "project": "../project.json",
+  "selector": "VAL_5D_COMMODITY_MACRO_MAE"
+}

@@ -1,0 +1,109 @@
+{
+  "C0": {
+    "model_id": "moe_phase_m/d0b_original",
+    "parameters": {
+      "total": 522269,
+      "trainable": 522269,
+      "backbone_and_head": 522269,
+      "experts": {},
+      "router": 0,
+      "effective_gradient_parameters": 522269
+    }
+  },
+  "C1": {
+    "model_id": "moe_phase_m/pred_global_static",
+    "parameters": {
+      "total": 550049,
+      "trainable": 550049,
+      "backbone_and_head": 514013,
+      "experts": {
+        "recent_change": 12352,
+        "long_memory": 16448,
+        "spatial_structure": 4160,
+        "st_interaction": 3072
+      },
+      "router": 4,
+      "effective_gradient_parameters": 550049
+    }
+  },
+  "C2": {
+    "model_id": "moe_phase_m/pred_short_long_static",
+    "parameters": {
+      "total": 550053,
+      "trainable": 550053,
+      "backbone_and_head": 514013,
+      "experts": {
+        "recent_change": 12352,
+        "long_memory": 16448,
+        "spatial_structure": 4160,
+        "st_interaction": 3072
+      },
+      "router": 8,
+      "effective_gradient_parameters": 550053
+    }
+  },
+  "C3": {
+    "model_id": "moe_phase_m/pred_horizon_static",
+    "parameters": {
+      "total": 550061,
+      "trainable": 550061,
+      "backbone_and_head": 514013,
+      "experts": {
+        "recent_change": 12352,
+        "long_memory": 16448,
+        "spatial_structure": 4160,
+        "st_interaction": 3072
+      },
+      "router": 16,
+      "effective_gradient_parameters": 550061
+    }
+  },
+  "C4": {
+    "model_id": "moe_phase_m/pred_global_dynamic",
+    "parameters": {
+      "total": 567169,
+      "trainable": 567169,
+      "backbone_and_head": 514013,
+      "experts": {
+        "recent_change": 12352,
+        "long_memory": 16448,
+        "spatial_structure": 4160,
+        "st_interaction": 3072
+      },
+      "router": 17124,
+      "effective_gradient_parameters": 567169
+    }
+  },
+  "C5": {
+    "model_id": "moe_phase_m/pred_horizon_dynamic",
+    "parameters": {
+      "total": 567457,
+      "trainable": 567457,
+      "backbone_and_head": 514013,
+      "experts": {
+        "recent_change": 12352,
+        "long_memory": 16448,
+        "spatial_structure": 4160,
+        "st_interaction": 3072
+      },
+      "router": 17412,
+      "effective_gradient_parameters": 567457
+    }
+  },
+  "C6": {
+    "model_id": "moe_phase_m/rep_horizon_dynamic",
+    "parameters": {
+      "total": 567457,
+      "trainable": 567457,
+      "backbone_and_head": 514013,
+      "experts": {
+        "recent_change": 12352,
+        "long_memory": 16448,
+        "spatial_structure": 4160,
+        "st_interaction": 3072
+      },
+      "router": 17412,
+      "effective_gradient_parameters": 567457
+    }
+  }
+}

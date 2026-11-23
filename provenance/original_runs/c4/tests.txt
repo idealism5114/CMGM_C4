@@ -1,0 +1,3 @@
+OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 ../.venv/bin/python -m pytest tests/test_phase_m_new_data.py tests/test_phase_m_prediction_moe.py tests/test_four_task_moe.py tests/test_horizon_tensor_fusion.py -q
+46 passed in 24.70s
+Compile/import checks passed. No real training or TEST access in tests.

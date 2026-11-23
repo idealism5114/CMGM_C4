@@ -1,0 +1,40 @@
+{
+  "C5": {
+    "router.horizon_embedding.weight": {
+      "initial_L2": 0.11144216358661652,
+      "trained_L2": 3.4389198845019564e-05,
+      "trained_max_abs": 3.184968591085635e-05
+    },
+    "router.network.0.weight": {
+      "initial_L2": 0.5622634291648865,
+      "trained_L2": 0.0012310580350458622,
+      "trained_max_abs": 0.0003354988293722272
+    },
+    "router.network.2.weight": {
+      "initial_L2": 0.010825288482010365,
+      "trained_L2": 0.12622474133968353,
+      "trained_max_abs": 0.021199440583586693
+    },
+    "horizon_embedding_pairwise_max_abs": 3.2121090043801814e-05,
+    "checkpoint_sha256": "063865a6342f8af671db33e63e56d061516362636d1cff4d7d4e5a383a11f398"
+  },
+  "C6": {
+    "router.horizon_embedding.weight": {
+      "initial_L2": 0.11144216358661652,
+      "trained_L2": 3.50281989085488e-05,
+      "trained_max_abs": 1.571215398143977e-05
+    },
+    "router.network.0.weight": {
+      "initial_L2": 0.5622634291648865,
+      "trained_L2": 0.0011966376332566142,
+      "trained_max_abs": 0.0003281263052485883
+    },
+    "router.network.2.weight": {
+      "initial_L2": 0.010825288482010365,
+      "trained_L2": 0.15293307602405548,
+      "trained_max_abs": 0.027110986411571503
+    },
+    "horizon_embedding_pairwise_max_abs": 2.3484326447942294e-05,
+    "checkpoint_sha256": "42c817ad4ff83006006cb54111b4076d9ec07726cb002fb0fc7b61903e221909"
+  }
+}

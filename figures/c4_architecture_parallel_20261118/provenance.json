@@ -1,0 +1,95 @@
+{
+  "date": "2026-11-18",
+  "model": "moe_phase_m/pred_global_dynamic",
+  "layout_version": 2,
+  "previous_layout_preserved": "layout_v1/",
+  "current_training_defaults": {
+    "lr": 0.0003,
+    "weight_decay": 0.0001
+  },
+  "source_sha256": {
+    "src/cmgm_c4/models/c4.py": "de2f79ea2fa97f4a4ff3ba70ec16639b61f80b4e22c5e436b3f5f761e0f96998",
+    "src/cmgm_c4/models/backbone.py": "ea32d379db48e9a5cee8983cfdd45bd4805bb55310d2471a742b15f3afab25a1",
+    "src/cmgm_c4/models/temporal.py": "4c2bd9e2cd964d45ea6b4e6ce7c220d891e899d2667df995984f3518f01d7a23",
+    "src/cmgm_c4/models/experts.py": "f9bb672fc85ba818b409208f2fecb87a139fbab6aa82001e6567cd31d3322c4a",
+    "src/cmgm_c4/models/router.py": "9574a305cfee4b39d8116fc6cb7644a5e5f9991350e9862ce1a9e38fe1e6b374",
+    "src/cmgm_c4/models/_native/native.py": "87fc929916cf1635e2357faac17deacec98e55c42fc90721a5efe047395915e8",
+    "src/cmgm_c4/models/_native/temporal.py": "37a32b500dfcfa90843ab1eb773aa78d874ee224a721cc8acc5af99f4e75a793"
+  },
+  "rendering": "Original deterministic SVG icons + librsvg/pycairo; editable vector PDF/SVG",
+  "styling_references": [
+    {
+      "title": "Connecting the Dots: Multivariate Time Series Forecasting with Graph Neural Networks",
+      "venue": "KDD 2020",
+      "figure": "Figure 2",
+      "url": "https://www.xiaojun.ai/papers/kdd-2020-wu.pdf"
+    },
+    {
+      "title": "Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting",
+      "venue": "International Journal of Forecasting 2021",
+      "figure": "Figure 2",
+      "url": "https://arxiv.org/pdf/1912.09363"
+    }
+  ],
+  "semantic_checks": {
+    "parallel_space_time": true,
+    "macro_drives_micro": true,
+    "regimes3_experts4": true,
+    "live_H_Z_direct_taps": true,
+    "A0_global_not_input_conditioned": true,
+    "graph_blocks2_each_K2": true,
+    "no_D0B_gate": true,
+    "no_GraphSkip": true,
+    "no_horizon_router": true,
+    "shared_head": true,
+    "prediction_level_fusion": true,
+    "router_weights_shared_across_horizons": true,
+    "router_experts_head_and_fusion_inside_one_MoE": true
+  },
+  "input_shape": [
+    "B",
+    20,
+    311,
+    26
+  ],
+  "candidate_shape": [
+    "B",
+    4,
+    4,
+    23
+  ],
+  "routing_unique_shape": [
+    "B",
+    4
+  ],
+  "routing_broadcast_shape": [
+    "B",
+    4,
+    4
+  ],
+  "output_shape": [
+    "B",
+    4,
+    23
+  ],
+  "schematic_only": [
+    "Heatmap tiles, graph nodes and router bars illustrate structure; they are not trained numerical results"
+  ],
+  "data_or_checkpoint_opened": false,
+  "training": false,
+  "model_source_modified": false,
+  "old_figure_modified": false,
+  "drawing_script_sha256": "7b13593884e9d3921161d30a2aeae325f571f9b51b23f69d119d303bae90d4b0",
+  "files": {
+    "c4_parallel_en.png": "d433a0fa5cb791e388ddd3c16ce3ea56f76e710be96aae8a6d79ab2b20853bf6",
+    "c4_parallel_zh_preview.png": "1f4f12d4c6a1309bfb6f1d219c32b5cbdaeb0853ea612403a0f4dc464f8a9228",
+    "CHECKS.json": "13d53e50e4b38213241fabc7478c6904ff703f06c70589600b724e6e7fee0dc9",
+    "c4_parallel_zh.png": "430b8c724cc795a4c6745a07ef6b706eca6de135a35c6511af33061cb206c7e2",
+    "README.md": "f9d6737e581b7e489272b9c3fc876c04f212c72df97059a05357974dcf9926a9",
+    "c4_parallel_zh.svg": "1151937027dca60b5c5d8f136a9b2ca0ffbf263d42ce9439c1ba53cbdba978d9",
+    "c4_parallel_en.svg": "809f763ffdd626a7fed095e534d9e74e199369f05639e6e5ac4f65e157b41ce4",
+    "c4_parallel_zh.pdf": "60d0f00570b7050c87c2fd48317e8f124be053892432b9468c5676c3016ce0e9",
+    "c4_parallel_en_preview.png": "4279995867f16e4e4fe8dda4871d50d9bc6cbf75d176232854388b21c489a70a",
+    "c4_parallel_en.pdf": "174548fa187e2c181bcc6e3fa18c1f1f1a961f018721405fde181221ec1b7eb1"
+  }
+}

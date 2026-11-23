@@ -1,0 +1,11 @@
+{
+  "c4_source": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/initial_states.pt",
+  "source_file_sha256": "75201c1b80344ce502d92d92e03f5ccec678f742c128fb61dc330fb38074506f",
+  "selected_keys": [
+    "C4",
+    "C0"
+  ],
+  "destination": "initial_states/c4.pt",
+  "destination_sha256": "08879013bd3e9ee78c06e9ed2ee4d2bd8a65d5394887ff46e6391f281157c3b6",
+  "statement": "Tensor-preserving extraction of untrained states; no trained weights used for initialization"
+}

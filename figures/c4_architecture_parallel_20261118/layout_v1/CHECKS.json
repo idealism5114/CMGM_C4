@@ -1,0 +1,26 @@
+{
+  "en": {
+    "svg_XML_valid": true,
+    "visible_text_count": 107,
+    "no_canvas_text_clipping": true,
+    "PNG_size": [
+      5940,
+      2700
+    ],
+    "PDF_valid_header": true
+  },
+  "zh": {
+    "svg_XML_valid": true,
+    "visible_text_count": 105,
+    "no_canvas_text_clipping": true,
+    "PNG_size": [
+      5940,
+      2700
+    ],
+    "PDF_valid_header": true
+  },
+  "source_hashes_unchanged": true,
+  "training": false,
+  "TEST_access": false,
+  "rendered_images_visually_inspected": true
+}

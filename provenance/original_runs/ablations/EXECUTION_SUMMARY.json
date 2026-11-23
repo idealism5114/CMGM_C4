@@ -1,0 +1,7 @@
+{
+  "new_fits": 11,
+  "reused": 2,
+  "new_epoch_loop_seconds": 6160.073473103344,
+  "new_optimizer_steps": 20124,
+  "timing_definition": "Sum epoch train+VAL time, excluding checkpoint serialization/final prediction exports; shared GPU, not a standardized speed comparison"
+}

@@ -1,0 +1,9 @@
+{
+  "torch": "2.7.1+cu118",
+  "numpy": "2.5.3",
+  "cuda": "11.8",
+  "device": "Tesla V100-PCIE-32GB",
+  "physical_gpu": "0",
+  "cudnn_deterministic": false,
+  "cudnn_benchmark": false
+}

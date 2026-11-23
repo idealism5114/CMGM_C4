@@ -1,0 +1,18 @@
+{
+  "pid": 1251916,
+  "command": [
+    "/home/yangxiaotong/projects/myresearch/.venv/bin/python",
+    "-u",
+    "-m",
+    "cmgm.scripts.phase_m_horizon_prediction_moe",
+    "--new-data-reference",
+    "/home/yangxiaotong/projects/myresearch/Commedities/experiments/sep17_d0b_triweave/20261022_153322_689200",
+    "--output",
+    "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381",
+    "--run",
+    "--device",
+    "cuda:0"
+  ],
+  "physical_gpu": 1,
+  "log": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_horizon_prediction_moe/newdata_20261026_135222_918381/runner.log"
+}

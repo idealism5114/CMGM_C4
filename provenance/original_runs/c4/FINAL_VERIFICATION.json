@@ -1,0 +1,75 @@
+{
+  "status": "PASS",
+  "models_complete": 7,
+  "shared_initialization": true,
+  "sources_unchanged": true,
+  "data_unchanged": true,
+  "original_D0B_checkpoint_unchanged": true,
+  "TEST_arrays_opened": false,
+  "no_additional_inference": true,
+  "checks": {
+    "C0": {
+      "strict_load": true,
+      "primary_metric_recomputed": true,
+      "selection_verified": true,
+      "full_training_coverage": true,
+      "checkpoint_sha256": "1a5a4aeb1f672f8bba648c26488c75da4c2557980eb4e9fa7882e9f1d98d8f3a",
+      "VAL_prediction_sha256": "de6f3a3657101ec6a4c3be1fe8ffda1d6af8739029841a760b92e3a4934d8544",
+      "best_epoch": 46
+    },
+    "C1": {
+      "strict_load": true,
+      "primary_metric_recomputed": true,
+      "selection_verified": true,
+      "full_training_coverage": true,
+      "checkpoint_sha256": "a7c252978309678f356f32781d57b2e76948ee13d6a058e53b2ab4d11bdaa7ae",
+      "VAL_prediction_sha256": "aaf21ae1a71055190d9e3a6e316d8a2499e6d2c380ab97a2290fa022b7c69c5a",
+      "best_epoch": 28
+    },
+    "C2": {
+      "strict_load": true,
+      "primary_metric_recomputed": true,
+      "selection_verified": true,
+      "full_training_coverage": true,
+      "checkpoint_sha256": "f80bd54c912ac1c22a6ad3be144e1acf50f0d1acb10c9a7e685ea747c522740a",
+      "VAL_prediction_sha256": "ad8ec347dbc1bee1bbc0937840ead1224de1563f870f4e8aa2d2ebca6bb84a5f",
+      "best_epoch": 28
+    },
+    "C3": {
+      "strict_load": true,
+      "primary_metric_recomputed": true,
+      "selection_verified": true,
+      "full_training_coverage": true,
+      "checkpoint_sha256": "7769a433a1bc2676f4ffba119ed1b4feccd4c1294609207f63541a2e780c2647",
+      "VAL_prediction_sha256": "0edffbbf6df821fc8c299f11815ed16a69fc7365d35ec7ddbeeb3cdb33344a82",
+      "best_epoch": 25
+    },
+    "C4": {
+      "strict_load": true,
+      "primary_metric_recomputed": true,
+      "selection_verified": true,
+      "full_training_coverage": true,
+      "checkpoint_sha256": "952dd88da6fb9be867c48bd089383ab12f4a55cc76fe38be7626d5bf4e6a612a",
+      "VAL_prediction_sha256": "064571a542de0c59f4c5d6af4323f5a89fb24b828c509a783696b2148596d4e2",
+      "best_epoch": 35
+    },
+    "C5": {
+      "strict_load": true,
+      "primary_metric_recomputed": true,
+      "selection_verified": true,
+      "full_training_coverage": true,
+      "checkpoint_sha256": "063865a6342f8af671db33e63e56d061516362636d1cff4d7d4e5a383a11f398",
+      "VAL_prediction_sha256": "08e9089953f8361192163cb8794650201a70565e5b6d4427224ad9a752df0012",
+      "best_epoch": 42
+    },
+    "C6": {
+      "strict_load": true,
+      "primary_metric_recomputed": true,
+      "selection_verified": true,
+      "full_training_coverage": true,
+      "checkpoint_sha256": "42c817ad4ff83006006cb54111b4076d9ec07726cb002fb0fc7b61903e221909",
+      "VAL_prediction_sha256": "c94a82af4be6004e08e71d3795338afe064bcda4dce3004a2ffa8f597fcae20a",
+      "best_epoch": 40
+    }
+  }
+}

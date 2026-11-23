@@ -1,0 +1,73 @@
+{
+  "PASS": true,
+  "dataset_manifest_sha256": "8c6180ca12a7fce3478a83733d8c5d0da88ab124c53e8ab99aa20ca00b24a1fc",
+  "splits": {
+    "train": {
+      "origins": 2726,
+      "first_origin": "2011-10-10",
+      "last_origin": "2022-12-29",
+      "shape": [
+        2726,
+        4,
+        23
+      ],
+      "valid_labels": {
+        "1": 52567,
+        "5": 51939,
+        "10": 51209,
+        "20": 49752
+      },
+      "target_sha256": "9a1e7c4798bdda3c383c8fe7ee9db81d7378218ae601f4d72fd9eaf7f5043608",
+      "mask_sha256": "55b841d6c7aa2daf845a288a77a750f1bc3cab295b85b0eeda3823c6b32b6b61"
+    },
+    "val": {
+      "origins": 483,
+      "first_origin": "2023-01-03",
+      "last_origin": "2024-12-30",
+      "shape": [
+        483,
+        4,
+        23
+      ],
+      "valid_labels": {
+        "1": 11101,
+        "5": 10993,
+        "10": 10858,
+        "20": 10592
+      },
+      "target_sha256": "12cad26dc697f4e15031ac80bc94e1aad38352f5cb3bbeb0dd0d3ebb34596477",
+      "mask_sha256": "65a2b689bfdeec97793da9f9cd8e86d4e03208ec1955c6f28ed1f664f3cc1b48"
+    }
+  },
+  "commodity_order": [
+    "FUT_LU",
+    "FUT_SC",
+    "FUT_CF",
+    "FUT_PG",
+    "FUT_HC",
+    "FUT_J",
+    "FUT_JM",
+    "FUT_FU",
+    "FUT_C",
+    "FUT_MA",
+    "FUT_SR",
+    "FUT_OI",
+    "FUT_RM",
+    "FUT_RB",
+    "FUT_M",
+    "FUT_CU",
+    "FUT_AL",
+    "FUT_ZN",
+    "FUT_SN",
+    "FUT_NI",
+    "FUT_A",
+    "FUT_I",
+    "FUT_Y"
+  ],
+  "source_nodes": 311,
+  "source_features": 26,
+  "baseline_token_count": 27,
+  "scaler_refitted": false,
+  "TEST_access_attempts": [],
+  "C4_population_exact_match": true
+}

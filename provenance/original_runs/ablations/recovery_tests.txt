@@ -1,0 +1,3 @@
+22 passed in 8.41s; includes populated TEST report regression.
+Original preflight tests.txt remains unchanged (21 passed).
+Model/training code unchanged; report keyword duplication repaired.

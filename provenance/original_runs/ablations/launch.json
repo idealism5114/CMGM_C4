@@ -1,0 +1,16 @@
+{
+  "pid": 2680189,
+  "command": [
+    "/home/yangxiaotong/projects/myresearch/.venv/bin/python",
+    "-u",
+    "-m",
+    "cmgm.scripts.phase_m_c4_ablation",
+    "--output",
+    "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_c4_ablation/seed42_20261026_r1",
+    "--run",
+    "--device",
+    "cuda:0"
+  ],
+  "physical_gpu": 0,
+  "log": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/phase_m_c4_ablation/seed42_20261026_r1/runner.log"
+}

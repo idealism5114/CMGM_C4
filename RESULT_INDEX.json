@@ -1,0 +1,48 @@
+{
+  "date": "2026-11-18",
+  "index_only_does_not_change_factory_defaults": true,
+  "current_tuned_C4": {
+    "run": "runs/ablations_c4_tuned/seed42_20261118_01",
+    "model_dir": "runs/ablations_c4_tuned/seed42_20261118_01/models/full_c4",
+    "best_checkpoint": "runs/ablations_c4_tuned/seed42_20261118_01/models/full_c4/best.pt",
+    "best_epoch": 15,
+    "lr": 0.0003,
+    "weight_decay": 0.0001,
+    "VAL5": 0.02424208720109714,
+    "TEST5": 0.024263393303929397
+  },
+  "current_ablation": {
+    "run": "runs/ablations_c4_tuned/seed42_20261118_01",
+    "models": 13,
+    "seed": 42,
+    "all_from_scratch": true,
+    "report": "runs/ablations_c4_tuned/seed42_20261118_01/REPORT.md",
+    "VAL": "VAL_ABLATION.csv",
+    "TEST": "TEST_ABLATION.csv"
+  },
+  "latest_baseline_archive": {
+    "version": "baselines_deep_v3_c4_val5/seed42_20261109",
+    "models": 8,
+    "results": "results/baselines",
+    "selection": "VAL_5D_COMMODITY_MACRO_MAE",
+    "note": "Historical migrated archive; current freshly trained baseline results are indexed under current_baselines"
+  },
+  "historical_registry": "configs/registry.json",
+  "restore_note": "Use evaluate --run-dir for current tuned C4 and new baseline model directories. --model identifiers still restore historical migrated checkpoints.",
+  "current_baselines": {
+    "run": "runs/baselines_deep_v3_tuned/seed42_20261118_01",
+    "status": "COMPLETE",
+    "models": 8,
+    "seed": 42,
+    "lr": 0.0003,
+    "weight_decay": 0.0001,
+    "selection": "VAL_5D_COMMODITY_MACRO_MAE",
+    "all_from_untrained_states": true,
+    "TEST_after_all8_VAL_lock": true,
+    "report": "runs/baselines_deep_v3_tuned/seed42_20261118_01/REPORT.md",
+    "VAL": "VAL_RANKING.csv",
+    "TEST": "TEST_COMPARISON.csv",
+    "reference_C4": "runs/ablations_c4_tuned/seed42_20261118_01/models/full_c4",
+    "independent_verification": "PASS"
+  }
+}

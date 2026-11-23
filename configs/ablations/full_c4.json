@@ -1,0 +1,6 @@
+{
+  "suite": "ablations",
+  "key": "full_c4",
+  "project": "../project.json",
+  "selector": "VAL_5D_COMMODITY_MACRO_MAE"
+}

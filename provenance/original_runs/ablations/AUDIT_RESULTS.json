@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "rows_complete": 13,
+  "new_fits_complete": 11,
+  "reused": 2,
+  "shared_initialization": true,
+  "historical_artifacts_unchanged": true,
+  "strict_checkpoints": true,
+  "checkpoint_selection": "VAL5 macro MAE",
+  "test_evaluated": true,
+  "no_additional_search": true,
+  "evaluation_recovery": "report-only source repair verified by AST; no training changes"
+}

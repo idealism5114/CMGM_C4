@@ -1,0 +1,57 @@
+{
+  "model": "moe_phase_m/pred_global_dynamic",
+  "commit": "981de35aa9a0472e6974d5a6e4f98e1c5242e465",
+  "checkpoint_sha256": "952dd88da6fb9be867c48bd089383ab12f4a55cc76fe38be7626d5bf4e6a612a",
+  "best_epoch": 35,
+  "figure_date": "2026-11-12",
+  "dimensions": {
+    "input": [
+      "B",
+      20,
+      311,
+      26
+    ],
+    "output": [
+      "B",
+      4,
+      23
+    ],
+    "candidate": [
+      "B",
+      4,
+      4,
+      23
+    ],
+    "routing": [
+      "B",
+      4
+    ]
+  },
+  "source_sha256": {
+    "cmgm/models/phase_m_new_data.py": "7cc5d12eb72be5fd379587a69a939478c541dd8f0f4bfb866c8ce323fd26d501",
+    "cmgm/models/phase_m_prediction_moe.py": "7dc055b95cec0d855aafffcd2b97f51ce17213a0b1ec2ac417ee018bab041526",
+    "cmgm/models/formal_d0b_main_ablation.py": "017867e4261080f07145b9b8f75fcfe4b129c15924b9ebf67984185cf0a97da7",
+    "cmgm/models/four_task_moe.py": "5388604c142131b6804051156ffde6743321e79145b60130029cb5dd4c22e051",
+    "cmgm/models/switching_latent_transformer.py": "0784387a1d2d59e8b57d55d5a42592bddac40da082ccbca720276471c28ee6de"
+  },
+  "critical_checks": {
+    "horizon_shared_router": true,
+    "prediction_level_fusion": true,
+    "one_shared_head": true,
+    "no_D0B_gate_in_C4": true,
+    "interaction_has_no_temporal_residual": true,
+    "regimes3_experts4": true,
+    "no_new_dynamic_graph_or_GraphSkip": true,
+    "original_Huber_and_KL": true
+  },
+  "rendering": "Deterministic editable SVG; vector PDF and PNG via system librsvg/pycairo; no image generation",
+  "training_or_data_access": false,
+  "files": {
+    "CAPTION.md": "9afd00a85b14bc82e09ae6ab8253e1a48ed0a2e0b9f0cdc631d8e2d1f34c4886",
+    "c4_architecture.pdf": "0bf49b542be922e2580b1a74a1739c9a41888dae9d30762227163280d3184cee",
+    "c4_architecture_preview.png": "4592f8cc8cd7b7fb30fa6b2ac33b26fe74efeda62f4eb33a7f7dcd3ff57e45e5",
+    "c4_architecture.png": "2f28a391a87a5656d324817e7bdd14ab753ae78c7b7920e4a4d678ce25c7e836",
+    "c4_architecture.svg": "8c50dabc5d2eff1a282b5cd62a0f8464e567bbd1e1049789d9b0dc88e69a0f60",
+    "render_c4.py": "58dd56adef79bca2f7044762f1ccad7518d5fe04b5bdc509a430836c5ca24f19"
+  }
+}

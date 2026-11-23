@@ -1,0 +1,90 @@
+{
+  "status": "PASS",
+  "dataset_protocol": "TRIWEAVE_23_AFTER_CLOSE_RESEARCH_V1",
+  "manifest_sha256": "8c6180ca12a7fce3478a83733d8c5d0da88ab124c53e8ab99aa20ca00b24a1fc",
+  "array_hashes": {
+    "features.npy": "19636e417be4b3fc825079e7df6758a830d943792cd8d31f38e967496be8da11",
+    "input_valid_mask.npy": "82f3f4545a82336ac7efa10c842ef9dc4a681c74a1af849d46cb929291cbf4bc",
+    "feature_valid_mask.npy": "cc5c7605a70cf885d8fd3f529650a02a2769960d1c925d1b512b6bd6a2857c7b",
+    "feature_applicable_mask.npy": "97be42d21b24b7dbfbf9bce6dca6e05042954e9c7346fb053e09d2b3cdf468b0",
+    "reference_dates.npy": "4a8530391b23d6dd21f9073bb2ad718b72a1c36ac941023bd5bbbdd24f78028f",
+    "train_targets.npy": "9a1e7c4798bdda3c383c8fe7ee9db81d7378218ae601f4d72fd9eaf7f5043608",
+    "train_label_valid_mask.npy": "55b841d6c7aa2daf845a288a77a750f1bc3cab295b85b0eeda3823c6b32b6b61",
+    "train_origin_indices.npy": "5558b49580e1da80acd7d692da95cff055c7f88689c8da9f88859e41d0b2c9c5",
+    "train_window_indices.npy": "cd6162b61fe38acd96e94f5b42a19ede38c1699e4e4e0bbdefa47af7b1a5827e",
+    "val_targets.npy": "12cad26dc697f4e15031ac80bc94e1aad38352f5cb3bbeb0dd0d3ebb34596477",
+    "val_label_valid_mask.npy": "65a2b689bfdeec97793da9f9cd8e86d4e03208ec1955c6f28ed1f664f3cc1b48",
+    "val_origin_indices.npy": "ec852a887609e7365a1e5a119a02e74996fb94c93ecc72f7d26131a731bdf3d0",
+    "val_window_indices.npy": "1dae99178706a33fb8bd3e6d2cd16819c0c6b8a48f869b95ce0989b522996f22"
+  },
+  "splits": {
+    "train": {
+      "origins": 2726,
+      "first_origin": "2011-10-10",
+      "last_origin": "2022-12-29",
+      "valid_labels": {
+        "1": 52567,
+        "5": 51939,
+        "10": 51209,
+        "20": 49752
+      },
+      "timeline_last": "2024-12-31"
+    },
+    "val": {
+      "origins": 483,
+      "first_origin": "2023-01-03",
+      "last_origin": "2024-12-30",
+      "valid_labels": {
+        "1": 11101,
+        "5": 10993,
+        "10": 10858,
+        "20": 10592
+      },
+      "timeline_last": "2024-12-31"
+    }
+  },
+  "targets": [
+    "FUT_LU",
+    "FUT_SC",
+    "FUT_CF",
+    "FUT_PG",
+    "FUT_HC",
+    "FUT_J",
+    "FUT_JM",
+    "FUT_FU",
+    "FUT_C",
+    "FUT_MA",
+    "FUT_SR",
+    "FUT_OI",
+    "FUT_RM",
+    "FUT_RB",
+    "FUT_M",
+    "FUT_CU",
+    "FUT_AL",
+    "FUT_ZN",
+    "FUT_SN",
+    "FUT_NI",
+    "FUT_A",
+    "FUT_I",
+    "FUT_Y"
+  ],
+  "model_shape": {
+    "nodes": 311,
+    "stocks": 263,
+    "bonds": 25,
+    "targets": 23,
+    "features": 26
+  },
+  "original_parameters": 522269,
+  "original_checkpoint_sha256": "d3c84515106f62343d9c90db0a831c0e8e1564170f57e5796e39ea0a142e46e5",
+  "original_best_epoch": 45,
+  "strict_load": true,
+  "original_VAL_prediction_max_abs_diff": 4.470348358154297e-08,
+  "original_VAL5_macro_MAE": 0.0242943128841843,
+  "temporal_math_AST_identical": true,
+  "previous_bounded_preprocessing_replay": "82e167df11d1425b0534958460ea41596d25fce2f6aa7e0d992e7eb2eccd544f",
+  "TEST_arrays_opened": false,
+  "limitation": "Frozen new-data Research23 is exploratory; historical PIT membership, price release time and continuous futures roll method not certified",
+  "historical_TEST_summary_seen_during_version_document_review": true,
+  "TEST_summary_used_for_selection": false
+}

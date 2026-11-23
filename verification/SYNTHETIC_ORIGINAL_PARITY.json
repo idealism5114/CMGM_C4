@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "threads": 4,
+  "modes": {
+    "eval": {
+      "max_absolute_differences": {
+        "prediction": 0.0,
+        "prediction_loss": 0.0,
+        "KL": 0.0,
+        "routing": 0.0,
+        "expert_prediction": 0.0,
+        "H": 0.0,
+        "Z": 0.0
+      },
+      "max_gradient_difference": 0.0,
+      "RNG_equal": true
+    },
+    "train": {
+      "max_absolute_differences": {
+        "prediction": 0.0,
+        "prediction_loss": 0.0,
+        "KL": 0.0,
+        "routing": 0.0,
+        "expert_prediction": 0.0,
+        "H": 0.0,
+        "Z": 0.0
+      },
+      "max_gradient_difference": 0.0,
+      "RNG_equal": true
+    }
+  },
+  "optimizer_steps": 0
+}

@@ -1,0 +1,7 @@
+{
+  "status": "PASS",
+  "files": 525,
+  "all_hashes_identical": true,
+  "TEST_operation": "opaque bytes SHA only",
+  "TEST_numeric_arrays_parsed": 0
+}

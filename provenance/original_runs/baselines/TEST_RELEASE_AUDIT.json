@@ -1,0 +1,10 @@
+{
+  "frozen_models_sha256": "e27713adf3e4c04e40a1bf791a7e664b16a0a055edbb5dda1f071e28458d3b47",
+  "source": "/home/yangxiaotong/projects/myresearch/Commedities/experiments/baseline_comparison_deep_v3_triweave/20261022_184258_600773/neutral_test",
+  "manifest_sha256": "289db1464b4cf3f8113110d81453ca246a127fec5672140cbef48f805c802144",
+  "common_C4_population": true,
+  "raw_data_read": false,
+  "scaler_refitted": false,
+  "models_evaluated": 8,
+  "C4_checkpoint_unchanged": true
+}

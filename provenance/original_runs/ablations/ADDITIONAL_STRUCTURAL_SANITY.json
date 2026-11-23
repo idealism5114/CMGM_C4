@@ -1,0 +1,155 @@
+{
+  "status": "PASS",
+  "data": "synthetic CPU only",
+  "formal_training_RNG_untouched": true,
+  "shape": {
+    "nodes": 311,
+    "features": 26,
+    "targets": 23
+  },
+  "checks": {
+    "full_c4": {
+      "shape": [
+        2,
+        4,
+        23
+      ],
+      "single_sample_max_abs_diff": 2.421438694000244e-08,
+      "temporal_prefix_causality": "PASS",
+      "all_unavailable_input_finite": true,
+      "PASS": true
+    },
+    "no_spatial": {
+      "shape": [
+        2,
+        4,
+        23
+      ],
+      "single_sample_max_abs_diff": 3.725290298461914e-08,
+      "temporal_prefix_causality": "PASS",
+      "all_unavailable_input_finite": true,
+      "PASS": true
+    },
+    "no_temporal": {
+      "shape": [
+        2,
+        4,
+        23
+      ],
+      "single_sample_max_abs_diff": 5.960464477539063e-08,
+      "temporal_prefix_causality": "NOT_APPLICABLE: temporal branch removed",
+      "all_unavailable_input_finite": true,
+      "PASS": true
+    },
+    "no_spatial_temporal_attention": {
+      "shape": [
+        2,
+        4,
+        23
+      ],
+      "single_sample_max_abs_diff": 2.2351741790771484e-08,
+      "temporal_prefix_causality": "PASS",
+      "all_unavailable_input_finite": true,
+      "PASS": true
+    },
+    "no_adaptive_graph": {
+      "shape": [
+        2,
+        4,
+        23
+      ],
+      "single_sample_max_abs_diff": 4.470348358154297e-08,
+      "temporal_prefix_causality": "PASS",
+      "all_unavailable_input_finite": true,
+      "PASS": true
+    },
+    "no_edge_attn_mixhop": {
+      "shape": [
+        2,
+        4,
+        23
+      ],
+      "single_sample_max_abs_diff": 2.9802322387695312e-08,
+      "temporal_prefix_causality": "PASS",
+      "all_unavailable_input_finite": true,
+      "PASS": true
+    },
+    "no_rpe": {
+      "shape": [
+        2,
+        4,
+        23
+      ],
+      "single_sample_max_abs_diff": 2.2351741790771484e-08,
+      "temporal_prefix_causality": "PASS",
+      "all_unavailable_input_finite": true,
+      "PASS": true
+    },
+    "no_adaptive_regime_routing": {
+      "shape": [
+        2,
+        4,
+        23
+      ],
+      "single_sample_max_abs_diff": 1.862645149230957e-08,
+      "temporal_prefix_causality": "PASS",
+      "all_unavailable_input_finite": true,
+      "PASS": true
+    },
+    "no_regime_specific_transition": {
+      "shape": [
+        2,
+        4,
+        23
+      ],
+      "single_sample_max_abs_diff": 2.9802322387695312e-08,
+      "temporal_prefix_causality": "PASS",
+      "all_unavailable_input_finite": true,
+      "PASS": true
+    },
+    "no_microstate": {
+      "shape": [
+        2,
+        4,
+        23
+      ],
+      "single_sample_max_abs_diff": 1.862645149230957e-08,
+      "temporal_prefix_causality": "PASS",
+      "all_unavailable_input_finite": true,
+      "PASS": true
+    },
+    "no_balanced_readout": {
+      "shape": [
+        2,
+        4,
+        23
+      ],
+      "single_sample_max_abs_diff": 2.9802322387695312e-08,
+      "temporal_prefix_causality": "PASS",
+      "all_unavailable_input_finite": true,
+      "PASS": true
+    },
+    "no_dynamic_routing": {
+      "shape": [
+        2,
+        4,
+        23
+      ],
+      "single_sample_max_abs_diff": 2.9802322387695312e-08,
+      "temporal_prefix_causality": "PASS",
+      "all_unavailable_input_finite": true,
+      "PASS": true
+    },
+    "no_moe": {
+      "shape": [
+        2,
+        4,
+        23
+      ],
+      "single_sample_max_abs_diff": 2.9802322387695312e-08,
+      "temporal_prefix_causality": "PASS",
+      "all_unavailable_input_finite": true,
+      "PASS": true
+    }
+  }
+}

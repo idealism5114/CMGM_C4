@@ -1,0 +1,102 @@
+{
+  "C0": {
+    "block_origins": 40,
+    "repeats": 2000,
+    "seed": 42,
+    "method": "paired noncircular moving date blocks; all commodities grouped; valid-label commodity-macro",
+    "CI95": {
+      "1": [
+        -2.330622022624774e-05,
+        0.00012312236507558178
+      ],
+      "5": [
+        -8.037486569907337e-05,
+        9.376550022985691e-05
+      ],
+      "10": [
+        -7.509997539642576e-05,
+        0.00012206905031603736
+      ],
+      "20": [
+        -0.0007786283974735921,
+        5.974713029146539e-05
+      ]
+    },
+    "interpretation": "Exploratory uncertainty only, not statistical significance or untouched validation"
+  },
+  "C3": {
+    "block_origins": 40,
+    "repeats": 2000,
+    "seed": 42,
+    "method": "paired noncircular moving date blocks; all commodities grouped; valid-label commodity-macro",
+    "CI95": {
+      "1": [
+        -0.00013988676511421415,
+        -5.760498431952868e-05
+      ],
+      "5": [
+        -5.816449372148909e-05,
+        3.706137739108037e-05
+      ],
+      "10": [
+        -0.00014765828248688116,
+        -1.382135627862794e-05
+      ],
+      "20": [
+        -0.0006162452917828332,
+        4.557361219950808e-06
+      ]
+    },
+    "interpretation": "Exploratory uncertainty only, not statistical significance or untouched validation"
+  },
+  "C4": {
+    "block_origins": 40,
+    "repeats": 2000,
+    "seed": 42,
+    "method": "paired noncircular moving date blocks; all commodities grouped; valid-label commodity-macro",
+    "CI95": {
+      "1": [
+        -4.766806633036529e-05,
+        -3.331796057930622e-06
+      ],
+      "5": [
+        -1.731218607131888e-05,
+        3.3713387562036216e-05
+      ],
+      "10": [
+        2.4442886453578103e-06,
+        6.763339825500812e-05
+      ],
+      "20": [
+        -0.00018078808704964704,
+        -1.8335191275541673e-05
+      ]
+    },
+    "interpretation": "Exploratory uncertainty only, not statistical significance or untouched validation"
+  },
+  "C6": {
+    "block_origins": 40,
+    "repeats": 2000,
+    "seed": 42,
+    "method": "paired noncircular moving date blocks; all commodities grouped; valid-label commodity-macro",
+    "CI95": {
+      "1": [
+        -2.468000377167755e-06,
+        7.978441454020513e-05
+      ],
+      "5": [
+        -8.449713495782032e-05,
+        9.013470818704177e-05
+      ],
+      "10": [
+        -6.904034856657655e-05,
+        0.00019145364068260531
+      ],
+      "20": [
+        -0.0003321861728411722,
+        0.00017760289482733228
+      ]
+    },
+    "interpretation": "Exploratory uncertainty only, not statistical significance or untouched validation"
+  }
+}

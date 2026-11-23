@@ -1,0 +1,794 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3300" height="1500" viewBox="0 0 3300 1500">
+<title>Current C4: parallel spatial and macro–micro temporal encoding with prediction-level MoE</title>
+<desc>One global dynamic four-expert router per sample, shared across horizons; one shared forecast head. Macro memory H drives regime filtering and recurrent microstates Z. Learned global A0 feeds two original graph blocks. No D0B gate, no task router, no new graph mechanism.</desc>
+<defs>
+<marker id="a24354b" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5.5 L0,11 Z" fill="#24354b"/></marker>
+<marker id="a2a918d" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5.5 L0,11 Z" fill="#2a918d"/></marker>
+<marker id="a397fb5" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5.5 L0,11 Z" fill="#397fb5"/></marker>
+<marker id="a5c90bc" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5.5 L0,11 Z" fill="#5c90bc"/></marker>
+<marker id="a627387" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5.5 L0,11 Z" fill="#627387"/></marker>
+<marker id="a63a98e" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5.5 L0,11 Z" fill="#63a98e"/></marker>
+<marker id="a67a795" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5.5 L0,11 Z" fill="#67a795"/></marker>
+<marker id="a8290a0" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5.5 L0,11 Z" fill="#8290a0"/></marker>
+<marker id="a84a04c" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5.5 L0,11 Z" fill="#84a04c"/></marker>
+<marker id="a8d72b5" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5.5 L0,11 Z" fill="#8d72b5"/></marker>
+<marker id="ab65a8b" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5.5 L0,11 Z" fill="#b65a8b"/></marker>
+<marker id="ad4a354" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5.5 L0,11 Z" fill="#d4a354"/></marker>
+<marker id="ad6e0ea" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5.5 L0,11 Z" fill="#d6e0ea"/></marker>
+<marker id="ad79436" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5.5 L0,11 Z" fill="#d79436"/></marker>
+<marker id="aeff8f5" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5.5 L0,11 Z" fill="#eff8f5"/></marker>
+<marker id="af1f7fc" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5.5 L0,11 Z" fill="#f1f7fc"/></marker>
+<marker id="afbf1f6" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5.5 L0,11 Z" fill="#fbf1f6"/></marker>
+</defs>
+<rect x="0" y="0" width="3300" height="1500" rx="0" fill="white" stroke="white" stroke-width="1.8" opacity="1"/>
+<text x="40" y="70" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="43" font-weight="650" fill="#24354b" text-anchor="start">C4 · Global Dynamic Spatiotemporal Prediction MoE</text>
+<rect x="30" y="485" width="220" height="565" rx="20" fill="#fafbfd" stroke="#d6e0ea" stroke-width="2" opacity="1"/>
+<rect x="49" y="507" width="7" height="34" rx="3" fill="#24354b" stroke="#24354b" stroke-width="1.8" opacity="1"/>
+<text x="74" y="534" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="650" fill="#24354b" text-anchor="start"></text>
+<text x="74" y="534" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="650" fill="#24354b" text-anchor="start">History</text>
+<g transform="translate(84,590) scale(0.8)" stroke-linecap="round" stroke-linejoin="round">
+<rect x="-37" y="0" width="19" height="34" rx="2" fill="white" stroke="#5c90bc" stroke-width="2.5" opacity="1"/>
+<path d="M -31,8 L -24,8" fill="none" stroke="#5c90bc" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -31,22 L -24,22" fill="none" stroke="#5c90bc" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="-10" y="-23" width="19" height="57" rx="2" fill="white" stroke="#5c90bc" stroke-width="2.5" opacity="1"/>
+<path d="M -4,-15 L 3,-15" fill="none" stroke="#5c90bc" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -4,-1 L 3,-1" fill="none" stroke="#5c90bc" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -4,13 L 3,13" fill="none" stroke="#5c90bc" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="17" y="-42" width="19" height="76" rx="2" fill="white" stroke="#5c90bc" stroke-width="2.5" opacity="1"/>
+<path d="M 23,-34 L 30,-34" fill="none" stroke="#5c90bc" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 23,-20 L 30,-20" fill="none" stroke="#5c90bc" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 23,-6 L 30,-6" fill="none" stroke="#5c90bc" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 23,8 L 30,8" fill="none" stroke="#5c90bc" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 23,22 L 30,22" fill="none" stroke="#5c90bc" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -44,44 L 44,44" fill="none" stroke="#5c90bc" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<text x="179" y="586" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="31" font-weight="650" fill="#24354b" text-anchor="middle">263</text>
+<text x="179" y="619" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="19" font-weight="400" fill="#627387" text-anchor="middle">Stocks</text>
+<g transform="translate(84,745) scale(0.8)" stroke-linecap="round" stroke-linejoin="round">
+<rect x="-39" y="-44" width="78" height="89" rx="6" fill="white" stroke="#63a98e" stroke-width="2.5" opacity="1"/>
+<path d="M -24,-20 L 25,-20" fill="none" stroke="#63a98e" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -24,-3 L 18,-3" fill="none" stroke="#63a98e" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -24,15 L 5,15" fill="none" stroke="#63a98e" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="21" cy="31" r="12" fill="white" stroke="#63a98e" stroke-width="2.5"/>
+<path d="M 15,41 L 11,54 L 22,49 L 30,54 L 28,41" fill="none" stroke="#63a98e" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<text x="179" y="741" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="31" font-weight="650" fill="#24354b" text-anchor="middle">25</text>
+<text x="179" y="774" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="19" font-weight="400" fill="#627387" text-anchor="middle">Bonds</text>
+<g transform="translate(84,900) scale(0.8)" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-37,-13 L-25,-33 L21,-33 L37,-13 Z" fill="white" stroke="#d4a354" stroke-width="2.5"/>
+<path d="M-37,16 L-25,-4 L21,-4 L37,16 Z" fill="white" stroke="#d4a354" stroke-width="2.5"/>
+<path d="M-37,45 L-25,25 L21,25 L37,45 Z" fill="white" stroke="#d4a354" stroke-width="2.5"/>
+</g>
+<text x="179" y="896" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="31" font-weight="650" fill="#24354b" text-anchor="middle">23</text>
+<text x="179" y="929" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="19" font-weight="400" fill="#627387" text-anchor="middle">Commodities</text>
+<text x="140" y="1012" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="400" fill="#627387" text-anchor="middle">20 × 311 × 26</text>
+<path d="M 250,766 L 275,766 L 275,411 L 324,411" fill="none" stroke="#397fb5" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a397fb5)"/>
+<path d="M 275,766 L 275,911 L 326,911" fill="none" stroke="#2a918d" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a918d)"/>
+<circle cx="275" cy="766" r="5" fill="#8290a0" stroke="#8290a0" stroke-width="2"/>
+<rect x="305" y="145" width="1510" height="415" rx="20" fill="#f1f7fc" stroke="#d6e0ea" stroke-width="2" opacity="1"/>
+<rect x="324" y="167" width="7" height="34" rx="3" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="1"/>
+<text x="349" y="194" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="650" fill="#397fb5" text-anchor="start">Spatial branch</text>
+<g transform="translate(423,390) scale(1)" stroke-linecap="round" stroke-linejoin="round">
+<rect x="-53" y="-40" width="9" height="17" rx="2" fill="#5c90bc" stroke="#5c90bc" stroke-width="1.8" opacity="1"/>
+<rect x="-40" y="-40" width="9" height="17" rx="2" fill="#5c90bc" stroke="#5c90bc" stroke-width="1.8" opacity="1"/>
+<rect x="-27" y="-40" width="9" height="17" rx="2" fill="#5c90bc" stroke="#5c90bc" stroke-width="1.8" opacity="1"/>
+<rect x="-14" y="-40" width="9" height="17" rx="2" fill="#5c90bc" stroke="#5c90bc" stroke-width="1.8" opacity="1"/>
+<rect x="-53" y="-12" width="9" height="17" rx="2" fill="#63a98e" stroke="#63a98e" stroke-width="1.8" opacity="1"/>
+<rect x="-40" y="-12" width="9" height="17" rx="2" fill="#63a98e" stroke="#63a98e" stroke-width="1.8" opacity="1"/>
+<rect x="-27" y="-12" width="9" height="17" rx="2" fill="#63a98e" stroke="#63a98e" stroke-width="1.8" opacity="1"/>
+<rect x="-14" y="-12" width="9" height="17" rx="2" fill="#63a98e" stroke="#63a98e" stroke-width="1.8" opacity="1"/>
+<rect x="-53" y="16" width="9" height="17" rx="2" fill="#d4a354" stroke="#d4a354" stroke-width="1.8" opacity="1"/>
+<rect x="-40" y="16" width="9" height="17" rx="2" fill="#d4a354" stroke="#d4a354" stroke-width="1.8" opacity="1"/>
+<rect x="-27" y="16" width="9" height="17" rx="2" fill="#d4a354" stroke="#d4a354" stroke-width="1.8" opacity="1"/>
+<rect x="-14" y="16" width="9" height="17" rx="2" fill="#d4a354" stroke="#d4a354" stroke-width="1.8" opacity="1"/>
+<path d="M 6,-31 L 26,-31" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 6,-3 L 26,-3" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 6,25 L 26,25" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="30" y="-40" width="32" height="18" rx="3" fill="white" stroke="#5c90bc" stroke-width="2.3" opacity="1"/>
+<rect x="30" y="-12" width="32" height="18" rx="3" fill="white" stroke="#63a98e" stroke-width="2.3" opacity="1"/>
+<rect x="30" y="16" width="32" height="18" rx="3" fill="white" stroke="#d4a354" stroke-width="2.3" opacity="1"/>
+</g>
+<text x="423" y="505" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="550" fill="#397fb5" text-anchor="middle">Node encoder</text>
+<g transform="translate(657,390) scale(1)" stroke-linecap="round" stroke-linejoin="round">
+<rect x="-55" y="8" width="15" height="22" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.25"/>
+<rect x="-30" y="-6" width="15" height="36" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.5"/>
+<rect x="-5" y="-28" width="15" height="58" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="1"/>
+<rect x="20" y="-12" width="15" height="42" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.65"/>
+<rect x="45" y="4" width="15" height="26" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.35"/>
+<path d="M -57,37 L 61,37" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,48 L 0,64" fill="none" stroke="#397fb5" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a397fb5)"/>
+<rect x="-28" y="72" width="56" height="12" rx="3" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="1"/>
+</g>
+<text x="657" y="505" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="550" fill="#397fb5" text-anchor="middle">History attention</text>
+<g transform="translate(942,390) scale(1)" stroke-linecap="round" stroke-linejoin="round">
+<path d="M -46,-8 L -19,-37" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,-8 L -27,35" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,-8 L 0,2" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -19,-37 L 17,-25" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -19,-37 L 0,2" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 17,-25 L 47,0" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 17,-25 L 0,2" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 47,0 L 17,37" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 47,0 L 0,2" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 17,37 L -27,35" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 17,37 L 0,2" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -27,35 L 0,2" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="-46" cy="-8" r="8" fill="#5c90bc" stroke="#397fb5" stroke-width="1.5"/>
+<circle cx="-19" cy="-37" r="8" fill="#63a98e" stroke="#397fb5" stroke-width="1.5"/>
+<circle cx="17" cy="-25" r="8" fill="#d4a354" stroke="#397fb5" stroke-width="1.5"/>
+<circle cx="47" cy="0" r="8" fill="#5c90bc" stroke="#397fb5" stroke-width="1.5"/>
+<circle cx="17" cy="37" r="8" fill="#63a98e" stroke="#397fb5" stroke-width="1.5"/>
+<circle cx="-27" cy="35" r="8" fill="#d4a354" stroke="#397fb5" stroke-width="1.5"/>
+<circle cx="0" cy="2" r="8" fill="#5c90bc" stroke="#397fb5" stroke-width="1.5"/>
+</g>
+<g transform="translate(1177,390) scale(1)" stroke-linecap="round" stroke-linejoin="round">
+<path d="M -46,-8 L -19,-37" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,-8 L -27,35" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,-8 L 0,2" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -19,-37 L 17,-25" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -19,-37 L 0,2" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 17,-25 L 47,0" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 17,-25 L 0,2" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 47,0 L 17,37" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 47,0 L 0,2" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 17,37 L -27,35" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 17,37 L 0,2" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -27,35 L 0,2" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="-46" cy="-8" r="8" fill="#5c90bc" stroke="#397fb5" stroke-width="1.5"/>
+<circle cx="-19" cy="-37" r="8" fill="#63a98e" stroke="#397fb5" stroke-width="1.5"/>
+<circle cx="17" cy="-25" r="8" fill="#d4a354" stroke="#397fb5" stroke-width="1.5"/>
+<circle cx="47" cy="0" r="8" fill="#5c90bc" stroke="#397fb5" stroke-width="1.5"/>
+<circle cx="17" cy="37" r="8" fill="#63a98e" stroke="#397fb5" stroke-width="1.5"/>
+<circle cx="-27" cy="35" r="8" fill="#d4a354" stroke="#397fb5" stroke-width="1.5"/>
+<circle cx="0" cy="2" r="8" fill="#5c90bc" stroke="#397fb5" stroke-width="1.5"/>
+</g>
+<g transform="translate(1422,390) scale(1)" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="-57" cy="-19" r="5" fill="#5c90bc" stroke="#5c90bc" stroke-width="2"/>
+<circle cx="-47" cy="-28" r="5" fill="#5c90bc" stroke="#5c90bc" stroke-width="2"/>
+<circle cx="-37" cy="-19" r="5" fill="#5c90bc" stroke="#5c90bc" stroke-width="2"/>
+<path d="M -47,-8 L -47,8" fill="none" stroke="#5c90bc" stroke-width="2.1" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a5c90bc)"/>
+<rect x="-59" y="14" width="24" height="24" rx="4" fill="#5c90bc" stroke="#5c90bc" stroke-width="1.8" opacity="1"/>
+<circle cx="-12" cy="-19" r="5" fill="#63a98e" stroke="#63a98e" stroke-width="2"/>
+<circle cx="-2" cy="-28" r="5" fill="#63a98e" stroke="#63a98e" stroke-width="2"/>
+<circle cx="8" cy="-19" r="5" fill="#63a98e" stroke="#63a98e" stroke-width="2"/>
+<path d="M -2,-8 L -2,8" fill="none" stroke="#63a98e" stroke-width="2.1" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a63a98e)"/>
+<rect x="-14" y="14" width="24" height="24" rx="4" fill="#63a98e" stroke="#63a98e" stroke-width="1.8" opacity="1"/>
+<circle cx="33" cy="-19" r="5" fill="#d4a354" stroke="#d4a354" stroke-width="2"/>
+<circle cx="43" cy="-28" r="5" fill="#d4a354" stroke="#d4a354" stroke-width="2"/>
+<circle cx="53" cy="-19" r="5" fill="#d4a354" stroke="#d4a354" stroke-width="2"/>
+<path d="M 43,-8 L 43,8" fill="none" stroke="#d4a354" stroke-width="2.1" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#ad4a354)"/>
+<rect x="31" y="14" width="24" height="24" rx="4" fill="#d4a354" stroke="#d4a354" stroke-width="1.8" opacity="1"/>
+<path d="M -47,53 L 0,73 L 43,53" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="-22" y="79" width="44" height="14" rx="3" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="1"/>
+</g>
+<text x="1422" y="505" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="550" fill="#397fb5" text-anchor="middle">Market pooling</text>
+<g transform="translate(1680,390) scale(1)" stroke-linecap="round" stroke-linejoin="round">
+<rect x="-41" y="-39" width="11" height="28" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.35"/>
+<rect x="-24" y="-39" width="11" height="28" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.48"/>
+<rect x="-7" y="-39" width="11" height="28" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.61"/>
+<rect x="10" y="-39" width="11" height="28" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.74"/>
+<rect x="27" y="-39" width="11" height="28" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.87"/>
+<path d="M 0,0 L 0,24" fill="none" stroke="#397fb5" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a397fb5)"/>
+<rect x="-25" y="36" width="14" height="31" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="1"/>
+<rect x="-4" y="36" width="14" height="31" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="1"/>
+<rect x="17" y="36" width="14" height="31" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="1"/>
+</g>
+<text x="1680" y="505" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="550" fill="#397fb5" text-anchor="middle">Projection</text>
+<path d="M 492,411 L 588,411" fill="none" stroke="#397fb5" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a397fb5)"/>
+<path d="M 723,411 L 863,411" fill="none" stroke="#397fb5" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a397fb5)"/>
+<path d="M 1008,411 L 1102,411" fill="none" stroke="#397fb5" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a397fb5)"/>
+<path d="M 1248,411 L 1343,411" fill="none" stroke="#397fb5" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a397fb5)"/>
+<path d="M 1491,411 L 1605,411" fill="none" stroke="#397fb5" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a397fb5)"/>
+<text x="942" y="500" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="600" fill="#397fb5" text-anchor="middle">EdgeAttn</text>
+<text x="942" y="529" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="400" fill="#397fb5" text-anchor="middle">MixHop ①</text>
+<text x="1177" y="500" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="600" fill="#397fb5" text-anchor="middle">EdgeAttn</text>
+<text x="1177" y="529" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="400" fill="#397fb5" text-anchor="middle">MixHop ②</text>
+<g transform="translate(1038,246) scale(0.66)" stroke-linecap="round" stroke-linejoin="round">
+<rect x="-37" y="-37" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.12"/>
+<rect x="-21" y="-37" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.9"/>
+<rect x="-5" y="-37" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.6"/>
+<rect x="11" y="-37" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.35"/>
+<rect x="27" y="-37" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.12"/>
+<rect x="-37" y="-21" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.9"/>
+<rect x="-21" y="-21" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.6"/>
+<rect x="-5" y="-21" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.35"/>
+<rect x="11" y="-21" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.12"/>
+<rect x="27" y="-21" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.9"/>
+<rect x="-37" y="-5" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.6"/>
+<rect x="-21" y="-5" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.35"/>
+<rect x="-5" y="-5" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.12"/>
+<rect x="11" y="-5" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.9"/>
+<rect x="27" y="-5" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.6"/>
+<rect x="-37" y="11" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.35"/>
+<rect x="-21" y="11" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.12"/>
+<rect x="-5" y="11" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.9"/>
+<rect x="11" y="11" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.6"/>
+<rect x="27" y="11" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.35"/>
+<rect x="-37" y="27" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.12"/>
+<rect x="-21" y="27" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.9"/>
+<rect x="-5" y="27" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.6"/>
+<rect x="11" y="27" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.35"/>
+<rect x="27" y="27" width="12" height="12" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.12"/>
+</g>
+<text x="1090" y="242" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="550" fill="#397fb5" text-anchor="start">Adaptive graph</text>
+<text x="1090" y="272" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="500" fill="#627387" text-anchor="start">A₀</text>
+<path d="M 1038,278 L 1038,303 L 942,303 L 942,337" fill="none" stroke="#397fb5" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="9 7" marker-end="url(#a397fb5)"/>
+<path d="M 1038,303 L 1177,303 L 1177,337" fill="none" stroke="#397fb5" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="9 7" marker-end="url(#a397fb5)"/>
+<text x="1036" y="541" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="19" font-weight="400" fill="#627387" text-anchor="middle">ReLU</text>
+<text x="1422" y="537" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="19" font-weight="400" fill="#627387" text-anchor="middle">LN · mean · concat</text>
+<path d="M 1728,411 L 1878,411" fill="none" stroke="#397fb5" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a397fb5)"/>
+<text x="1774" y="387" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="29" font-weight="650" fill="#397fb5" text-anchor="middle">s</text>
+<text x="1680" y="537" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="20" font-weight="400" fill="#627387" text-anchor="middle">64 → 64</text>
+<rect x="305" y="600" width="1510" height="755" rx="20" fill="#eff8f5" stroke="#d6e0ea" stroke-width="2" opacity="1"/>
+<rect x="324" y="622" width="7" height="34" rx="3" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="1"/>
+<text x="349" y="649" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="650" fill="#2a918d" text-anchor="start">Temporal branch</text>
+<rect x="610" y="681" width="670" height="238" rx="15" fill="#f7fbf9" stroke="#c5dfd5" stroke-width="1.5" opacity="1"/>
+<text x="633" y="720" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="29" font-weight="650" fill="#2a918d" text-anchor="start">Macro memory</text>
+<rect x="610" y="976" width="670" height="303" rx="15" fill="#f9fbf4" stroke="#d5dfbf" stroke-width="1.5" opacity="1"/>
+<text x="633" y="1016" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="29" font-weight="650" fill="#84a04c" text-anchor="start">Micro dynamics</text>
+<g transform="translate(423,885) scale(1)" stroke-linecap="round" stroke-linejoin="round">
+<rect x="-53" y="-40" width="9" height="17" rx="2" fill="#5c90bc" stroke="#5c90bc" stroke-width="1.8" opacity="1"/>
+<rect x="-40" y="-40" width="9" height="17" rx="2" fill="#5c90bc" stroke="#5c90bc" stroke-width="1.8" opacity="1"/>
+<rect x="-27" y="-40" width="9" height="17" rx="2" fill="#5c90bc" stroke="#5c90bc" stroke-width="1.8" opacity="1"/>
+<rect x="-14" y="-40" width="9" height="17" rx="2" fill="#5c90bc" stroke="#5c90bc" stroke-width="1.8" opacity="1"/>
+<rect x="-53" y="-12" width="9" height="17" rx="2" fill="#63a98e" stroke="#63a98e" stroke-width="1.8" opacity="1"/>
+<rect x="-40" y="-12" width="9" height="17" rx="2" fill="#63a98e" stroke="#63a98e" stroke-width="1.8" opacity="1"/>
+<rect x="-27" y="-12" width="9" height="17" rx="2" fill="#63a98e" stroke="#63a98e" stroke-width="1.8" opacity="1"/>
+<rect x="-14" y="-12" width="9" height="17" rx="2" fill="#63a98e" stroke="#63a98e" stroke-width="1.8" opacity="1"/>
+<rect x="-53" y="16" width="9" height="17" rx="2" fill="#d4a354" stroke="#d4a354" stroke-width="1.8" opacity="1"/>
+<rect x="-40" y="16" width="9" height="17" rx="2" fill="#d4a354" stroke="#d4a354" stroke-width="1.8" opacity="1"/>
+<rect x="-27" y="16" width="9" height="17" rx="2" fill="#d4a354" stroke="#d4a354" stroke-width="1.8" opacity="1"/>
+<rect x="-14" y="16" width="9" height="17" rx="2" fill="#d4a354" stroke="#d4a354" stroke-width="1.8" opacity="1"/>
+<path d="M 6,-31 L 26,-31" fill="none" stroke="#2a918d" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 6,-3 L 26,-3" fill="none" stroke="#2a918d" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 6,25 L 26,25" fill="none" stroke="#2a918d" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="30" y="-40" width="32" height="18" rx="3" fill="white" stroke="#5c90bc" stroke-width="2.3" opacity="1"/>
+<rect x="30" y="-12" width="32" height="18" rx="3" fill="white" stroke="#63a98e" stroke-width="2.3" opacity="1"/>
+<rect x="30" y="16" width="32" height="18" rx="3" fill="white" stroke="#d4a354" stroke-width="2.3" opacity="1"/>
+<path d="M 47,50 L -42,50" fill="none" stroke="#2a918d" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="-44" y="42" width="18" height="16" rx="2" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="1"/>
+<rect x="-18" y="42" width="18" height="16" rx="2" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="1"/>
+<rect x="8" y="42" width="18" height="16" rx="2" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="1"/>
+<rect x="34" y="42" width="18" height="16" rx="2" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="1"/>
+</g>
+<text x="423" y="1004" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="550" fill="#2a918d" text-anchor="middle">Market encoder</text>
+<path d="M 492,911 L 550,911 L 550,805 L 680,805" fill="none" stroke="#2a918d" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a918d)"/>
+<g transform="translate(807,805) scale(1.06)" stroke-linecap="round" stroke-linejoin="round">
+<rect x="-51" y="-44" width="30" height="90" rx="5" fill="white" stroke="#2a918d" stroke-width="2.3" opacity="1"/>
+<rect x="-47.0" y="-26" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="-41.5" y="-26" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.08"/>
+<rect x="-36.0" y="-26" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.08"/>
+<rect x="-30.5" y="-26" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.08"/>
+<rect x="-47.0" y="-14" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="-41.5" y="-14" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="-36.0" y="-14" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.08"/>
+<rect x="-30.5" y="-14" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.08"/>
+<rect x="-47.0" y="-2" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="-41.5" y="-2" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="-36.0" y="-2" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="-30.5" y="-2" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.08"/>
+<rect x="-47.0" y="10" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="-41.5" y="10" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="-36.0" y="10" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="-30.5" y="10" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="-11" y="-44" width="30" height="90" rx="5" fill="white" stroke="#2a918d" stroke-width="2.3" opacity="1"/>
+<rect x="-7.0" y="-26" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="-1.5" y="-26" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.08"/>
+<rect x="4.0" y="-26" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.08"/>
+<rect x="9.5" y="-26" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.08"/>
+<rect x="-7.0" y="-14" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="-1.5" y="-14" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="4.0" y="-14" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.08"/>
+<rect x="9.5" y="-14" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.08"/>
+<rect x="-7.0" y="-2" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="-1.5" y="-2" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="4.0" y="-2" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="9.5" y="-2" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.08"/>
+<rect x="-7.0" y="10" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="-1.5" y="10" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="4.0" y="10" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="9.5" y="10" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="29" y="-44" width="30" height="90" rx="5" fill="white" stroke="#2a918d" stroke-width="2.3" opacity="1"/>
+<rect x="33.0" y="-26" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="38.5" y="-26" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.08"/>
+<rect x="44.0" y="-26" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.08"/>
+<rect x="49.5" y="-26" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.08"/>
+<rect x="33.0" y="-14" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="38.5" y="-14" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="44.0" y="-14" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.08"/>
+<rect x="49.5" y="-14" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.08"/>
+<rect x="33.0" y="-2" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="38.5" y="-2" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="44.0" y="-2" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="49.5" y="-2" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.08"/>
+<rect x="33.0" y="10" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="38.5" y="10" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="44.0" y="10" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<rect x="49.5" y="10" width="4.2" height="7" rx="0" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6"/>
+<path d="M -46,62 L 56,62" fill="none" stroke="#2a918d" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a918d)"/>
+</g>
+<text x="807" y="889" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="550" fill="#2a918d" text-anchor="middle">Causal Transformer</text>
+<path d="M 878,805 L 1040,805" fill="none" stroke="#2a918d" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a918d)"/>
+<g transform="translate(1123,805) scale(1)" stroke-linecap="round" stroke-linejoin="round">
+<rect x="-39" y="-39" width="58" height="76" rx="5" fill="white" stroke="#2a918d" stroke-width="2.5" opacity="1"/>
+<rect x="-26" y="-48" width="58" height="76" rx="5" fill="white" stroke="#2a918d" stroke-width="2.5" opacity="1"/>
+<rect x="-13" y="-57" width="58" height="76" rx="5" fill="white" stroke="#2a918d" stroke-width="2.5" opacity="1"/>
+<path d="M -3,-30 L 29,-30" fill="none" stroke="#2a918d" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -3,-12 L 29,-12" fill="none" stroke="#2a918d" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -3,6 L 29,6" fill="none" stroke="#2a918d" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<text x="1123" y="891" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="600" fill="#2a918d" text-anchor="middle">H · 20 × 128</text>
+<g transform="translate(722,1115) scale(1)" stroke-linecap="round" stroke-linejoin="round">
+<path d="M -34,22 L 0,-33" fill="none" stroke="#84a04c" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,-33 L 38,22" fill="none" stroke="#84a04c" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 38,22 L -34,22" fill="none" stroke="#84a04c" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="-34" cy="22" r="14" fill="#67a795" stroke="#84a04c" stroke-width="1.5"/>
+<circle cx="0" cy="-33" r="14" fill="#84a04c" stroke="#84a04c" stroke-width="1.5"/>
+<circle cx="38" cy="22" r="14" fill="#2a918d" stroke="#84a04c" stroke-width="1.5"/>
+</g>
+<g transform="translate(929,1115) scale(1)" stroke-linecap="round" stroke-linejoin="round">
+<rect x="-49" y="-44" width="27" height="86" rx="5" fill="white" stroke="#67a795" stroke-width="2.1" opacity="1"/>
+<circle cx="-36" cy="-25" r="4.5" fill="#67a795" stroke="#67a795" stroke-width="2"/>
+<circle cx="-36" cy="-1" r="4.5" fill="#67a795" stroke="#67a795" stroke-width="2"/>
+<circle cx="-36" cy="23" r="4.5" fill="#67a795" stroke="#67a795" stroke-width="2"/>
+<path d="M -36,-19 L -36,-7" fill="none" stroke="#67a795" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -36,5 L -36,17" fill="none" stroke="#67a795" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="-13" y="-44" width="27" height="86" rx="5" fill="white" stroke="#84a04c" stroke-width="2.1" opacity="1"/>
+<circle cx="0" cy="-25" r="4.5" fill="#84a04c" stroke="#84a04c" stroke-width="2"/>
+<circle cx="0" cy="-1" r="4.5" fill="#84a04c" stroke="#84a04c" stroke-width="2"/>
+<circle cx="0" cy="23" r="4.5" fill="#84a04c" stroke="#84a04c" stroke-width="2"/>
+<path d="M 0,-19 L 0,-7" fill="none" stroke="#84a04c" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,5 L 0,17" fill="none" stroke="#84a04c" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="23" y="-44" width="27" height="86" rx="5" fill="white" stroke="#2a918d" stroke-width="2.1" opacity="1"/>
+<circle cx="36" cy="-25" r="4.5" fill="#2a918d" stroke="#2a918d" stroke-width="2"/>
+<circle cx="36" cy="-1" r="4.5" fill="#2a918d" stroke="#2a918d" stroke-width="2"/>
+<circle cx="36" cy="23" r="4.5" fill="#2a918d" stroke="#2a918d" stroke-width="2"/>
+<path d="M 36,-19 L 36,-7" fill="none" stroke="#2a918d" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 36,5 L 36,17" fill="none" stroke="#2a918d" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g transform="translate(1154,1115) scale(1)" stroke-linecap="round" stroke-linejoin="round">
+<rect x="-54" y="-23" width="29" height="48" rx="7" fill="white" stroke="#84a04c" stroke-width="2.5" opacity="1"/>
+<path d="M -25,0 L -14,0" fill="none" stroke="#84a04c" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a84a04c)"/>
+<path d="M -47,-11 L -33,-11" fill="none" stroke="#84a04c" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -47,0 L -33,0" fill="none" stroke="#84a04c" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -47,11 L -33,11" fill="none" stroke="#84a04c" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="-12" y="-23" width="29" height="48" rx="7" fill="white" stroke="#84a04c" stroke-width="2.5" opacity="1"/>
+<path d="M 17,0 L 28,0" fill="none" stroke="#84a04c" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a84a04c)"/>
+<path d="M -5,-11 L 9,-11" fill="none" stroke="#84a04c" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -5,0 L 9,0" fill="none" stroke="#84a04c" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -5,11 L 9,11" fill="none" stroke="#84a04c" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="30" y="-23" width="29" height="48" rx="7" fill="white" stroke="#84a04c" stroke-width="2.5" opacity="1"/>
+<path d="M 37,-11 L 51,-11" fill="none" stroke="#84a04c" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 37,0 L 51,0" fill="none" stroke="#84a04c" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 37,11 L 51,11" fill="none" stroke="#84a04c" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<text x="722" y="1201" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="550" fill="#84a04c" text-anchor="middle">Regime filter</text>
+<text x="722" y="1235" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="20" font-weight="400" fill="#627387" text-anchor="middle">K = 3</text>
+<text x="929" y="1193" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="550" fill="#2a918d" text-anchor="middle">Regime-specific</text>
+<text x="929" y="1221" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="550" fill="#2a918d" text-anchor="middle">generators</text>
+<text x="1154" y="1201" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="600" fill="#84a04c" text-anchor="middle">Z · 20 × 64</text>
+<path d="M 766,1115 L 863,1115" fill="none" stroke="#84a04c" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a84a04c)"/>
+<text x="815" y="1097" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="400" fill="#84a04c" text-anchor="middle">pₜ</text>
+<path d="M 988,1115 L 1089,1115" fill="none" stroke="#2a918d" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a918d)"/>
+<path d="M 1123,852 L 1123,944 L 722,944 L 722,1066" fill="none" stroke="#2a918d" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a918d)"/>
+<path d="M 929,944 L 929,1064" fill="none" stroke="#2a918d" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a918d)"/>
+<text x="1027" y="934" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="400" fill="#2a918d" text-anchor="middle">Hₜ</text>
+<path d="M 1217,1115 L 1250,1115 L 1250,1257 L 1046,1257 L 1046,1154 L 990,1154" fill="none" stroke="#84a04c" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a84a04c)"/>
+<text x="1140" y="1246" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#84a04c" text-anchor="middle">Zₜ₋₁</text>
+<rect x="1360" y="872" width="210" height="206" rx="13" fill="white" stroke="#2a918d" stroke-width="1.9" opacity="1"/>
+<g transform="translate(1465,952) scale(1.03)" stroke-linecap="round" stroke-linejoin="round">
+<rect x="-55" y="-50" width="43" height="28" rx="4" fill="white" stroke="#67a795" stroke-width="2" opacity="1"/>
+<text x="-33" y="-30" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="15" font-weight="600" fill="#67a795" text-anchor="middle">LN</text>
+<path d="M -6,-35 L 20,0" fill="none" stroke="#67a795" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="-55" y="13" width="43" height="28" rx="4" fill="white" stroke="#84a04c" stroke-width="2" opacity="1"/>
+<text x="-33" y="33" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="15" font-weight="600" fill="#84a04c" text-anchor="middle">LN</text>
+<path d="M -6,28 L 20,0" fill="none" stroke="#84a04c" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="23" y="-25" width="27" height="50" rx="4" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="1"/>
+</g>
+<text x="1465" y="1044" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="550" fill="#2a918d" text-anchor="middle">Project + LN</text>
+<text x="1465" y="1115" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="600" fill="#2a918d" text-anchor="middle">Balanced readout</text>
+<path d="M 1188,805 L 1305,805 L 1305,920 L 1360,920" fill="none" stroke="#2a918d" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a918d)"/>
+<path d="M 1217,1115 L 1305,1115 L 1305,1010 L 1360,1010" fill="none" stroke="#84a04c" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a84a04c)"/>
+<text x="1327" y="900" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="20" font-weight="400" fill="#2a918d" text-anchor="middle">Hₜ</text>
+<text x="1327" y="1045" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="20" font-weight="400" fill="#84a04c" text-anchor="middle">Zₜ</text>
+<path d="M 1570,971 L 1615,971" fill="none" stroke="#2a918d" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a918d)"/>
+<g transform="translate(1679,950) scale(0.76)" stroke-linecap="round" stroke-linejoin="round">
+<rect x="-41" y="-39" width="11" height="28" rx="2" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.35"/>
+<rect x="-24" y="-39" width="11" height="28" rx="2" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.48"/>
+<rect x="-7" y="-39" width="11" height="28" rx="2" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.61"/>
+<rect x="10" y="-39" width="11" height="28" rx="2" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.74"/>
+<rect x="27" y="-39" width="11" height="28" rx="2" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.87"/>
+<path d="M 0,0 L 0,24" fill="none" stroke="#2a918d" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a918d)"/>
+<rect x="-25" y="36" width="14" height="31" rx="2" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="1"/>
+<rect x="-4" y="36" width="14" height="31" rx="2" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="1"/>
+<rect x="17" y="36" width="14" height="31" rx="2" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="1"/>
+</g>
+<text x="1679" y="1060" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="20" font-weight="400" fill="#627387" text-anchor="middle">128 → 64 → 64</text>
+<path d="M 1722,971 L 1878,971" fill="none" stroke="#2a918d" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a918d)"/>
+<text x="1776" y="949" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="29" font-weight="650" fill="#2a918d" text-anchor="middle">t</text>
+<path d="M 1261,805 L 1261,663 L 1860,663 L 1860,710 L 1878,710" fill="none" stroke="#2a918d" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a918d)"/>
+<path d="M 1220,1115 L 1290,1115 L 1290,1320 L 1860,1320 L 1860,1250 L 1878,1250" fill="none" stroke="#84a04c" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a84a04c)"/>
+<text x="1838" y="694" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="600" fill="#2a918d" text-anchor="middle">H</text>
+<text x="1838" y="1292" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="600" fill="#84a04c" text-anchor="middle">Z</text>
+<path d="M 1880,279 L 1880,1320" fill="none" stroke="#8290a0" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="1880" cy="411" r="5.5" fill="#8290a0" stroke="#8290a0" stroke-width="2"/>
+<circle cx="1880" cy="710" r="5.5" fill="#8290a0" stroke="#8290a0" stroke-width="2"/>
+<circle cx="1880" cy="971" r="5.5" fill="#8290a0" stroke="#8290a0" stroke-width="2"/>
+<circle cx="1880" cy="1250" r="5.5" fill="#8290a0" stroke="#8290a0" stroke-width="2"/>
+<text x="1880" y="228" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="550" fill="#627387" text-anchor="middle">Live states</text>
+<text x="1880" y="1352" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="400" fill="#627387" text-anchor="middle">s, t, H, Z</text>
+<g id="prediction-level-moe">
+<g id="moe-boundary">
+<rect x="1958" y="115" width="1007" height="1290" rx="20" fill="#faf9fd" stroke="#d6e0ea" stroke-width="2" opacity="1"/>
+<rect x="1977" y="137" width="7" height="34" rx="3" fill="#24354b" stroke="#24354b" stroke-width="1.8" opacity="1"/>
+<text x="2002" y="164" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="650" fill="#24354b" text-anchor="start">Prediction-level MoE</text>
+</g>
+<g id="moe-router" transform="translate(0,65)">
+<rect x="1990" y="145" width="750" height="224" rx="20" fill="#fbf1f6" stroke="#d6e0ea" stroke-width="2" opacity="1"/>
+<rect x="2009" y="167" width="7" height="34" rx="3" fill="#b65a8b" stroke="#b65a8b" stroke-width="1.8" opacity="1"/>
+<text x="2034" y="194" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="650" fill="#b65a8b" text-anchor="start">Global dynamic router</text>
+<g transform="translate(2080,266) scale(0.65)" stroke-linecap="round" stroke-linejoin="round">
+<path d="M -46,-32 L 0,-48" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,-32 L 0,-16" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,-32 L 0,16" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,-32 L 0,48" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,0 L 0,-48" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,0 L 0,-16" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,0 L 0,16" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,0 L 0,48" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,32 L 0,-48" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,32 L 0,-16" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,32 L 0,16" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,32 L 0,48" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,-48 L 46,-32" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,-48 L 46,0" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,-48 L 46,32" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,-16 L 46,-32" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,-16 L 46,0" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,-16 L 46,32" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,16 L 46,-32" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,16 L 46,0" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,16 L 46,32" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,48 L 46,-32" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,48 L 46,0" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,48 L 46,32" fill="none" stroke="#b65a8b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="-46" cy="-32" r="6" fill="white" stroke="#b65a8b" stroke-width="2"/>
+<circle cx="-46" cy="0" r="6" fill="white" stroke="#b65a8b" stroke-width="2"/>
+<circle cx="-46" cy="32" r="6" fill="white" stroke="#b65a8b" stroke-width="2"/>
+<circle cx="0" cy="-48" r="6" fill="white" stroke="#b65a8b" stroke-width="2"/>
+<circle cx="0" cy="-16" r="6" fill="white" stroke="#b65a8b" stroke-width="2"/>
+<circle cx="0" cy="16" r="6" fill="white" stroke="#b65a8b" stroke-width="2"/>
+<circle cx="0" cy="48" r="6" fill="white" stroke="#b65a8b" stroke-width="2"/>
+<circle cx="46" cy="-32" r="6" fill="white" stroke="#b65a8b" stroke-width="2"/>
+<circle cx="46" cy="0" r="6" fill="white" stroke="#b65a8b" stroke-width="2"/>
+<circle cx="46" cy="32" r="6" fill="white" stroke="#b65a8b" stroke-width="2"/>
+</g>
+<path d="M 1880,279 L 2007,279" fill="none" stroke="#b65a8b" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="9 7" marker-end="url(#ab65a8b)"/>
+<text x="2211" y="264" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="27" font-weight="600" fill="#b65a8b" text-anchor="middle">MLP</text>
+<text x="2211" y="299" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="400" fill="#627387" text-anchor="middle">256 → 32 → 4</text>
+<path d="M 2287,275 L 2320,275" fill="none" stroke="#b65a8b" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#ab65a8b)"/>
+<text x="2373" y="282" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="550" fill="#b65a8b" text-anchor="middle">softmax</text>
+<path d="M 2430,275 L 2464,275" fill="none" stroke="#b65a8b" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#ab65a8b)"/>
+<rect x="2490" y="254" width="27" height="46" rx="3" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="1"/>
+<rect x="2535" y="271" width="27" height="29" rx="3" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="1"/>
+<rect x="2580" y="265" width="27" height="35" rx="3" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="1"/>
+<rect x="2625" y="256" width="27" height="44" rx="3" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="1"/>
+<text x="2582" y="329" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="600" fill="#b65a8b" text-anchor="middle">π(x)</text>
+<path d="M 2660,275 L 2726,275" fill="none" stroke="#b65a8b" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="2365" y="401" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="550" fill="#b65a8b" text-anchor="middle">One π per sample · shared by all four horizons</text>
+</g>
+<g id="moe-experts">
+<path d="M 1880,604 L 1998,604" fill="none" stroke="#d79436" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#ad79436)"/>
+<text x="1936" y="587" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="550" fill="#d79436" text-anchor="middle">Z</text>
+<rect x="2000" y="527" width="290" height="156" rx="13" fill="white" stroke="#d79436" stroke-width="1.9" opacity="1"/>
+<g transform="translate(2060,600) scale(0.68)" stroke-linecap="round" stroke-linejoin="round">
+<path d="M -55,25 L -37,17 L -19,29 L -3,-3 L 13,11 L 34,-28 L 54,-35" fill="none" stroke="#d79436" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="54" cy="-35" r="5" fill="#d79436" stroke="#d79436" stroke-width="2"/>
+<path d="M 28,33 L 52,7" fill="none" stroke="#d79436" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#ad79436)"/>
+</g>
+<text x="2220" y="587" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="650" fill="#d79436" text-anchor="middle">E1</text>
+<text x="2145" y="660" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="600" fill="#d79436" text-anchor="middle">Recent change</text>
+<text x="2220" y="619" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="20" font-weight="400" fill="#627387" text-anchor="middle">64</text>
+<path d="M 2290,604 L 2340,604" fill="none" stroke="#d79436" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#ad79436)"/>
+<path d="M 1880,815 L 1998,815" fill="none" stroke="#2a918d" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a918d)"/>
+<text x="1936" y="798" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="550" fill="#2a918d" text-anchor="middle">H</text>
+<rect x="2000" y="738" width="290" height="156" rx="13" fill="white" stroke="#2a918d" stroke-width="1.9" opacity="1"/>
+<g transform="translate(2060,811) scale(0.68)" stroke-linecap="round" stroke-linejoin="round">
+<rect x="-39" y="-39" width="58" height="76" rx="5" fill="white" stroke="#2a918d" stroke-width="2.5" opacity="1"/>
+<rect x="-26" y="-48" width="58" height="76" rx="5" fill="white" stroke="#2a918d" stroke-width="2.5" opacity="1"/>
+<rect x="-13" y="-57" width="58" height="76" rx="5" fill="white" stroke="#2a918d" stroke-width="2.5" opacity="1"/>
+<path d="M -3,-30 L 29,-30" fill="none" stroke="#2a918d" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -3,-12 L 29,-12" fill="none" stroke="#2a918d" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -3,6 L 29,6" fill="none" stroke="#2a918d" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<text x="2220" y="798" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="650" fill="#2a918d" text-anchor="middle">E2</text>
+<text x="2145" y="871" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="600" fill="#2a918d" text-anchor="middle">Long memory</text>
+<text x="2220" y="830" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="20" font-weight="400" fill="#627387" text-anchor="middle">64</text>
+<path d="M 2290,815 L 2340,815" fill="none" stroke="#2a918d" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a918d)"/>
+<path d="M 1880,1026 L 1998,1026" fill="none" stroke="#397fb5" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a397fb5)"/>
+<text x="1936" y="1009" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="550" fill="#397fb5" text-anchor="middle">s</text>
+<rect x="2000" y="949" width="290" height="156" rx="13" fill="white" stroke="#397fb5" stroke-width="1.9" opacity="1"/>
+<g transform="translate(2060,1022) scale(0.68)" stroke-linecap="round" stroke-linejoin="round">
+<path d="M -46,-8 L -19,-37" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,-8 L -27,35" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,-8 L 0,2" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -19,-37 L 17,-25" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -19,-37 L 0,2" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 17,-25 L 47,0" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 17,-25 L 0,2" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 47,0 L 17,37" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 47,0 L 0,2" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 17,37 L -27,35" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 17,37 L 0,2" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -27,35 L 0,2" fill="none" stroke="#397fb5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="-46" cy="-8" r="8" fill="#5c90bc" stroke="#397fb5" stroke-width="1.5"/>
+<circle cx="-19" cy="-37" r="8" fill="#63a98e" stroke="#397fb5" stroke-width="1.5"/>
+<circle cx="17" cy="-25" r="8" fill="#d4a354" stroke="#397fb5" stroke-width="1.5"/>
+<circle cx="47" cy="0" r="8" fill="#5c90bc" stroke="#397fb5" stroke-width="1.5"/>
+<circle cx="17" cy="37" r="8" fill="#63a98e" stroke="#397fb5" stroke-width="1.5"/>
+<circle cx="-27" cy="35" r="8" fill="#d4a354" stroke="#397fb5" stroke-width="1.5"/>
+<circle cx="0" cy="2" r="8" fill="#5c90bc" stroke="#397fb5" stroke-width="1.5"/>
+</g>
+<text x="2220" y="1009" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="650" fill="#397fb5" text-anchor="middle">E3</text>
+<text x="2145" y="1082" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="600" fill="#397fb5" text-anchor="middle">Spatial structure</text>
+<text x="2220" y="1041" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="20" font-weight="400" fill="#627387" text-anchor="middle">64</text>
+<path d="M 2290,1026 L 2340,1026" fill="none" stroke="#397fb5" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a397fb5)"/>
+<path d="M 1880,1237 L 1998,1237" fill="none" stroke="#8d72b5" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a8d72b5)"/>
+<text x="1936" y="1220" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="550" fill="#8d72b5" text-anchor="middle">s, t</text>
+<rect x="2000" y="1160" width="290" height="156" rx="13" fill="white" stroke="#8d72b5" stroke-width="1.9" opacity="1"/>
+<g transform="translate(2060,1233) scale(0.68)" stroke-linecap="round" stroke-linejoin="round">
+<rect x="-50" y="-43" width="24" height="32" rx="4" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="1"/>
+<path d="M -38,-4 L 0,12" fill="none" stroke="#397fb5" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="25" y="-43" width="24" height="32" rx="4" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="1"/>
+<path d="M 37,-4 L 0,12" fill="none" stroke="#2a918d" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="0" cy="22" r="17" fill="white" stroke="#8d72b5" stroke-width="2.5"/>
+<path d="M -7,15 L 7,29" fill="none" stroke="#8d72b5" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -7,29 L 7,15" fill="none" stroke="#8d72b5" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,43 L 0,61" fill="none" stroke="#8d72b5" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a8d72b5)"/>
+</g>
+<text x="2220" y="1220" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="650" fill="#8d72b5" text-anchor="middle">E4</text>
+<text x="2145" y="1293" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="600" fill="#8d72b5" text-anchor="middle">ST interaction</text>
+<text x="2220" y="1252" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="20" font-weight="400" fill="#627387" text-anchor="middle">64</text>
+<path d="M 2290,1237 L 2340,1237" fill="none" stroke="#8d72b5" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a8d72b5)"/>
+</g>
+<g id="moe-shared-head">
+<rect x="2340" y="526" width="190" height="788" rx="13" fill="#f4f6fa" stroke="#8290a0" stroke-width="1.9" opacity="1"/>
+<text x="2435" y="567" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="27" font-weight="650" fill="#24354b" text-anchor="middle">Shared head</text>
+<g transform="translate(2435,684) scale(0.92)" stroke-linecap="round" stroke-linejoin="round">
+<path d="M -46,-32 L 0,-48" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,-32 L 0,-16" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,-32 L 0,16" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,-32 L 0,48" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,0 L 0,-48" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,0 L 0,-16" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,0 L 0,16" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,0 L 0,48" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,32 L 0,-48" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,32 L 0,-16" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,32 L 0,16" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M -46,32 L 0,48" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,-48 L 46,-32" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,-48 L 46,0" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,-48 L 46,32" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,-16 L 46,-32" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,-16 L 46,0" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,-16 L 46,32" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,16 L 46,-32" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,16 L 46,0" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,16 L 46,32" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,48 L 46,-32" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,48 L 46,0" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 0,48 L 46,32" fill="none" stroke="#627387" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="-46" cy="-32" r="6" fill="white" stroke="#627387" stroke-width="2"/>
+<circle cx="-46" cy="0" r="6" fill="white" stroke="#627387" stroke-width="2"/>
+<circle cx="-46" cy="32" r="6" fill="white" stroke="#627387" stroke-width="2"/>
+<circle cx="0" cy="-48" r="6" fill="white" stroke="#627387" stroke-width="2"/>
+<circle cx="0" cy="-16" r="6" fill="white" stroke="#627387" stroke-width="2"/>
+<circle cx="0" cy="16" r="6" fill="white" stroke="#627387" stroke-width="2"/>
+<circle cx="0" cy="48" r="6" fill="white" stroke="#627387" stroke-width="2"/>
+<circle cx="46" cy="-32" r="6" fill="white" stroke="#627387" stroke-width="2"/>
+<circle cx="46" cy="0" r="6" fill="white" stroke="#627387" stroke-width="2"/>
+<circle cx="46" cy="32" r="6" fill="white" stroke="#627387" stroke-width="2"/>
+</g>
+<text x="2435" y="782" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="39" font-weight="650" fill="#24354b" text-anchor="middle">θ</text>
+<path d="M 2371,817 L 2499,817" fill="none" stroke="#8290a0" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="2435" y="875" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="550" fill="#24354b" text-anchor="middle">Linear</text>
+<text x="2435" y="911" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="550" fill="#24354b" text-anchor="middle">ReLU</text>
+<text x="2435" y="947" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="550" fill="#24354b" text-anchor="middle">Dropout</text>
+<text x="2435" y="995" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="550" fill="#24354b" text-anchor="middle">Linear</text>
+<text x="2435" y="1062" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="400" fill="#627387" text-anchor="middle">64 → 64</text>
+<text x="2435" y="1096" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="400" fill="#627387" text-anchor="middle">→ 4 × 23</text>
+<text x="2435" y="1300" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="600" fill="#24354b" text-anchor="middle">one θ</text>
+</g>
+<g id="moe-candidate-forecasts">
+<text x="2651" y="514" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="23" font-weight="550" fill="#627387" text-anchor="middle">Candidate forecasts</text>
+<path d="M 2530,604 L 2570,604" fill="none" stroke="#d79436" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#ad79436)"/>
+<rect x="2574" y="555" width="158" height="98" rx="8" fill="white" stroke="#d6e0ea" stroke-width="1.5" opacity="1"/>
+<rect x="2589" y="570" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.17"/>
+<rect x="2606" y="570" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.51"/>
+<rect x="2623" y="570" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.8500000000000001"/>
+<rect x="2640" y="570" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.44200000000000006"/>
+<rect x="2657" y="570" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.782"/>
+<rect x="2674" y="570" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.374"/>
+<rect x="2691" y="570" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.7140000000000001"/>
+<rect x="2589" y="587" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.374"/>
+<rect x="2606" y="587" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.7140000000000001"/>
+<rect x="2623" y="587" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.30600000000000005"/>
+<rect x="2640" y="587" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.6460000000000001"/>
+<rect x="2657" y="587" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.23800000000000002"/>
+<rect x="2674" y="587" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.5780000000000001"/>
+<rect x="2691" y="587" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.17"/>
+<rect x="2589" y="604" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.5780000000000001"/>
+<rect x="2606" y="604" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.17"/>
+<rect x="2623" y="604" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.51"/>
+<rect x="2640" y="604" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.8500000000000001"/>
+<rect x="2657" y="604" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.44200000000000006"/>
+<rect x="2674" y="604" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.782"/>
+<rect x="2691" y="604" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.374"/>
+<rect x="2589" y="621" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.782"/>
+<rect x="2606" y="621" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.374"/>
+<rect x="2623" y="621" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.7140000000000001"/>
+<rect x="2640" y="621" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.30600000000000005"/>
+<rect x="2657" y="621" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.6460000000000001"/>
+<rect x="2674" y="621" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.23800000000000002"/>
+<rect x="2691" y="621" width="14" height="14" rx="1" fill="#d79436" stroke="#d79436" stroke-width="1.8" opacity="0.5780000000000001"/>
+<text x="2712" y="636" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="18" font-weight="600" fill="#d79436" text-anchor="middle">P1</text>
+<path d="M 2732,604 L 2804,604" fill="none" stroke="#d79436" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 2530,815 L 2570,815" fill="none" stroke="#2a918d" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a918d)"/>
+<rect x="2574" y="766" width="158" height="98" rx="8" fill="white" stroke="#d6e0ea" stroke-width="1.5" opacity="1"/>
+<rect x="2589" y="781" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.17"/>
+<rect x="2606" y="781" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.51"/>
+<rect x="2623" y="781" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.8500000000000001"/>
+<rect x="2640" y="781" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.44200000000000006"/>
+<rect x="2657" y="781" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.782"/>
+<rect x="2674" y="781" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.374"/>
+<rect x="2691" y="781" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.7140000000000001"/>
+<rect x="2589" y="798" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.374"/>
+<rect x="2606" y="798" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.7140000000000001"/>
+<rect x="2623" y="798" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.30600000000000005"/>
+<rect x="2640" y="798" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6460000000000001"/>
+<rect x="2657" y="798" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.23800000000000002"/>
+<rect x="2674" y="798" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.5780000000000001"/>
+<rect x="2691" y="798" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.17"/>
+<rect x="2589" y="815" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.5780000000000001"/>
+<rect x="2606" y="815" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.17"/>
+<rect x="2623" y="815" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.51"/>
+<rect x="2640" y="815" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.8500000000000001"/>
+<rect x="2657" y="815" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.44200000000000006"/>
+<rect x="2674" y="815" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.782"/>
+<rect x="2691" y="815" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.374"/>
+<rect x="2589" y="832" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.782"/>
+<rect x="2606" y="832" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.374"/>
+<rect x="2623" y="832" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.7140000000000001"/>
+<rect x="2640" y="832" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.30600000000000005"/>
+<rect x="2657" y="832" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.6460000000000001"/>
+<rect x="2674" y="832" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.23800000000000002"/>
+<rect x="2691" y="832" width="14" height="14" rx="1" fill="#2a918d" stroke="#2a918d" stroke-width="1.8" opacity="0.5780000000000001"/>
+<text x="2712" y="847" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="18" font-weight="600" fill="#2a918d" text-anchor="middle">P2</text>
+<path d="M 2732,815 L 2804,815" fill="none" stroke="#2a918d" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 2530,1026 L 2570,1026" fill="none" stroke="#397fb5" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a397fb5)"/>
+<rect x="2574" y="977" width="158" height="98" rx="8" fill="white" stroke="#d6e0ea" stroke-width="1.5" opacity="1"/>
+<rect x="2589" y="992" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.17"/>
+<rect x="2606" y="992" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.51"/>
+<rect x="2623" y="992" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.8500000000000001"/>
+<rect x="2640" y="992" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.44200000000000006"/>
+<rect x="2657" y="992" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.782"/>
+<rect x="2674" y="992" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.374"/>
+<rect x="2691" y="992" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.7140000000000001"/>
+<rect x="2589" y="1009" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.374"/>
+<rect x="2606" y="1009" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.7140000000000001"/>
+<rect x="2623" y="1009" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.30600000000000005"/>
+<rect x="2640" y="1009" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.6460000000000001"/>
+<rect x="2657" y="1009" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.23800000000000002"/>
+<rect x="2674" y="1009" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.5780000000000001"/>
+<rect x="2691" y="1009" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.17"/>
+<rect x="2589" y="1026" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.5780000000000001"/>
+<rect x="2606" y="1026" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.17"/>
+<rect x="2623" y="1026" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.51"/>
+<rect x="2640" y="1026" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.8500000000000001"/>
+<rect x="2657" y="1026" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.44200000000000006"/>
+<rect x="2674" y="1026" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.782"/>
+<rect x="2691" y="1026" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.374"/>
+<rect x="2589" y="1043" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.782"/>
+<rect x="2606" y="1043" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.374"/>
+<rect x="2623" y="1043" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.7140000000000001"/>
+<rect x="2640" y="1043" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.30600000000000005"/>
+<rect x="2657" y="1043" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.6460000000000001"/>
+<rect x="2674" y="1043" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.23800000000000002"/>
+<rect x="2691" y="1043" width="14" height="14" rx="1" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.5780000000000001"/>
+<text x="2712" y="1058" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="18" font-weight="600" fill="#397fb5" text-anchor="middle">P3</text>
+<path d="M 2732,1026 L 2804,1026" fill="none" stroke="#397fb5" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 2530,1237 L 2570,1237" fill="none" stroke="#8d72b5" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a8d72b5)"/>
+<rect x="2574" y="1188" width="158" height="98" rx="8" fill="white" stroke="#d6e0ea" stroke-width="1.5" opacity="1"/>
+<rect x="2589" y="1203" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.17"/>
+<rect x="2606" y="1203" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.51"/>
+<rect x="2623" y="1203" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.8500000000000001"/>
+<rect x="2640" y="1203" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.44200000000000006"/>
+<rect x="2657" y="1203" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.782"/>
+<rect x="2674" y="1203" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.374"/>
+<rect x="2691" y="1203" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.7140000000000001"/>
+<rect x="2589" y="1220" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.374"/>
+<rect x="2606" y="1220" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.7140000000000001"/>
+<rect x="2623" y="1220" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.30600000000000005"/>
+<rect x="2640" y="1220" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.6460000000000001"/>
+<rect x="2657" y="1220" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.23800000000000002"/>
+<rect x="2674" y="1220" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.5780000000000001"/>
+<rect x="2691" y="1220" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.17"/>
+<rect x="2589" y="1237" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.5780000000000001"/>
+<rect x="2606" y="1237" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.17"/>
+<rect x="2623" y="1237" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.51"/>
+<rect x="2640" y="1237" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.8500000000000001"/>
+<rect x="2657" y="1237" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.44200000000000006"/>
+<rect x="2674" y="1237" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.782"/>
+<rect x="2691" y="1237" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.374"/>
+<rect x="2589" y="1254" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.782"/>
+<rect x="2606" y="1254" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.374"/>
+<rect x="2623" y="1254" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.7140000000000001"/>
+<rect x="2640" y="1254" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.30600000000000005"/>
+<rect x="2657" y="1254" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.6460000000000001"/>
+<rect x="2674" y="1254" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.23800000000000002"/>
+<rect x="2691" y="1254" width="14" height="14" rx="1" fill="#8d72b5" stroke="#8d72b5" stroke-width="1.8" opacity="0.5780000000000001"/>
+<text x="2712" y="1269" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="18" font-weight="600" fill="#8d72b5" text-anchor="middle">P4</text>
+<path d="M 2732,1237 L 2804,1237" fill="none" stroke="#8d72b5" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 2804,604 L 2804,1237" fill="none" stroke="#8290a0" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 2804,920 L 2858,920" fill="none" stroke="#8290a0" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a8290a0)"/>
+<text x="2650" y="1336" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="20" font-weight="400" fill="#627387" text-anchor="middle">P: B × 4 × 4 × 23</text>
+</g>
+<g id="moe-prediction-fusion">
+<path d="M 2740,338 L 2899,338 L 2899,872" fill="none" stroke="#b65a8b" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="9 7" marker-end="url(#ab65a8b)"/>
+<text x="2928" y="642" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="29" font-weight="650" fill="#b65a8b" text-anchor="middle">π</text>
+<circle cx="2899" cy="920" r="43" fill="white" stroke="#b65a8b" stroke-width="2.7"/>
+<text x="2899" y="934" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="41" font-weight="550" fill="#b65a8b" text-anchor="middle">Σ</text>
+<text x="2899" y="995" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="600" fill="#b65a8b" text-anchor="middle">Prediction</text>
+<text x="2899" y="1026" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="600" fill="#b65a8b" text-anchor="middle">fusion</text>
+<path d="M 2943,920 L 2990,920" fill="none" stroke="#b65a8b" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#ab65a8b)"/>
+</g>
+<text x="2455" y="1378" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="27" font-weight="550" fill="#24354b" text-anchor="middle">Ŷₕ = Σₖ πₖ(x) · Pₕ,ₖ</text>
+</g>
+<g id="final-forecasts">
+<rect x="2990" y="700" width="280" height="433" rx="20" fill="#fafbfd" stroke="#d6e0ea" stroke-width="2" opacity="1"/>
+<rect x="3009" y="722" width="7" height="34" rx="3" fill="#24354b" stroke="#24354b" stroke-width="1.8" opacity="1"/>
+<text x="3034" y="749" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="32" font-weight="650" fill="#24354b" text-anchor="start"></text>
+<text x="3034" y="749" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="27" font-weight="650" fill="#24354b" text-anchor="start">Forecasts</text>
+<text x="3025" y="831" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="600" fill="#24354b" text-anchor="middle">1</text>
+<rect x="3063" y="810" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.25"/>
+<rect x="3088" y="810" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.55"/>
+<rect x="3113" y="810" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.85"/>
+<rect x="3138" y="810" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.49"/>
+<rect x="3163" y="810" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.7899999999999999"/>
+<rect x="3188" y="810" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.43"/>
+<rect x="3213" y="810" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.73"/>
+<text x="3025" y="889" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="600" fill="#24354b" text-anchor="middle">5</text>
+<rect x="3063" y="868" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.43"/>
+<rect x="3088" y="868" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.73"/>
+<rect x="3113" y="868" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.37"/>
+<rect x="3138" y="868" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.67"/>
+<rect x="3163" y="868" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.31"/>
+<rect x="3188" y="868" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.61"/>
+<rect x="3213" y="868" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.25"/>
+<text x="3025" y="947" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="600" fill="#24354b" text-anchor="middle">10</text>
+<rect x="3063" y="926" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.61"/>
+<rect x="3088" y="926" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.25"/>
+<rect x="3113" y="926" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.55"/>
+<rect x="3138" y="926" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.85"/>
+<rect x="3163" y="926" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.49"/>
+<rect x="3188" y="926" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.7899999999999999"/>
+<rect x="3213" y="926" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.43"/>
+<text x="3025" y="1005" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="26" font-weight="600" fill="#24354b" text-anchor="middle">20</text>
+<rect x="3063" y="984" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.7899999999999999"/>
+<rect x="3088" y="984" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.43"/>
+<rect x="3113" y="984" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.73"/>
+<rect x="3138" y="984" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.37"/>
+<rect x="3163" y="984" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.67"/>
+<rect x="3188" y="984" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.31"/>
+<rect x="3213" y="984" width="17" height="27" rx="2" fill="#397fb5" stroke="#397fb5" stroke-width="1.8" opacity="0.61"/>
+<text x="3130" y="1073" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="25" font-weight="600" fill="#24354b" text-anchor="middle">B × 4 × 23</text>
+<text x="3130" y="1107" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="21" font-weight="400" fill="#627387" text-anchor="middle">23 Commodities</text>
+<text x="3114" y="1198" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="22" font-weight="400" fill="#627387" text-anchor="middle">1 / 5 / 10 / 20 sessions</text>
+</g>
+<path d="M 48,1436 L 111,1436" fill="none" stroke="#8290a0" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a8290a0)"/>
+<text x="128" y="1445" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="400" fill="#627387" text-anchor="start">Representation / prediction</text>
+<path d="M 601,1436 L 664,1436" fill="none" stroke="#b65a8b" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="9 7" marker-end="url(#ab65a8b)"/>
+<text x="683" y="1445" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="400" fill="#627387" text-anchor="start">Prior / routing weights</text>
+<text x="1740" y="1445" font-family="DejaVu Sans, Noto Sans CJK SC, sans-serif" font-size="24" font-weight="400" fill="#627387" text-anchor="middle">Macro memory drives microstate updates; H and Z also feed the experts directly.</text>
+</svg>

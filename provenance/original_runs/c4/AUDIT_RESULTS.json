@@ -1,0 +1,50 @@
+{
+  "status": "COMPLETE",
+  "data_identity": "PASS",
+  "original_D0B": "PASS",
+  "common_initialization": "PASS",
+  "effective_parameter_checks": {
+    "C0": {
+      "unused_parameter_names": [],
+      "finite": true,
+      "PASS": true
+    },
+    "C1": {
+      "unused_parameter_names": [],
+      "finite": true,
+      "PASS": true
+    },
+    "C2": {
+      "unused_parameter_names": [],
+      "finite": true,
+      "PASS": true
+    },
+    "C3": {
+      "unused_parameter_names": [],
+      "finite": true,
+      "PASS": true
+    },
+    "C4": {
+      "unused_parameter_names": [],
+      "finite": true,
+      "PASS": true
+    },
+    "C5": {
+      "unused_parameter_names": [],
+      "finite": true,
+      "PASS": true
+    },
+    "C6": {
+      "unused_parameter_names": [],
+      "finite": true,
+      "PASS": true
+    }
+  },
+  "TEST_arrays_opened": false,
+  "training": "NOT_RUN",
+  "models_complete": 7,
+  "checkpoints": "PASS",
+  "metrics": "PASS",
+  "test_evaluated": false,
+  "bootstrap": "COMPLETE_EXPLORATORY"
+}

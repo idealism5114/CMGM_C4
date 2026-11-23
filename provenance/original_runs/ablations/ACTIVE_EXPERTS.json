@@ -1,0 +1,79 @@
+{
+  "expert_order": [
+    "recent_change",
+    "long_memory",
+    "spatial_structure",
+    "st_interaction"
+  ],
+  "active_expert_indices": {
+    "no_spatial": [
+      0,
+      1
+    ],
+    "no_temporal": [
+      2
+    ],
+    "no_spatial_temporal_attention": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "no_adaptive_graph": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "no_edge_attn_mixhop": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "no_rpe": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "no_adaptive_regime_routing": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "no_regime_specific_transition": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "no_microstate": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "no_balanced_readout": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "full_c4": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "no_dynamic_routing": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "no_moe": []
+  },
+  "note": "Branch-removal logs preserve four slots for compatibility. Inactive slots have zero embeddings and zero route weights; their head-bias-only candidate predictions are placeholders, not active expert competence."
+}

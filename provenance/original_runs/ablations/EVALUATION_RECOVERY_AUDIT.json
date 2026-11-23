@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "reason": "Duplicate TEST_MAE_5d keyword in report dict after training completed",
+  "changed_files": [
+    "cmgm/scripts/phase_m_c4_ablation.py",
+    "tests/test_phase_m_c4_ablation.py"
+  ],
+  "current_source_hashes": {
+    "cmgm/models/phase_m_new_data.py": "7cc5d12eb72be5fd379587a69a939478c541dd8f0f4bfb866c8ce323fd26d501",
+    "cmgm/models/phase_m_prediction_moe.py": "7dc055b95cec0d855aafffcd2b97f51ce17213a0b1ec2ac417ee018bab041526",
+    "cmgm/models/formal_d0b_main_ablation.py": "017867e4261080f07145b9b8f75fcfe4b129c15924b9ebf67984185cf0a97da7",
+    "cmgm/models/four_task_moe.py": "5388604c142131b6804051156ffde6743321e79145b60130029cb5dd4c22e051",
+    "cmgm/models/horizon_tensor_fusion.py": "bf0f087c772e8f19d83d1ca7373380a40f4baef34f90e3cc16a6c15300f7a2a0",
+    "cmgm/models/frozen_d0b_task_experts.py": "dfed3d65a5a6c38be1d96f8a6ad44813410fc419a8781abd10b54734b9c051f5",
+    "cmgm/scripts/phase_m_new_data.py": "cdd1b8a7c78583ee1f7b5c3c69a23177996aa1e70f7503da1e5476decad6f3b7",
+    "cmgm/scripts/phase_m_analysis.py": "3940fc81cf84e680d1df0f39f4d50d755b1a1bef2dbe9ac49f1edbf4209382e3",
+    "cmgm/scripts/phase_m_horizon_prediction_moe.py": "19d2969aa1f55802b1401c490e5a227a160d925217a5058c4909f7c456d1d807",
+    "cmgm/scripts/formal_main_innovation_ablation.py": "93e2861d91e0d04076417161d6a8ed1ebb3e015f101fbb7103a3e981f9ce82cd",
+    "tests/test_phase_m_new_data.py": "ee0b4728e9ce3932f30ac4d402b7956fdc5e5707a67ce5bffdc0228f14caa741",
+    "tests/test_phase_m_prediction_moe.py": "45eda3e0fa84d2e564757efe1356713a6bf76821adff280692e861e22891efd3",
+    "cmgm/models/phase_m_c4_ablation.py": "c70e03e1c2637f9bf88ffcefec0d9f1bb2dfcea23d489339d558a6e6f9d0fd77",
+    "cmgm/scripts/phase_m_c4_ablation.py": "8aa3d9ddd8f6a69f8d15850c67734275855df6840ef76d4435291dddf5845783",
+    "tests/test_phase_m_c4_ablation.py": "a15a0702406c818f8b9dfed0136cdc5680e5abfd50a801a3ff84c9ea5d9a10a5",
+    "docs/phase_m_c4_ablation.md": "eafc1f75730e7f3cfa08b882e0980d47077fbcd76de90fcf16ae7066be266d24"
+  },
+  "training_source_hashes": {
+    "cmgm/models/phase_m_new_data.py": "7cc5d12eb72be5fd379587a69a939478c541dd8f0f4bfb866c8ce323fd26d501",
+    "cmgm/models/phase_m_prediction_moe.py": "7dc055b95cec0d855aafffcd2b97f51ce17213a0b1ec2ac417ee018bab041526",
+    "cmgm/models/formal_d0b_main_ablation.py": "017867e4261080f07145b9b8f75fcfe4b129c15924b9ebf67984185cf0a97da7",
+    "cmgm/models/four_task_moe.py": "5388604c142131b6804051156ffde6743321e79145b60130029cb5dd4c22e051",
+    "cmgm/models/horizon_tensor_fusion.py": "bf0f087c772e8f19d83d1ca7373380a40f4baef34f90e3cc16a6c15300f7a2a0",
+    "cmgm/models/frozen_d0b_task_experts.py": "dfed3d65a5a6c38be1d96f8a6ad44813410fc419a8781abd10b54734b9c051f5",
+    "cmgm/scripts/phase_m_new_data.py": "cdd1b8a7c78583ee1f7b5c3c69a23177996aa1e70f7503da1e5476decad6f3b7",
+    "cmgm/scripts/phase_m_analysis.py": "3940fc81cf84e680d1df0f39f4d50d755b1a1bef2dbe9ac49f1edbf4209382e3",
+    "cmgm/scripts/phase_m_horizon_prediction_moe.py": "19d2969aa1f55802b1401c490e5a227a160d925217a5058c4909f7c456d1d807",
+    "cmgm/scripts/formal_main_innovation_ablation.py": "93e2861d91e0d04076417161d6a8ed1ebb3e015f101fbb7103a3e981f9ce82cd",
+    "tests/test_phase_m_new_data.py": "ee0b4728e9ce3932f30ac4d402b7956fdc5e5707a67ce5bffdc0228f14caa741",
+    "tests/test_phase_m_prediction_moe.py": "45eda3e0fa84d2e564757efe1356713a6bf76821adff280692e861e22891efd3",
+    "cmgm/models/phase_m_c4_ablation.py": "c70e03e1c2637f9bf88ffcefec0d9f1bb2dfcea23d489339d558a6e6f9d0fd77",
+    "cmgm/scripts/phase_m_c4_ablation.py": "fc7dbecfa9d77e1cf0090a044348d1bf087de60712bf41066c519ee88fb1800d",
+    "tests/test_phase_m_c4_ablation.py": "86018fb0382020c5dcacc50038024671001612a5d51177b9ab34e7519ca3999d",
+    "docs/phase_m_c4_ablation.md": "eafc1f75730e7f3cfa08b882e0980d47077fbcd76de90fcf16ae7066be266d24"
+  },
+  "whole_runner_AST_identical_after_exact_report_keyword_removal": true,
+  "test_change": "One post-TEST report regression test appended; existing tests unchanged",
+  "model_forward_loss_optimizer_scheduler_and_checkpoint_code_unchanged": true,
+  "additional_training": false,
+  "frozen_checkpoint_count": 13,
+  "recovery_script_sha256": "70a7f9e3781035ab72a22398cf49cee903e92df81db5da13e7e61a5724552ca5",
+  "original_failure_logs_preserved": true
+}

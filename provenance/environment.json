@@ -1,0 +1,10 @@
+{
+  "python": "3.13.13 | packaged by Anaconda, Inc. | (main, Apr 14 2026, 06:19:41) [GCC 14.3.0]",
+  "platform": "Linux-5.15.0-131-generic-x86_64-with-glibc2.31",
+  "packages": {
+    "torch": "2.7.1+cu118",
+    "numpy": "2.5.3",
+    "pytest": "9.1.1",
+    "setuptools": "84.0.0"
+  }
+}

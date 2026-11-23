@@ -1,0 +1,74 @@
+{
+  "status": "PASS",
+  "source_workspace_unchanged": true,
+  "original_commit": "981de35aa9a0472e6974d5a6e4f98e1c5242e465",
+  "transported_files": 528,
+  "transported_bytes": 810516628,
+  "all_original_and_copied_hashes_match": true,
+  "independent_copies_no_links": true,
+  "registry_rows": 22,
+  "unique_best_checkpoints": 21,
+  "C4_parameters": 567169,
+  "C4_best_epoch": 35,
+  "C4_VAL5_macro_MAE": 0.024297203261564152,
+  "full_TRAIN_VAL_replays": 44,
+  "max_GPU_prediction_difference": 0.0,
+  "CPU_CLI_VAL5_macro_MAE": 0.02429720329052408,
+  "tests_passed": 57,
+  "relocation_test": "PASS; independent subprocess in a temporary copied project",
+  "source_and_train_eval_math_parity": {
+    "eval": {
+      "max_absolute_differences": {
+        "prediction": 0.0,
+        "prediction_loss": 0.0,
+        "KL": 0.0,
+        "routing": 0.0,
+        "expert_prediction": 0.0,
+        "H": 0.0,
+        "Z": 0.0
+      },
+      "max_gradient_difference": 0.0,
+      "RNG_equal": true
+    },
+    "train": {
+      "max_absolute_differences": {
+        "prediction": 0.0,
+        "prediction_loss": 0.0,
+        "KL": 0.0,
+        "routing": 0.0,
+        "expert_prediction": 0.0,
+        "H": 0.0,
+        "Z": 0.0
+      },
+      "max_gradient_difference": 0.0,
+      "RNG_equal": true
+    }
+  },
+  "train_val_data_audit": {
+    "files": 47,
+    "status": "PASS",
+    "TEST_files_opened": 0
+  },
+  "formal_training_runs": 0,
+  "synthetic_optimizer_updates_only": true,
+  "TEST_inference": 0,
+  "TEST_numeric_arrays_parsed": 0,
+  "TEST_transport": "Opaque byte copies and hashes only",
+  "TEST_metric_summary": "Historical metric JSON copied/read only; not new evaluation",
+  "old_repository_runtime_imports": 0,
+  "new_default": "Original Phase M C4; original Huber + Switch KL",
+  "non_goals": [
+    "Raw CSV preprocessing rebuild",
+    "Changing architecture/loss",
+    "New seed results",
+    "New TEST inference",
+    "Git commit/push"
+  ],
+  "known_limits": [
+    "Historical TEST repeatedly viewed",
+    "Single seed42",
+    "Baseline 27-token view differs from full-node C4",
+    "GraphWaveNet legacy unused3104 parameters retained",
+    "No formal retraining of the refactored training loop; only synthetic tests and frozen replay"
+  ]
+}

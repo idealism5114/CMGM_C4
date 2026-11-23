@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2480" height="1570" viewBox="0 0 2480 1570">
+<title>C4: Global Dynamic Spatiotemporal Prediction Mixture of Experts</title>
+<desc>Exact current C4: parallel original spatial and switching-latent temporal encoders; four shared experts; one shared forecast head; sample-dependent, horizon-shared router; prediction-level mixture. Original four-horizon Huber and Switch KL.</desc>
+<defs>
+<marker id="default" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L10,5 L0,10 Z" fill="#728498"/></marker>
+<marker id="spatial" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L10,5 L0,10 Z" fill="#2869a0"/></marker>
+<marker id="temporal" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L10,5 L0,10 Z" fill="#177f7e"/></marker>
+<marker id="router" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L10,5 L0,10 Z" fill="#9c4687"/></marker>
+</defs>
+<rect x="0" y="0" width="2480" height="1570" rx="0" fill="#fff" stroke="#fff" stroke-width="1.8"/>
+<text x="60" y="65" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="45" font-weight="700" fill="#1c2d43" text-anchor="start">C4  |  Global Dynamic Spatiotemporal Prediction MoE</text>
+<text x="63" y="111" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="27" font-weight="400" fill="#52657a" text-anchor="start">One sample-conditioned router · four shared experts · prediction-level fusion · four cumulative-return horizons</text>
+<rect x="50" y="150" width="2380" height="705" rx="19" fill="#fff" stroke="#b7c5d3" stroke-width="2"/>
+<text x="77" y="196" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="32" font-weight="700" fill="#1c2d43" text-anchor="start">a</text>
+<text x="135" y="196" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="31" font-weight="650" fill="#1c2d43" text-anchor="start">End-to-end prediction</text>
+<rect x="70" y="345" width="260" height="250" rx="16" fill="#f5f7fa" stroke="#b9c7d5" stroke-width="1.8"/>
+<text x="200" y="386" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="27" font-weight="650" fill="#1c2d43" text-anchor="middle">Historical inputs</text>
+<circle cx="92" cy="424" r="6" fill="#2869a0"/>
+<text x="109" y="432" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="24" font-weight="400" fill="#1c2d43" text-anchor="start">Stocks</text>
+<text x="309" y="432" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25" font-weight="650" fill="#1c2d43" text-anchor="end">263</text>
+<circle cx="92" cy="467" r="6" fill="#177f7e"/>
+<text x="109" y="475" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="24" font-weight="400" fill="#1c2d43" text-anchor="start">Bonds</text>
+<text x="309" y="475" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25" font-weight="650" fill="#1c2d43" text-anchor="end">25</text>
+<circle cx="92" cy="510" r="6" fill="#b5751b"/>
+<text x="109" y="518" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="24" font-weight="400" fill="#1c2d43" text-anchor="start">Commodities</text>
+<text x="309" y="518" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25" font-weight="650" fill="#1c2d43" text-anchor="end">23</text>
+<text x="200" y="566" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="23" font-weight="400" fill="#52657a" text-anchor="middle">B × 20 × 311 × 26</text>
+<path d="M 330,468 L 365,468 L 365,423 L 400,423" stroke="#2869a0" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#spatial)"/>
+<path d="M 365,468 L 365,648 L 400,648" stroke="#177f7e" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#temporal)"/>
+<rect x="400" y="350" width="620" height="145" rx="16" fill="#edf5fc" stroke="#2869a0" stroke-width="1.8"/>
+<text x="710.0" y="392" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="31" font-weight="600" fill="#2869a0" text-anchor="middle">Original spatial encoder</text>
+<text x="710.0" y="428" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="22.31" font-weight="400" fill="#52657a" text-anchor="middle">History attention → adaptive graph → 2 graph blocks</text>
+<text x="710.0" y="462" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="24.87" font-weight="400" fill="#52657a" text-anchor="middle">Market pooling + spatial projection → s: B × 64</text>
+<rect x="400" y="575" width="620" height="145" rx="16" fill="#eaf7f4" stroke="#177f7e" stroke-width="1.8"/>
+<text x="710.0" y="617" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="30" font-weight="600" fill="#177f7e" text-anchor="middle">Switching-latent temporal encoder</text>
+<text x="710.0" y="653" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25" font-weight="400" fill="#52657a" text-anchor="middle">Causal memory H + recurrent microstates Z</text>
+<text x="710.0" y="687" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25" font-weight="400" fill="#52657a" text-anchor="middle">Balanced readout + temporal projection → t</text>
+<path d="M 1020,423 L 1065,423" stroke="#2869a0" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 1020,648 L 1065,648" stroke="#177f7e" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 1065,263 L 1065,740" stroke="#728498" stroke-width="3.3" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="1065" cy="423" r="5" fill="#728498"/>
+<circle cx="1065" cy="648" r="5" fill="#728498"/>
+<text x="710" y="535" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25" font-weight="400" fill="#52657a" text-anchor="middle">Both branches execute once per forward</text>
+<rect x="1130" y="215" width="760" height="96" rx="16" fill="#fbf0f7" stroke="#9c4687" stroke-width="1.8"/>
+<text x="1510.0" y="257" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="30" font-weight="600" fill="#9c4687" text-anchor="middle">Global dynamic router</text>
+<text x="1510.0" y="293" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25" font-weight="400" fill="#52657a" text-anchor="middle">u: B × 256 → MLP(32, GELU) → softmax → π: B × 4</text>
+<path d="M 1065,263 L 1130,263" stroke="#9c4687" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="9 7" marker-end="url(#router)"/>
+<path d="M 1890,263 L 2150,263 L 2150,380" stroke="#9c4687" stroke-width="3" fill="none" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="9 7" marker-end="url(#router)"/>
+<text x="2150" y="319" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25" font-weight="600" fill="#9c4687" text-anchor="middle">Same π for all 4 horizons</text>
+<rect x="1130" y="340" width="400" height="85" rx="16" fill="#fff5e5" stroke="#b5751b" stroke-width="1.8"/>
+<text x="1150" y="374" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="27" font-weight="650" fill="#b5751b" text-anchor="start">E₁  Recent latent change</text>
+<text x="1150" y="406" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="24" font-weight="400" fill="#52657a" text-anchor="start">Z_last, mean₅(Z), ΔZ</text>
+<path d="M 1065,382.5 L 1130,382.5" stroke="#728498" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#default)"/>
+<path d="M 1530,382.5 L 1600,382.5" stroke="#b5751b" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#default)"/>
+<rect x="1130" y="445" width="400" height="85" rx="16" fill="#eaf7f4" stroke="#177f7e" stroke-width="1.8"/>
+<text x="1150" y="479" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="27" font-weight="650" fill="#177f7e" text-anchor="start">E₂  Long memory</text>
+<text x="1150" y="511" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="24" font-weight="400" fill="#52657a" text-anchor="start">H_last, mean₂₀(H)</text>
+<path d="M 1065,487.5 L 1130,487.5" stroke="#728498" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#default)"/>
+<path d="M 1530,487.5 L 1600,487.5" stroke="#177f7e" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#temporal)"/>
+<rect x="1130" y="550" width="400" height="85" rx="16" fill="#edf5fc" stroke="#2869a0" stroke-width="1.8"/>
+<text x="1150" y="584" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="27" font-weight="650" fill="#2869a0" text-anchor="start">E₃  Spatial structure</text>
+<text x="1150" y="616" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="24" font-weight="400" fill="#52657a" text-anchor="start">Projected spatial state s</text>
+<path d="M 1065,592.5 L 1130,592.5" stroke="#728498" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#default)"/>
+<path d="M 1530,592.5 L 1600,592.5" stroke="#2869a0" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#spatial)"/>
+<rect x="1130" y="655" width="400" height="85" rx="16" fill="#f3eff9" stroke="#7960a5" stroke-width="1.8"/>
+<text x="1150" y="689" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="27" font-weight="650" fill="#7960a5" text-anchor="start">E₄  ST interaction</text>
+<text x="1150" y="721" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="24" font-weight="400" fill="#52657a" text-anchor="start">s and t; low-rank product</text>
+<path d="M 1065,697.5 L 1130,697.5" stroke="#728498" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#default)"/>
+<path d="M 1530,697.5 L 1600,697.5" stroke="#7960a5" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#default)"/>
+<rect x="1600" y="340" width="290" height="400" rx="16" fill="#f8f9fc" stroke="#8494aa" stroke-width="1.8"/>
+<text x="1745" y="382" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25.25" font-weight="650" fill="#1c2d43" text-anchor="middle">One shared Headθ</text>
+<text x="1745" y="421" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="23" font-weight="400" fill="#52657a" text-anchor="middle">Same θ for all experts</text>
+<rect x="1620" y="447" width="250" height="150" rx="12" fill="#fff" stroke="#cbd5df" stroke-width="1.8"/>
+<text x="1745" y="481" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="26" font-weight="400" fill="#1c2d43" text-anchor="middle">Linear 64 → 64</text>
+<text x="1745" y="524" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="24" font-weight="400" fill="#1c2d43" text-anchor="middle">ReLU + Dropout 0.3</text>
+<text x="1745" y="570" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="24" font-weight="400" fill="#1c2d43" text-anchor="middle">Linear 64 → 4 × 23</text>
+<text x="1745" y="635" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="23" font-weight="400" fill="#52657a" text-anchor="middle">Horizon-major rows</text>
+<text x="1745" y="680" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="27" font-weight="600" fill="#1c2d43" text-anchor="middle">P: B × 4 × 4 × 23</text>
+<text x="1745" y="713" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="22" font-weight="400" fill="#52657a" text-anchor="middle">[B, horizon, expert, C]</text>
+<path d="M 1890,540 L 1920,540 L 1920,455 L 1950,455" stroke="#728498" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#default)"/>
+<rect x="1950" y="380" width="400" height="150" rx="16" fill="#f0f3f7" stroke="#6c819b" stroke-width="1.8"/>
+<text x="2150" y="424" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="29" font-weight="650" fill="#1c2d43" text-anchor="middle">Prediction-level fusion</text>
+<text x="2150" y="472" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="36" font-weight="550" fill="#1c2d43" text-anchor="middle">ŷₕ = ∑ₖ πₖ Pₕ,ₖ</text>
+<text x="2150" y="508" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="22" font-weight="400" fill="#52657a" text-anchor="middle">Mix forecasts after the shared head</text>
+<path d="M 2150,530 L 2150,625" stroke="#728498" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#default)"/>
+<rect x="1950" y="625" width="400" height="120" rx="16" fill="#f7fafc" stroke="#7b92aa" stroke-width="1.8"/>
+<text x="2150" y="663" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="27" font-weight="650" fill="#1c2d43" text-anchor="middle">23 commodity forecasts</text>
+<text x="2150" y="698" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="27" font-weight="400" fill="#1c2d43" text-anchor="middle">1 / 5 / 10 / 20 sessions</text>
+<text x="2150" y="730" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25" font-weight="400" fill="#52657a" text-anchor="middle">Output: B × 4 × 23</text>
+<text x="1065" y="785" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="27" font-weight="400" fill="#52657a" text-anchor="middle">Live feature taps: (s, t, H, Z), without early fusion</text>
+<text x="1240" y="825" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="24" font-weight="400" fill="#52657a" text-anchor="middle">Four experts are evaluated once each; all access remains dense. Solid: forecast data flow. Dashed: routing weights/context.</text>
+<rect x="50" y="895" width="730" height="495" rx="19" fill="#fff" stroke="#b7c5d3" stroke-width="2"/>
+<text x="77" y="941" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="32" font-weight="700" fill="#1c2d43" text-anchor="start">b</text>
+<text x="135" y="941" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="31" font-weight="650" fill="#1c2d43" text-anchor="start">Spatial information pathway</text>
+<rect x="80" y="964" width="390" height="65" rx="16" fill="#edf5fc" stroke="#2869a0" stroke-width="1.8"/>
+<text x="275.0" y="1006.5" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="21.2" font-weight="600" fill="#2869a0" text-anchor="middle">Heterogeneous node encoder</text>
+<text x="620" y="1004" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="22" font-weight="400" fill="#52657a" text-anchor="middle">B × 20 × 311 × 64</text>
+<path d="M 275,1029 L 275,1050" stroke="#2869a0" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#spatial)"/>
+<rect x="80" y="1050" width="390" height="65" rx="16" fill="#edf5fc" stroke="#2869a0" stroke-width="1.8"/>
+<text x="275.0" y="1092.5" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="21.01" font-weight="600" fill="#2869a0" text-anchor="middle">History-weighted aggregation</text>
+<text x="620" y="1091" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="24" font-weight="400" fill="#52657a" text-anchor="middle">H₀: B × 311 × 64</text>
+<path d="M 275,1115 L 275,1136" stroke="#2869a0" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#spatial)"/>
+<rect x="80" y="1136" width="390" height="69" rx="16" fill="#edf5fc" stroke="#2869a0" stroke-width="1.8"/>
+<text x="275" y="1163" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25" font-weight="600" fill="#2869a0" text-anchor="middle">EdgeAttnMixHop → ReLU</text>
+<text x="275" y="1193" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25" font-weight="600" fill="#2869a0" text-anchor="middle">→ EdgeAttnMixHop</text>
+<rect x="520" y="1136" width="230" height="69" rx="16" fill="#fff" stroke="#2869a0" stroke-width="1.8"/>
+<text x="635.0" y="1180.5" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="27" font-weight="600" fill="#2869a0" text-anchor="middle">Learned A₀</text>
+<text x="635" y="1235" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="21" font-weight="400" fill="#52657a" text-anchor="middle">Global N × N prior</text>
+<path d="M 520,1170 L 470,1170" stroke="#2869a0" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#spatial)"/>
+<path d="M 275,1205 L 275,1250" stroke="#2869a0" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#spatial)"/>
+<rect x="80" y="1250" width="670" height="77" rx="16" fill="#edf5fc" stroke="#2869a0" stroke-width="1.8"/>
+<text x="415" y="1280" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25" font-weight="500" fill="#2869a0" text-anchor="middle">LayerNorm → masked means of 3 markets</text>
+<text x="415" y="1311" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25" font-weight="500" fill="#2869a0" text-anchor="middle">Concat → Linear(192→64) → gcn_proj → s</text>
+<text x="415" y="1363" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="23" font-weight="400" fill="#52657a" text-anchor="middle">Each graph block retains its original K = 2 MixHop.</text>
+<rect x="805" y="895" width="850" height="495" rx="19" fill="#fff" stroke="#b7c5d3" stroke-width="2"/>
+<text x="832" y="941" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="32" font-weight="700" fill="#1c2d43" text-anchor="start">c</text>
+<text x="890" y="941" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="31" font-weight="650" fill="#1c2d43" text-anchor="start">Causal memory and latent dynamics</text>
+<rect x="835" y="964" width="790" height="65" rx="16" fill="#eaf7f4" stroke="#177f7e" stroke-width="1.8"/>
+<text x="1230.0" y="1006.5" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25" font-weight="600" fill="#177f7e" text-anchor="middle">Market tokens → Causal Transformer + RPE</text>
+<path d="M 940,1029 L 940,1050" stroke="#177f7e" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#temporal)"/>
+<rect x="835" y="1050" width="220" height="65" rx="16" fill="#eaf7f4" stroke="#177f7e" stroke-width="1.8"/>
+<text x="945" y="1077" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="24" font-weight="600" fill="#177f7e" text-anchor="middle">Long memory H</text>
+<text x="945" y="1104" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="23" font-weight="400" fill="#52657a" text-anchor="middle">B × 20 × 128</text>
+<rect x="1110" y="1050" width="515" height="65" rx="16" fill="#eaf7f4" stroke="#177f7e" stroke-width="1.8"/>
+<text x="1367.5" y="1092.5" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="26" font-weight="600" fill="#177f7e" text-anchor="middle">Markov regime filter: pₜ,  K = 3</text>
+<path d="M 1055,1082 L 1110,1082" stroke="#177f7e" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#temporal)"/>
+<path d="M 1370,1115 L 1370,1140" stroke="#177f7e" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#temporal)"/>
+<rect x="1110" y="1140" width="515" height="90" rx="16" fill="#eaf7f4" stroke="#177f7e" stroke-width="1.8"/>
+<text x="1367" y="1175" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="22.56" font-weight="600" fill="#177f7e" text-anchor="middle">Regime-specific generators G₁, G₂, G₃</text>
+<text x="1367" y="1212" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="29" font-weight="500" fill="#177f7e" text-anchor="middle">zₜ = ∑ᵣ pₜ,ᵣ Gᵣ([Hₜ, zₜ₋₁])</text>
+<rect x="835" y="1140" width="220" height="90" rx="16" fill="#eaf7f4" stroke="#177f7e" stroke-width="1.8"/>
+<text x="945" y="1175" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25" font-weight="600" fill="#177f7e" text-anchor="middle">Microstates Z</text>
+<text x="945" y="1211" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="24" font-weight="400" fill="#52657a" text-anchor="middle">B × 20 × 64</text>
+<path d="M 1110,1205 L 1055,1205" stroke="#177f7e" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#temporal)"/>
+<path d="M 1055,1094 L 1080,1094 L 1080,1170 L 1110,1170" stroke="#177f7e" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#temporal)"/>
+<path d="M 835,1082 L 820,1082 L 820,1290 L 835,1290" stroke="#177f7e" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#temporal)"/>
+<path d="M 945,1230 L 945,1250" stroke="#177f7e" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#temporal)"/>
+<rect x="835" y="1250" width="790" height="78" rx="16" fill="#eaf7f4" stroke="#177f7e" stroke-width="1.8"/>
+<text x="1230" y="1280" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25" font-weight="550" fill="#177f7e" text-anchor="middle">Balanced readout: [LN(P_H H_last), LN(P_Z z_last)]</text>
+<text x="1230" y="1313" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="26" font-weight="500" fill="#177f7e" text-anchor="middle">Linear(128→64) → temporal projection → t: B × 64</text>
+<text x="1230" y="1363" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="23" font-weight="400" fill="#52657a" text-anchor="middle">Live H and Z also feed the experts and the router directly.</text>
+<rect x="1680" y="895" width="750" height="495" rx="19" fill="#fff" stroke="#b7c5d3" stroke-width="2"/>
+<text x="1707" y="941" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="32" font-weight="700" fill="#1c2d43" text-anchor="start">d</text>
+<text x="1765" y="941" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="31" font-weight="650" fill="#1c2d43" text-anchor="start">Experts and global routing</text>
+<text x="1710" y="982" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="28" font-weight="550" fill="#b5751b" text-anchor="start">E₁ = ReLU(W₁[Z_last, Z̄₅, Z_last−Z̄₅])</text>
+<text x="1710" y="1030" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="28" font-weight="550" fill="#177f7e" text-anchor="start">E₂ = ReLU(W₂[H_last, H̄₂₀])</text>
+<text x="1710" y="1078" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="28" font-weight="550" fill="#2869a0" text-anchor="start">E₃ = s + ReLU(W₃s)</text>
+<text x="1710" y="1126" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="28" font-weight="550" fill="#7960a5" text-anchor="start">E₄ = Wₒ[(Uₛs) ⊙ (Uₜt)],  rank = 16</text>
+<text x="1710" y="1172" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="27" font-weight="400" fill="#52657a" text-anchor="start">Eₖ ∈ ℝ⁶⁴   →   P[b,h,k,:] = Headθ,h(Eₖ)</text>
+<rect x="1710" y="1200" width="690" height="150" rx="12" fill="#fbf0f7" stroke="#9c4687" stroke-width="1.8"/>
+<text x="1730" y="1235" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25" font-weight="500" fill="#9c4687" text-anchor="start">u = [LN(s), LN(t), LN(ΔZ), LN(W_R H̄₂₀)]</text>
+<text x="1730" y="1279" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="30" font-weight="650" fill="#9c4687" text-anchor="start">π = softmax(MLP₂₅₆→₃₂→₄(u))</text>
+<text x="1730" y="1323" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="23" font-weight="400" fill="#9c4687" text-anchor="start">GELU hidden layer · temperature 1 · no horizon input</text>
+<rect x="50" y="1420" width="2380" height="100" rx="15" fill="#f6f8fb" stroke="#d6dee7" stroke-width="1.8"/>
+<text x="80" y="1460" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="28" font-weight="550" fill="#1c2d43" text-anchor="start">Training:  L = ∑ₕ MaskedHuber₍δ=0.02₎(ŷₕ, yₕ) + β(epoch) · mean_valid KL(pₜ ∥ pₜ₋₁T)</text>
+<text x="80" y="1499" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="25" font-weight="400" fill="#52657a" text-anchor="start">Checkpoint selection: VAL 5-session commodity Macro MAE.  The original Switch KL warmup is retained.</text>
+<text x="60" y="1553" font-family="DejaVu Sans, Noto Sans, Arial, sans-serif" font-size="23" font-weight="400" fill="#52657a" text-anchor="start">Current implementation: moe_phase_m/pred_global_dynamic  ·  311 assets / 26 features / 23 targets  ·  567,169 trainable parameters</text>
+</svg>

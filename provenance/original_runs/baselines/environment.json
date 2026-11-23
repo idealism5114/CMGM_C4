@@ -1,0 +1,8 @@
+{
+  "torch": "2.7.1+cu118",
+  "numpy": "2.5.3",
+  "cuda": "11.8",
+  "device": "cuda:0",
+  "device_name": "Tesla V100-PCIE-32GB",
+  "CUDA_VISIBLE_DEVICES": "0"
+}

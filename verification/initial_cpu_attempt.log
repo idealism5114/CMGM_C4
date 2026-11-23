@@ -1,0 +1,28 @@
+[REPLAY PASS] c4/full train MAE5 0.026586806671391204 maxdiff 3.9814040064811707e-08
+[REPLAY PASS] c4/full val MAE5 0.02429720329052408 maxdiff 3.4924596548080444e-08
+Traceback (most recent call last):
+  File "/home/yangxiaotong/projects/myresearch/CMGM_C4/run.py", line 7, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                            ^^^^^^
+  File "/home/yangxiaotong/projects/myresearch/CMGM_C4/src/cmgm_c4/cli.py", line 30, in main
+    verify(a.device)
+    ~~~~~~^^^^^^^^^^
+  File "/home/yangxiaotong/projects/myresearch/CMGM_C4/src/cmgm_c4/verification.py", line 54, in verify
+    saved=read(root/row['results']/'metrics.json')[split]
+          ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/yangxiaotong/projects/myresearch/CMGM_C4/src/cmgm_c4/common.py", line 18, in read
+    def read(p):return json.loads(Path(p).read_text())
+                                  ~~~~~~~~~~~~~~~~~^^
+  File "/home/yangxiaotong/miniconda3/lib/python3.13/pathlib/_local.py", line 546, in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/yangxiaotong/miniconda3/lib/python3.13/pathlib/_abc.py", line 632, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/yangxiaotong/miniconda3/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/yangxiaotong/projects/myresearch/CMGM_C4/src/cmgm_c4/verification.py", line 25, in guard_io
+    def guard_io(p,*a,**kw):check(p);return old_io(p,*a,**kw)
+                                            ~~~~~~^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/yangxiaotong/projects/myresearch/CMGM_C4/results/baselines/RNN/metrics.json'

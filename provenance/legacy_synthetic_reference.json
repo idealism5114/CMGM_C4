@@ -1,0 +1,9 @@
+{
+  "source": "/home/yangxiaotong/projects/myresearch/Commedities",
+  "sha256": "25c5606f067bed06ca6aa57b6a66a939b178f1b7a7ff5dd09d84e48806d7c659",
+  "constructor_hash": "0e28d1538e200790fe5a8469f39dccc8065875898f730ac41b00a6ac632e5ba2",
+  "initial_hash": "499c561f617abdadac5098b5ff6091622651e38cbf20d41a7a1402bfeffc71d1",
+  "optimizer_created": false,
+  "TEST_numeric_reads": 0,
+  "description": "Synthetic CPU eval/train forward/backward, original code; no parameter updates"
+}

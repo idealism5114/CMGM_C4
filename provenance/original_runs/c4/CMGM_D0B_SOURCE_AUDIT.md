@@ -1,0 +1,5 @@
+# 原始D0B身份
+
+架构来源9eab8eebea703812652aa609071a4f5bcbce1165。当前HEAD 981de35aa9a0472e6974d5a6e4f98e1c5242e465。封存的原始AdaptiveGate D0B，新数据mask adapter不增加参数。原Full参数量 522269；checkpoint SHA256 d3c84515106f62343d9c90db0a831c0e8e1564170f57e5796e39ea0a142e46e5；原best epoch 45。strict=True恢复，仅用于身份/VAL复现，不作为训练初始化。VAL预测最大差 4.470348358154297e-08。
+
+新增temporal子类方法在最终return以前与原mask adapter AST完全一致。默认调用值不变，只暴露已计算的live H/Z。原空间和时间文件未修改。输入311/26，输出23，目标/日期来源冻结manifest，用户明确选择该新协议。

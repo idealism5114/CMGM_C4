@@ -1,0 +1,9 @@
+{
+  "device": "cpu",
+  "torch": "2.7.1+cu118",
+  "numpy": "2.5.3",
+  "torch_threads": 2,
+  "dtype": "float32",
+  "autocast": false,
+  "matched_reused_reference": true
+}

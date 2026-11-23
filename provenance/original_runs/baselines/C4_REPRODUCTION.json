@@ -1,0 +1,8 @@
+{
+  "strict_load": true,
+  "prediction_max_abs_diff": 3.4924596548080444e-08,
+  "VAL5_macro_MAE": 0.02429720329052408,
+  "best_epoch": 35,
+  "checkpoint_sha256": "952dd88da6fb9be867c48bd089383ab12f4a55cc76fe38be7626d5bf4e6a612a",
+  "PASS": true
+}
