@@ -6,7 +6,7 @@ import time
 import numpy as np
 import torch
 from cmgm_c4.common import project_root,read,save,seed_all,checkpoint,rng_state,restore_rng,prediction_loss,sha,runtime_hashes,audit_train_val_files,tensor_hash
-from cmgm_c4.data.dataset import loader
+from cmgm_c4.data.dataset import FrozenDataset, loader
 from cmgm_c4.evaluation.evaluate import forward,evaluate
 from cmgm_c4.factory import build
 from cmgm_c4.models.progressive import ROWS
@@ -66,6 +66,32 @@ def make_optimizer(model, protocol):
     return optimizer, scheduler
 
 
+def baseline_train_loader(dataset, batch_size, horizons):
+    """Keep chronological batches and move the last boundary only if the tail lacks labels."""
+    valid = dataset.a['train_label_valid_mask'].any(axis=2)
+    batches = [range(i, min(i + batch_size, len(dataset))) for i in range(0, len(dataset), batch_size)]
+    if len(batches) >= 2:
+        previous, tail = batches[-2:]
+        if not valid[tail.start:tail.stop].any(axis=0).all():
+            # Borrow the fewest adjacent origins needed, respecting the configured batch size.
+            earliest = max(previous.start + 1, tail.stop - batch_size)
+            for boundary in range(tail.start - 1, earliest - 1, -1):
+                if not valid[previous.start:boundary].any(axis=0).all():
+                    break
+                if valid[boundary:tail.stop].any(axis=0).all():
+                    batches[-2:] = [range(previous.start, boundary), range(boundary, tail.stop)]
+                    print(f'Adjusted final TRAIN batches from {len(previous)}+{len(tail)} '
+                          f'to {boundary - previous.start}+{tail.stop - boundary}', flush=True)
+                    break
+    for batch in batches:
+        covered = valid[batch.start:batch.stop].any(axis=0)
+        if not covered.all():
+            missing = [h for h, ok in zip(horizons, covered) if not ok]
+            raise ValueError(f'Baseline TRAIN batch {dataset.dates[batch.start]} to '
+                             f'{dataset.dates[batch.stop - 1]} has no valid labels for horizons {missing}')
+    return torch.utils.data.DataLoader(dataset, batch_sampler=batches)
+
+
 def train(identifier,out,device='cuda:0',resume=False,*,lr=None,weight_decay=None,seed=None):
     root=project_root();cfg=read(root/'configs/project.json');out=Path(out).resolve()
     if identifier not in read(root/'configs/registry.json') and identifier not in {'progressive/'+row for row in ROWS}:
@@ -82,7 +108,10 @@ def train(identifier,out,device='cuda:0',resume=False,*,lr=None,weight_decay=Non
     m=build(identifier,initial=True,device=device,seed=protocol['seed']);seed_all(protocol['seed'])
     opt,scheduler=make_optimizer(m,protocol)
     schedule=protocol.get('scheduler','plateau')
-    batches=loader('train',neutral,batch_size=protocol['batch_size'])
+    if neutral:
+        batches=baseline_train_loader(FrozenDataset('train', neutral=True), protocol['batch_size'], cfg['horizons'])
+    else:
+        batches=loader('train',batch_size=protocol['batch_size'])
     val=loader('val',neutral)
     history=[];best=float('inf');best_epoch=None;stale=0;start=1;seconds=0.
     signature=dict(identifier=identifier,protocol=protocol,selector=cfg['selector'],dataset_sha256=cfg['dataset_manifest_sha256'],

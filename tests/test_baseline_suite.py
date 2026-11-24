@@ -6,12 +6,56 @@ import numpy as np
 import pytest
 import torch
 
+from cmgm_c4.data.dataset import FrozenDataset
 from cmgm_c4.evaluation.metrics import population
-from cmgm_c4.training.train import make_optimizer, training_protocol
+from cmgm_c4.training.train import baseline_train_loader, make_optimizer, training_protocol
 
 ROOT=Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('baseline_runner',ROOT/'tools/run_c4_baselines.py')
 module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+
+
+class SyntheticTrainSet:
+    def __init__(self, mask):
+        self.a = {'train_label_valid_mask': mask}
+        self.dates = np.arange(len(mask))
+
+    def __len__(self):
+        return len(self.dates)
+
+    def __getitem__(self, index):
+        return index
+
+
+@pytest.mark.parametrize('batch_size', [32, 64])
+def test_training_batches_cover_split_boundary(batch_size):
+    horizons = [1, 5, 10, 20]
+    mask = np.ones((2726, 4, 2), dtype=bool)
+    for column, horizon in enumerate(horizons):
+        mask[-horizon:, column] = False
+    batches = list(baseline_train_loader(SyntheticTrainSet(mask), batch_size, horizons))
+    assert torch.cat(batches).tolist() == list(range(len(mask)))
+    assert len(batches) == math.ceil(len(mask) / batch_size)
+    assert [len(b) for b in batches[-2:]] == ([17, 21] if batch_size == 32 else [64, 38])
+    assert all(mask[b.numpy()].any(axis=(0, 2)).all() for b in batches)
+
+
+def test_unrepairable_training_batch_identifies_missing_horizon():
+    mask = np.ones((38, 4, 2), dtype=bool)
+    mask[-32:, 3] = False
+    with pytest.raises(ValueError, match=r'32 to 37.*horizons \[20\]'):
+        baseline_train_loader(SyntheticTrainSet(mask), 32, [1, 5, 10, 20])
+
+
+def test_frozen_train_masks_support_all_baseline_batch_sizes():
+    config = module.read(ROOT/'configs/project.json')
+    if not (ROOT/config['baseline_data_path']/'train_label_valid_mask.npy').exists():
+        pytest.skip('Frozen baseline TRAIN arrays are not installed')
+    dataset = FrozenDataset('train', neutral=True)
+    sizes = {training_protocol('baselines/'+key, config['train'])['batch_size'] for key in module.MODELS}
+    for size in sizes:
+        batches = baseline_train_loader(dataset, size, config['horizons'])
+        assert len(batches) == math.ceil(len(dataset) / size)
 
 
 def test_baseline_freeze_requires_all_eight_and_is_immutable(tmp_path):
