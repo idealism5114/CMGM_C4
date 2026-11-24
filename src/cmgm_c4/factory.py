@@ -3,13 +3,20 @@ import torch
 from cmgm_c4.common import project_root,read,sha,seed_all
 from cmgm_c4.models.c4 import C4Model
 from cmgm_c4.models.ablations import C4Ablation
+from cmgm_c4.models.progressive import ROWS, configure
 from cmgm_c4.baselines.adapter import prepared_model
 
 
-def build(identifier='c4/full',initial=False,device='cpu'):
+def build(identifier='c4/full',initial=False,device='cpu',*,seed=42):
     root=project_root();cfg=read(root/'configs/project.json');registry=read(root/'configs/registry.json')
-    if identifier not in registry:raise ValueError('Unknown stable experiment: '+identifier)
-    suite,key=identifier.split('/');seed_all(42)
+    progressive = identifier in {'progressive/'+row for row in ROWS}
+    if identifier not in registry and not progressive:raise ValueError('Unknown stable experiment: '+identifier)
+    suite,key=identifier.split('/');seed_all(seed)
+    if progressive:
+        model = C4Ablation('no_temporal' if key=='A' else 'full_c4', **cfg['shape'])
+        if initial and seed==42:
+            model.load_state_dict(build('c4/full',initial=True).state_dict(),strict=True)
+        return configure(model,key,cfg['inactive_parameters']).to(device)
     if suite=='c4':m=C4Model(**cfg['shape'])
     elif suite=='baselines':m=prepared_model(key,commodities=23,features=26)
     else:m=C4Ablation(key,**cfg['shape'])

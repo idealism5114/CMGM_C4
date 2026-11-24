@@ -1,5 +1,7 @@
 # 当前调优参数下的8个Deep V3 baseline
 
+本文记录 2026-11-18 的历史运行。复现该实验使用当时的源码快照与参数。当前训练入口使用[独立 baseline 配置](../README.md#baseline-独立训练参数与-c4-百分比对比)。
+
 运行目录：`runs/baselines_deep_v3_tuned/seed42_20261118_01/`。
 
 模型依次为RNN、GRU、LSTM、VanillaTransformer、GraphWaveNet、MTGNN、MSGNet、CrossGNN，保留本项目已迁移的最新Deep V3实现。各模型strict加载自己保存的未训练Seed42初值，从头训练，不加载历史已训练checkpoint。

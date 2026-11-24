@@ -9,6 +9,7 @@ from cmgm_c4.common import project_root,read,save,seed_all,checkpoint,rng_state,
 from cmgm_c4.data.dataset import loader
 from cmgm_c4.evaluation.evaluate import forward,evaluate
 from cmgm_c4.factory import build
+from cmgm_c4.models.progressive import ROWS
 
 
 def effective_protocol(defaults,lr=None,weight_decay=None):
@@ -23,31 +24,85 @@ def effective_protocol(defaults,lr=None,weight_decay=None):
     return result
 
 
-def train(identifier,out,device='cuda:0',resume=False,*,lr=None,weight_decay=None):
+def training_protocol(identifier, defaults, lr=None, weight_decay=None, *, root=None):
+    if not identifier.startswith('baselines/'):
+        return effective_protocol(defaults, lr, weight_decay)
+    root = project_root() if root is None else root
+    profile = read(root / 'configs' / (identifier + '.json'))
+    settings = {name: defaults[name] for name in
+                ('seed', 'shuffle', 'drop_last', 'Huber_delta', 'epoch0_candidate')}
+    settings.update(profile['train'], training_source=profile['training_source'])
+    return effective_protocol(settings, lr, weight_decay)
+
+
+def make_optimizer(model, protocol):
+    if protocol['optimizer'] != 'Adam':
+        raise ValueError(f"Unsupported optimizer {protocol['optimizer']}")
+    optimizer = torch.optim.Adam(
+        (p for p in model.parameters() if p.requires_grad),
+        lr=protocol['lr'], weight_decay=protocol['weight_decay'],
+        betas=tuple(protocol.get('betas', (0.9, 0.999))), eps=protocol.get('eps', 1e-8),
+    )
+    schedule = protocol.get('scheduler', 'plateau')
+    if schedule == 'plateau':
+        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+            optimizer, factor=protocol['scheduler_factor'], patience=protocol['scheduler_patience'])
+    elif schedule == 'type1':
+        # The official scripts set the LR after epoch e to initial_lr * 0.5**(e-1).
+        scheduler = torch.optim.lr_scheduler.LambdaLR(
+            optimizer, lambda epochs: 0.5 ** max(0, epochs - 1))
+    elif schedule == 'transformer_warmup':
+        warmup = protocol['warmup_steps']
+
+        def warmup_factor(completed_steps):
+            step = completed_steps + 1
+            return min(step / warmup, math.sqrt(warmup / step))
+
+        scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, warmup_factor)
+    elif schedule == 'constant':
+        scheduler = None
+    else:
+        raise ValueError(f'Unknown LR schedule {schedule}')
+    return optimizer, scheduler
+
+
+def train(identifier,out,device='cuda:0',resume=False,*,lr=None,weight_decay=None,seed=None):
     root=project_root();cfg=read(root/'configs/project.json');out=Path(out).resolve()
-    protocol=effective_protocol(cfg['train'],lr,weight_decay)
+    if identifier not in read(root/'configs/registry.json') and identifier not in {'progressive/'+row for row in ROWS}:
+        raise ValueError('Unknown stable experiment: '+identifier)
+    protocol=training_protocol(identifier,cfg['train'],lr,weight_decay,root=root)
+    if seed is not None:
+        if not identifier.startswith('progressive/'):
+            raise ValueError('Custom seeds are supported for progressive ablations')
+        protocol['seed']=seed
     if out.is_relative_to(root) and not out.is_relative_to(root/'runs'):
         raise ValueError('Use runs/ for new work; all migrated project files are immutable')
     if out.exists() and not resume:raise ValueError('New training requires a fresh output directory')
     out.mkdir(parents=True,exist_ok=True);neutral=identifier.startswith('baselines/')
-    m=build(identifier,initial=True,device=device);seed_all(42)
-    opt=torch.optim.Adam([p for p in m.parameters() if p.requires_grad],lr=protocol['lr'],weight_decay=protocol['weight_decay'])
-    scheduler=torch.optim.lr_scheduler.ReduceLROnPlateau(opt,factor=protocol['scheduler_factor'],patience=protocol['scheduler_patience'])
-    batches,val=loader('train',neutral),loader('val',neutral)
+    m=build(identifier,initial=True,device=device,seed=protocol['seed']);seed_all(protocol['seed'])
+    opt,scheduler=make_optimizer(m,protocol)
+    schedule=protocol.get('scheduler','plateau')
+    batches=loader('train',neutral,batch_size=protocol['batch_size'])
+    val=loader('val',neutral)
     history=[];best=float('inf');best_epoch=None;stale=0;start=1;seconds=0.
     signature=dict(identifier=identifier,protocol=protocol,selector=cfg['selector'],dataset_sha256=cfg['dataset_manifest_sha256'],
         source_hashes=runtime_hashes(),data_audit=audit_train_val_files(),initial_state_sha256=tensor_hash(m.state_dict()))
-    if resume:
+    if resume and (out/'latest.pt').exists():
         cp=torch.load(out/'latest.pt',map_location='cpu',weights_only=False)
         if cp['signature']!=signature:raise ValueError('Resume protocol mismatch')
-        m.load_state_dict(cp['model_state_dict'],strict=True);opt.load_state_dict(cp['optimizer']);scheduler.load_state_dict(cp['scheduler']);restore_rng(cp['rng'])
+        m.load_state_dict(cp['model_state_dict'],strict=True);opt.load_state_dict(cp['optimizer'])
+        if scheduler is not None:scheduler.load_state_dict(cp['scheduler'])
+        restore_rng(cp['rng'])
         history,best,best_epoch,stale,start,seconds=cp['history'],cp['best'],cp['best_epoch'],cp['stale'],cp['epoch']+1,cp['seconds']
+    elif resume and any(out.iterdir()):
+        if not (out/'config.json').exists() or read(out/'config.json')!=signature:
+            raise ValueError('Resume protocol mismatch')
     save(out/'config.json',signature)
     for epoch in range(start,protocol['max_epochs']+1):
-        if stale>=protocol['patience']:break
+        if protocol['patience'] is not None and stale>=protocol['patience']:break
         tic=time.perf_counter();m.train()
         if hasattr(m,'set_epoch'):m.set_epoch(epoch)
-        logs=[];used=[]
+        logs=[];used=[];epoch_lr=opt.param_groups[0]['lr']
         for b in batches:
             opt.zero_grad(set_to_none=True);p,_=forward(m,b,device,neutral)
             pred=prediction_loss(p,b['Y'].to(device),b['label_valid_mask'].to(device))
@@ -56,21 +111,34 @@ def train(identifier,out,device='cuda:0',resume=False,*,lr=None,weight_decay=Non
             if not torch.isfinite(loss):raise ValueError('Nonfinite loss')
             loss.backward()
             if any(v.grad is not None and not torch.isfinite(v.grad).all() for v in m.parameters()):raise ValueError('Nonfinite parameter gradient')
-            opt.step();logs.append((float(pred.detach()),float(kl.detach())));used+=b['origin_date']
-        if len(used)!=2726 or len(set(used))!=2726 or len(logs)!=43:raise ValueError('TRAIN coverage mismatch')
-        metrics,_=evaluate(m,val,device,neutral);score=metrics['primary'];scheduler.step(score)
+            if protocol.get('grad_clip_norm') is not None:
+                torch.nn.utils.clip_grad_norm_(m.parameters(), protocol['grad_clip_norm'], error_if_nonfinite=True)
+            epoch_lr=opt.param_groups[0]['lr']
+            opt.step()
+            if schedule=='transformer_warmup':scheduler.step()
+            logs.append((float(pred.detach()),float(kl.detach())));used+=b['origin_date']
+        if len(used)!=2726 or used!=list(batches.dataset.dates) or len(logs)!=len(batches):
+            raise ValueError('TRAIN coverage mismatch')
+        metrics,_=evaluate(m,val,device,neutral);score=metrics['primary']
+        if schedule=='plateau':
+            scheduler.step(score)
+            epoch_lr=opt.param_groups[0]['lr']
+        elif schedule=='type1':
+            scheduler.step()
         improved=score<best
         if improved:best,best_epoch,stale=score,epoch,0
         else:stale+=1
         elapsed=time.perf_counter()-tic;seconds+=elapsed
         history.append(dict(epoch=epoch,VAL_5D_COMMODITY_MACRO_MAE=score,VAL=metrics,
             train_Huber_batch_mean=float(np.mean(logs,0)[0]),train_KL_batch_mean=float(np.mean(logs,0)[1]),
-            optimizer_steps=43,train_origins_used=2726,lr=opt.param_groups[0]['lr'],seconds=elapsed))
+            optimizer_steps=len(logs),train_origins_used=len(used),lr=epoch_lr,seconds=elapsed))
         cp=dict(identifier=identifier,signature=signature,epoch=epoch,best=best,best_epoch=best_epoch,stale=stale,seconds=seconds,
-            history=history,model_state_dict=m.state_dict(),optimizer=opt.state_dict(),scheduler=scheduler.state_dict(),rng=rng_state(),selection=cfg['selector'])
+            history=history,model_state_dict=m.state_dict(),optimizer=opt.state_dict(),
+            scheduler=scheduler.state_dict() if scheduler is not None else None,rng=rng_state(),selection=cfg['selector'])
         if improved:checkpoint(out/'best.pt',cp)
         checkpoint(out/'latest.pt',cp);save(out/'history.json',history)
         print(identifier,epoch,score,'best',best_epoch,flush=True)
+    save(out/'history.json',history)
     save(out/'models_frozen.json',dict(identifier=identifier,best_epoch=best_epoch,checkpoint='best.pt',checkpoint_sha256=sha(out/'best.pt'),selection=cfg['selector'],
         parameters=sum(v.numel() for v in m.parameters()),trainable_parameters=sum(v.numel() for v in m.parameters() if v.requires_grad),training_seconds=seconds))
     frozen=torch.load(out/'best.pt',map_location='cpu',weights_only=False)

@@ -25,6 +25,7 @@
 ```bash
 CUDA_VISIBLE_DEVICES=1 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4 \
 ../.venv/bin/python -u tools/run_c4_ablation.py \
+  --legacy \
   --output runs/ablations_c4_tuned/seed42_20261118_01 \
   --device cuda:0 --execute --allow-test
 ```

@@ -25,8 +25,16 @@ REFERENCE='runs/tuning_lr_wd/seed42_20261113_01'
 def make_protocol(allow_test):
     root=project_root();cfg=read(root/'configs/project.json');selected=read(root/REFERENCE/'SELECTED_MODEL.json')
     old=read(root/REFERENCE/'PREREGISTERED_PROTOCOL.json')
+    if old['dataset_sha256']!=cfg['dataset_manifest_sha256'] or old['selector']!=cfg['selector']:
+        raise ValueError('HPO reference uses different data or selection')
+    # The HPO snapshot pins its trainer. The current shared trainer now supports
+    # baseline profiles, while C4 is still checked against frozen predictions.
+    updated_paths={'src/cmgm_c4/training/train.py','src/cmgm_c4/reporting.py','src/cmgm_c4/data/dataset.py',
+                   'src/cmgm_c4/factory.py'}
     for rel,h in old['source_hashes'].items():
-        if sha(root/rel)!=h:raise ValueError('Existing model/trainer changed since HPO: '+rel)
+        source=root/REFERENCE/'source_snapshot'/Path(rel).relative_to('src')
+        if sha(source)!=h or (rel not in updated_paths and sha(root/rel)!=h):
+            raise ValueError('HPO snapshot or shared model source changed: '+rel)
     if read(root/REFERENCE/'INDEPENDENT_VERIFICATION.json')['status']!='PASS':raise ValueError('HPO reference not verified')
     if selected['lr']!=3e-4 or selected['weight_decay']!=1e-4:raise ValueError('Unexpected tuned C4 identity')
     definitions={k:DEFS[k] for k in KEYS}

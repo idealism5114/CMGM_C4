@@ -42,7 +42,7 @@ Router：`concat(LN(s), LN(t), LN(Z_last−mean5Z), LN(W_H mean20H)) → Linear2
 | TRAIN 覆盖 | 2726 origins，每 epoch43 steps，尾 batch38 |
 | VAL 覆盖 | 483 origins，8 batches，尾 batch35 |
 
-2026-11-18经用户确认，`configs/project.json`的通用训练默认值同步为调优配置。今后主模型、消融及baseline使用同一训练入口时，未显式覆盖的lr/weight_decay均读取上述值；其他训练设置不变。历史运行目录中的配置、源码快照和checkpoint保持原样，不代表已有baseline也使用新参数重新训练过。复现或恢复旧参数运行时，应显式传入其原始`--lr`和`--weight-decay`；恢复仍须满足原有源码、数据及协议一致性检查。
+2026-11-18 的主模型、消融及 baseline 实验均读取 `configs/project.json` 的调优参数。当前主模型和消融仍使用该公共配置，baseline 训练读取 `configs/baselines/` 下各自的训练配置。模型参数来源与百分比比较口径见 [README](../README.md#baseline-独立训练参数与-c4-百分比对比)。
 
 每个 horizon 在其有效标签单元内计算 Huberδ0.02 均值，然后四项求和，不额外除以4。C4 保留原 Switch KL，仅加入一次，warmup20 到 beta_max0.0005；相关消融按原定义关闭相应逻辑；baseline 不加入 KL。任一 horizon 无有效标签则失败，禁止静默当作0损失。
 

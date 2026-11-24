@@ -12,6 +12,9 @@ from cmgm_c4.evaluation.metrics import population
 
 def verify(out):
     out=Path(out).resolve()
+    if (out/'PROTOCOL.json').is_file() and read(out/'PROTOCOL.json').get('id')=='C4_PROGRESSIVE_V1':
+        from cmgm_c4.training.progressive import verify as verify_progressive
+        return verify_progressive(out)
     if not (out/'COMPLETE.json').exists():raise ValueError('Wait for all13 completion before reading results')
     p=read(out/'PREREGISTERED_PROTOCOL.json');frozen=read(out/'MODELS_FROZEN.json');final=read(out/'FINAL_AUDIT.json');init=read(out/'INITIALIZATION_AUDIT.json')
     if final['status']!='PASS' or sha(out/'MODELS_FROZEN.json')!=final['models_frozen_sha256']:raise ValueError('Freeze audit failed')

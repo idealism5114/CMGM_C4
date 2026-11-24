@@ -2,5 +2,27 @@
   "suite": "baselines",
   "key": "GraphWaveNet",
   "project": "../project.json",
-  "selector": "VAL_5D_COMMODITY_MACRO_MAE"
+  "selector": "VAL_5D_COMMODITY_MACRO_MAE",
+  "train": {
+    "optimizer": "Adam",
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-8,
+    "scheduler": "constant",
+    "grad_clip_norm": 5,
+    "batch_size": 64,
+    "max_epochs": 100,
+    "patience": null
+  },
+  "training_source": {
+    "kind": "upstream",
+    "links": [
+      "https://github.com/nnzhan/Graph-WaveNet/blob/6b162e80c59a1d494809252eca055cff93dc66b1/train.py",
+      "https://github.com/nnzhan/Graph-WaveNet/blob/6b162e80c59a1d494809252eca055cff93dc66b1/engine.py"
+    ]
+  }
 }

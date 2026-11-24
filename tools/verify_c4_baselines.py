@@ -3,6 +3,7 @@ import argparse
 import csv
 import hashlib
 import json
+import math
 from pathlib import Path
 import sys
 import numpy as np
@@ -28,10 +29,16 @@ def verify(out):
     if sha(ROOT/'initial_states/baselines.pt')!=p['initial_archive_sha256']:raise ValueError('Initialization archive changed')
     if sha(out/'run_entry_snapshot.py')!=p['runner_sha256']:raise ValueError('Launch source snapshot changed')
     for rel,h in p['source_hashes'].items():
-        if sha(ROOT/rel)!=h or sha(out/'source_snapshot'/Path(rel).relative_to('src'))!=h:raise ValueError('Model/trainer source drift '+rel)
-    if sha(ROOT/'configs/project.json')!=p['project_config_sha256']:raise ValueError('Current defaults changed')
+        snapshot=out/'source_snapshot'/Path(rel).relative_to('src')
+        if sha(snapshot)!=h or (rel.startswith('src/cmgm_c4/baselines/') and sha(ROOT/rel)!=h):
+            raise ValueError('Source snapshot or baseline architecture changed '+rel)
+    if sha(out/'project_config.json')!=p['project_config_sha256']:raise ValueError('Project config snapshot changed')
+    for key,digest in p.get('profile_sha256',{}).items():
+        if sha(out/'baseline_configs'/(key+'.json'))!=digest:raise ValueError('Baseline config snapshot changed '+key)
     initial=read(out/'INITIALIZATION_AND_GRADIENT_AUDIT.json')['models'];records={};checkpoints_before={}
     for key in p['models']:
+        training=p['training_by_model'][key] if 'training_by_model' in p else p['fixed_training']
+        steps_per_epoch=math.ceil(2726/training['batch_size'])
         folder=out/'models'/key;history=read(folder/'history.json');meta=read(folder/'models_frozen.json')
         selected=min(history,key=lambda r:r['VAL_5D_COMMODITY_MACRO_MAE'])
         fresh=build('baselines/'+key,initial=True)
@@ -41,13 +48,14 @@ def verify(out):
             f=folder/(name+'.pt');checkpoints_before[str(f)]=sha(f)
             cp=torch.load(f,map_location='cpu',weights_only=False);fresh.load_state_dict(cp['model_state_dict'],strict=True)
             signature=cp['signature']
-            if signature['protocol']!=p['fixed_training'] or signature['source_hashes']!=p['source_hashes']:raise ValueError('Training signature mismatch')
+            if signature['protocol']!=training or signature['source_hashes']!=p['source_hashes']:raise ValueError('Training signature mismatch')
             if signature['initial_state_sha256']!=initial[key]['initial_state_sha256']:raise ValueError('Wrong initialization in checkpoint')
             if signature['dataset_sha256']!=p['dataset_sha256'] or signature['selector']!=p['selector']:raise ValueError('Data/selector mismatch')
             steps=[float(s['step']) for s in cp['optimizer']['state'].values()]
             optimizer_state_count=sum(s['exp_avg'].numel() for s in cp['optimizer']['state'].values())
             if optimizer_state_count!=initial[key]['gradient_connected_parameters']:raise ValueError('Optimizer does not cover every used parameter '+key)
-            if min(steps)!=cp['epoch']*43 or max(steps)!=cp['epoch']*43:raise ValueError('Step count mismatch')
+            if not steps or any(step!=cp['epoch']*steps_per_epoch for step in steps):
+                raise ValueError('Step count mismatch')
             if name=='best' and (cp['epoch']!=selected['epoch'] or sha(f)!=lock['models'][key]['checkpoint_sha256']):raise ValueError('Wrong best epoch/hash')
             if name=='latest' and cp['epoch']!=history[-1]['epoch']:raise ValueError('Latest epoch mismatch')
             checks[name]=dict(strict_restore=True,epoch=cp['epoch'],optimizer_steps=min(steps),optimizer_used_parameters=optimizer_state_count,checkpoint_sha256=sha(f))
@@ -120,4 +128,7 @@ def paired_statistics(out):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('folder',type=Path);args=parser.parse_args()
-    torch.set_num_threads(2);verify(args.folder);paired_statistics(args.folder)
+    torch.set_num_threads(2)
+    verify(args.folder)
+    if (args.folder/'PAIRED_STATISTICS_PROTOCOL.json').exists():
+        paired_statistics(args.folder)

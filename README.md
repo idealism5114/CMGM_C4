@@ -116,12 +116,56 @@ Full＋12消融均已从头完成Seed42训练及VAL锁定后的TEST评估。结�
 
 ## 2026-11-18 通用训练默认值更新
 
-现已按用户要求将[通用配置](configs/project.json)更新为初始`lr=3e-4`、`weight_decay=1e-4`。今后`run.py train --execute`不传优化器覆盖参数时，主模型、消融和baseline均使用这套默认值；其他训练协议不变。命令行`--lr`、`--weight-decay`仍可显式覆盖。
+2026-11-18 将[通用配置](configs/project.json)更新为初始 `lr=3e-4`、`weight_decay=1e-4`。该版本的主模型、消融和 baseline 都使用这组默认值。当前 baseline 训练入口读取各自的配置，见下节。
 
-此前“默认配置未覆盖”的记录描述当时状态。历史实验配置、源码快照、指标和checkpoint保留原样，已有baseline不会因此自动变成使用新参数训练的结果。复现或恢复旧参数运行需显式指定其原始lr/weight_decay，并满足原有源码、数据及协议校验。此次默认值更新不改变`evaluate --model c4/full`指向的历史checkpoint；评价当前调优版请继续使用对应的`--run-dir`。
+复现或恢复旧实验时使用相应运行目录记录的源码快照、配置与数据。`evaluate --model c4/full` 指向历史 checkpoint。评价当前调优版使用对应的 `--run-dir`。
 
 ## 2026-11-18 调优参数下的新baseline
 
 8个Deep V3 baseline已从未训练Seed42初值重新完成训练，并在全部VAL5 checkpoint锁定后统一评价TEST。使用当前默认lr3e-4、weight_decay1e-4，其他预算及VAL5商品Macro MAE选模协议与调优C4一致。
 
 MSGNet的VAL5最低；C4的TEST5点估计最低，但与MSGNet仅差约0.00000387，配对区块区间跨0，不能宣称稳定优于全部baseline。完整结果及限制见[报告](runs/baselines_deep_v3_tuned/seed42_20261118_01/REPORT.md)，运行/复核命令见[记录](docs/C4_TUNED_BASELINES_20261118.md)。当前路径记录于[RESULT_INDEX.json](RESULT_INDEX.json)，评价新baseline请使用相应`models/<模型名>`作为`--run-dir`。历史索引及结果保留。
+
+## Baseline 独立训练参数与 C4 百分比对比
+
+`run.py train --model baselines/<模型名> --execute` 和八模型批量入口都读取 [configs/baselines](configs/baselines) 中对应的优化器、调度、梯度裁剪、批大小和训练预算。单模型入口支持 `--lr` 和 `--weight-decay` 覆盖。主模型和消融使用 [configs/project.json](configs/project.json)。
+
+| 模型 | Adam 学习率 | Weight decay | 调度 | Batch / 最大 epoch / 早停 patience | 参数来源 |
+|---|---:|---:|---|---|---|
+| RNN、GRU、LSTM | 1e-3 | 0 | 恒定 | 64 / 200 / 10 | [PyTorch Adam 默认值](https://docs.pytorch.org/docs/stable/generated/torch.optim.Adam.html)，采用本项目预算 |
+| VanillaTransformer | 1.3975e-3（峰值） | 0 | 4000 步 warmup，随后按步数平方根倒数衰减 | 64 / 200 / 10 | [原论文 §5.3](https://papers.neurips.cc/paper/7181-attention-isall-you-need.pdf)，按本地宽度 128 计算，采用本项目预算 |
+| GraphWaveNet | 1e-3 | 1e-4 | 恒定，梯度裁剪 5 | 64 / 100 / 无 | [官方训练脚本](https://github.com/nnzhan/Graph-WaveNet/blob/6b162e80c59a1d494809252eca055cff93dc66b1/train.py) |
+| MTGNN | 1e-3 | 1e-4 | 恒定，梯度裁剪 5 | 64 / 100 / 无 | [官方多步训练脚本](https://github.com/nnzhan/MTGNN/blob/master/train_multi_step.py) |
+| MSGNet | 1e-4 | 0 | 官方 `type1` | 32 / 10 / 3 | [官方 ETTh1 脚本](https://github.com/YoZhibo/MSGNet/blob/main/scripts/ETTh1.sh)、[运行默认值](https://github.com/YoZhibo/MSGNet/blob/main/run_longExp.py) |
+| CrossGNN | 1e-4 | 0 | 官方 `type1` | 32 / 10 / 3 | [官方运行默认值](https://github.com/hqh0728/CrossGNN/blob/0407abd085ee8342abe0bbe6de5b2ab17c44373c/run_longExp.py) |
+
+RNN、GRU 和 LSTM 是本地 PyTorch 层的预测适配版，采用 Adam 默认值作为训练设定。VanillaTransformer 还采用论文中的 `betas=(0.9, 0.98)` 和 `eps=1e-9`，`--lr` 覆盖其峰值。MSGNet 和 CrossGNN 前两个 epoch 使用初始学习率，此后每轮减半。所有模型继续使用本项目的预测目标、架构适配、四周期 masked Huber 和 VAL5 商品 Macro MAE 选模。MTGNN 的四个预测周期共同训练。
+
+```bash
+python tools/run_c4_baselines.py --output runs/baselines_model_specific/seed42_01 --device cuda:0 --execute --allow-test
+python tools/verify_c4_baselines.py runs/baselines_model_specific/seed42_01
+```
+
+批量入口使用已冻结的调优版 C4 Full 作参照。运行目录需为新路径，并需要冻结数据、初值和 C4 参照产物。TEST 需使用 `--allow-test`，在八组 VAL checkpoint 全部锁定后计算。
+
+`REPORT.md`、`VAL_RANKING.csv` 和 `TEST_COMPARISON.csv` 给出 C4 相对各 baseline 的 5 日商品 Macro MAE 降幅，公式为 `(baseline - C4) / baseline × 100%`。正值表示 C4 误差更小，负值表示更大，分母为零时留空。`ALL_HORIZONS.csv` 提供 1、5、10、20 日各项指标的相对变化，Hit 使用越高越好的方向。`PER_COMMODITY_5D.csv` 提供各商品的 5 日 MAE 降幅。
+
+## C4 递进消融与冻结路由诊断
+
+主表固定为 A 仅空间专家、B 空间＋近期＋长期三专家等权、C 四专家等权、D 四专家全局可学习权重、E 原动态路由 Full C4。B→C 加入时空交互专家并重新均分权重。D 的四个 logits 从零开始，softmax 后跨样本和期限共享。D→E 衡量样本相关路由的增量。A 沿用原 `no_temporal`，关闭时间 KL，B–E 使用原时间 KL。A→B 衡量引入整套时间分支后的变化。
+
+```bash
+# 默认运行合成预检
+python tools/run_c4_ablation.py
+# 直接使用已有 Full checkpoint 对应的 TRAIN、VAL 预测缓存诊断路由
+python tools/run_c4_ablation.py --diagnose-full runs/ablations_c4_tuned/seed42_20261118_01/models/full_c4
+# 使用默认种子 42 训练 A–E
+python tools/run_c4_ablation.py --execute --output runs/c4_progressive_01
+python tools/verify_c4_ablation.py runs/c4_progressive_01
+```
+
+默认仅使用种子 42，五行共用归档的 C4 未训练骨干和专家初值。主配置使用 Adam `lr=3e-4, weight_decay=1e-4`，共 5 次拟合。显式启用 `--sensitivity` 会用同一种子增加 D、E 两次拟合，使用 `lr=1e-4, weight_decay=1e-5`。各行都按 VAL5 商品 Macro MAE 选择 checkpoint。`--allow-test` 须在启动时指定，整套 checkpoint 锁定后评估历史 TEST。恢复同一运行使用相同参数和 `--resume`。
+
+`REPORT.md` 和 `ABLATION_SUMMARY.csv` 默认报告种子 42 的 MAE 和相对改善，种子间标准差留空。`PAIRED_SEEDS.csv` 保留每个种子的结果。相对前一行、相对 A 的改善以参照行 MAE 为分母，Full 相对此行的改善以该行 MAE 为分母。所有百分比均在相同种子、配置和划分下配对计算。`PERIOD_STABILITY_5D.csv` 给出四段连续日期上的配对差值百分比。各组 `ROUTING_VAL.json` 使用同一 E 的专家预测，在 VAL 比较等权、TRAIN 平均权重和动态权重。
+
+旧 Full＋12 消融及其附表见 [历史实验记录](docs/C4_TUNED_ABLATION_20261118.md)。旧入口显式指定 `--legacy`。
