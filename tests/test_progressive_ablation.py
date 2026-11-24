@@ -108,7 +108,7 @@ def test_paired_reporting(tmp_path):
     assert (tmp_path/'PERIOD_STABILITY_5D.csv').exists()
 
 
-def test_suite_interrupt_resume_and_protocol_lock(tmp_path,monkeypatch):
+def test_suite_interrupt_resume_and_protocol_lock(tmp_path,monkeypatch,capsys):
     from cmgm_c4.training import progressive as suite
     from cmgm_c4.common import sha
 
@@ -143,6 +143,8 @@ def test_suite_interrupt_resume_and_protocol_lock(tmp_path,monkeypatch):
     with pytest.raises(ValueError,match='Resume protocol'):
         suite.run(out,'cpu',True,True,[43],True)
     suite.run(out,'cpu',True,False,[43],True)
+    display = capsys.readouterr().out
+    assert 'Full 相对此行改善' in display and '+0.000%' in display
     assert len(calls)==7 and len(set(calls))==7
     assert len(read(out/'MODELS_FROZEN.json'))==7
     suite.run(out,'cpu',True,False,[43],True)

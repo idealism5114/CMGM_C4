@@ -102,7 +102,8 @@ def test_report_uses_split_matched_c4_and_baseline_denominator(tmp_path, monkeyp
     rows = [dict(key='RNN', identifier='baselines/RNN', best_epoch=1, parameters=42)]
     module.summarize(out, rows, {}, protocol)
     assert not (out/'TEST_COMPARISON.csv').exists()
-    module.summarize(out, rows, {'RNN': baseline_test}, protocol)
+    display = module.summarize(out, rows, {'RNN': baseline_test}, protocol)
+    assert '+20.0000%' in display and '-100.0000%' in display
 
     for filename, expected in (('VAL_RANKING.csv', 20), ('TEST_COMPARISON.csv', -100)):
         with (out/filename).open() as handle:

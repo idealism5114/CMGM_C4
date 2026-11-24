@@ -132,10 +132,12 @@ def summarize(out, protocol):
         lines.append(f"| {r['profile']} | {r['split']} | {key} {ROWS[key]} | {r['seeds']} | "
                      f"{r['mean_MAE5']:.9f} | {pct(r['gain_vs_previous_pct'])} | {pct(r['gain_vs_A_pct'])} | "
                      f"{pct(r['full_gain_vs_model_pct'])} |")
+    terminal_summary='\n'.join(lines)
     lines.extend(['','逐种子与分时段差值见 PAIRED_SEEDS.csv 和 PERIOD_STABILITY_5D.csv。',
                   '各组 E 的 ROUTING_VAL.json 包含等权、TRAIN 平均权重和动态权重的冻结诊断。','',
                   '历史 Full＋12 消融附表见项目 runs/ablations_c4_tuned/seed42_20261118_01/ 下的 VAL_ABLATION.csv 和 TEST_ABLATION.csv。'])
     (out/'REPORT.md').write_text('\n'.join(lines)+'\n')
+    return terminal_summary
 
 
 def run(out, device, resume, allow_test, seeds, sensitivity):
@@ -218,8 +220,9 @@ def _run_locked(out,root,protocol,device,resume):
             np.savez_compressed(dest/'predictions.npz',**arrays)
             save(dest/'metrics.json',metrics)
             save(dest/'COMPLETE.json',stamp)
-    summarize(out,protocol)
+    terminal_summary=summarize(out,protocol)
     save(out/'COMPLETE.json',dict(models=len(locks),TEST_evaluated=allow_test,lock_sha256=sha(lock)))
+    print(terminal_summary,flush=True)
 
 
 def verify(out):

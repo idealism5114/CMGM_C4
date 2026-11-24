@@ -88,7 +88,9 @@ def preflight():
     from cmgm_c4.verification import train_val_guard
     torch.set_num_threads(2)
     with train_val_guard():
-        return pytest.main(['-q',str(ROOT/'tests'),'-k','not test_summary_uses_historical_json_not_test_arrays'])
+        # Report-format tests open TEST-named tables, including synthetic CSVs.
+        return pytest.main(['-q',str(ROOT/'tests'),'-k',
+            'not test_summary_uses_historical_json_not_test_arrays and not test_report_uses_split_matched_c4_and_baseline_denominator'])
 
 
 def prepare(out,device,p):
@@ -276,6 +278,7 @@ def summarize(out,rows,test,p):
         t=by_test.get(r['key'])
         columns=(f"{t['TEST5_macro_MAE']:.12f} | {signed_percent(t['c4_improvement_pct'])}" if t else '— | —')
         lines.append(f"| {r['key']} | {r['VAL5_macro_MAE']:.12f} | {signed_percent(r['c4_improvement_pct'])} | {columns} | {r['parameters']} | {r['best_epoch']} |")
+    terminal_summary='\n'.join(lines)
     lines+=['','## Baseline 训练参数','',
             '| Model | Adam LR | Weight decay | 调度 | 梯度裁剪 | Batch | Epoch 上限 | 早停 patience | 来源 |',
             '|---|---:|---:|---|---:|---:|---:|---:|---|']
@@ -293,6 +296,7 @@ def summarize(out,rows,test,p):
         'ALL_HORIZONS.csv 含四个周期的相对表现，其中 Hit 使用 (C4 − baseline) / baseline × 100%。',
         'PER_COMMODITY_5D.csv 含各商品的 5 日 MAE 降幅。TRAINING_HISTORY.csv 含各轮最后一次更新所用的学习率。']
     (out/'REPORT.md').write_text('\n'.join(lines)+'\n')
+    return terminal_summary
 
 
 def run(out,device,resume,allow_test):
@@ -333,7 +337,7 @@ def run(out,device,resume,allow_test):
             freeze_all(out,rows)
             save(out/'TRAIN_VAL_ISOLATION.json',dict(status='PASS',blocked_attempts=hits,all8_frozen_before_TEST=True))
         test=evaluate_test(out,rows,device,p) if allow_test else {}
-        summarize(out,rows,test,p)
+        terminal_summary=summarize(out,rows,test,p)
         if runtime_hashes()!=p['source_hashes'] or sha(ROOT/'configs/project.json')!=p['project_config_sha256']:raise ValueError('Sources/default config changed')
         if any(sha(ROOT/'configs/baselines'/(key+'.json'))!=digest for key,digest in p['profile_sha256'].items()):
             raise ValueError('Baseline training profile changed')
@@ -345,6 +349,7 @@ def run(out,device,resume,allow_test):
             models_frozen_sha256=sha(out/'MODELS_FROZEN.json'),seconds=time.perf_counter()-start,no_extra_models_or_seeds=True))
         save(out/'COMPLETE.json',dict(status='COMPLETE',models=8,TEST_evaluated=bool(test)))
         save(out/'file_index.json',{str(f.relative_to(out)):sha(f) for f in sorted(out.rglob('*')) if f.is_file() and f.name!='file_index.json'})
+        print(terminal_summary,flush=True)
         print('ALL8 COMPLETE',out/'REPORT.md',flush=True)
     except BaseException:
         save(out/'INTERRUPTION.json',dict(traceback=traceback.format_exc(),completed=len(rows),TEST_opened=(out/'TEST_OPEN_AUTHORIZATION.json').exists()))
