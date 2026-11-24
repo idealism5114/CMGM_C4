@@ -6,6 +6,51 @@ import sys
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'src'))
 
 
+def diagnose_run(out):
+    """Compare the startup protocol, per-model training records and current checkout."""
+    from cmgm_c4.common import project_root, read, runtime_hashes, sha
+
+    protocol = read(out/'PROTOCOL.json')
+    differences = []
+
+    def compare(label, expected, actual):
+        if isinstance(expected, dict) and isinstance(actual, dict):
+            for key in sorted(expected.keys() | actual.keys()):
+                compare(f'{label}.{key}', expected.get(key, '<missing>'), actual.get(key, '<missing>'))
+        elif expected != actual:
+            differences.append(f'{label}: expected {expected!r}, found {actual!r}')
+
+    compare('current.source_hashes', protocol['source_hashes'], runtime_hashes())
+    compare('current.project_sha256', protocol['project_sha256'], sha(project_root()/'configs/project.json'))
+    for profile, settings in protocol['profiles'].items():
+        for seed in protocol['seeds']:
+            for key in settings['models']:
+                rel = Path(profile)/f'seed{seed}'/'models'/key
+                folder = out/rel
+                if (folder/'COMPLETE.json').is_file():
+                    signature = read(folder/'COMPLETE.json')['signature']
+                    status = 'complete'
+                elif (folder/'config.json').is_file():
+                    signature = read(folder/'config.json')
+                    status = 'incomplete'
+                else:
+                    print(rel, 'no training record')
+                    continue
+                expected = dict(identifier='progressive/'+key, protocol=dict(protocol['training'], seed=seed,
+                                lr=settings['lr'], weight_decay=settings['weight_decay']),
+                                source_hashes=protocol['source_hashes'], dataset_sha256=protocol['dataset_sha256'],
+                                selector=protocol['selector'])
+                count = len(differences)
+                for field, value in expected.items():
+                    compare(f'{rel}.{field}', value, signature.get(field, '<missing>'))
+                print(rel, status, 'MISMATCH' if len(differences) > count else 'OK')
+    for line in differences:
+        print(line)
+    if not differences:
+        print('Recorded signature fields and current source/config match the run protocol.')
+    return int(bool(differences))
+
+
 def preflight(legacy):
     import torch
     import pytest
@@ -25,9 +70,14 @@ def main():
     parser.add_argument('--seeds',nargs='+',type=int,help='Paired seeds (default 42)')
     parser.add_argument('--sensitivity',action='store_true',help='Also compare D and E with the original optimizer settings')
     parser.add_argument('--diagnose-full',type=Path,metavar='MODEL_DIR',help='Read existing Full TRAIN/VAL prediction caches')
+    parser.add_argument('--diagnose-run',type=Path,metavar='RUN_DIR',help='Compare saved training signatures without starting training')
     parser.add_argument('--device',default='cuda:0');parser.add_argument('--execute',action='store_true');parser.add_argument('--allow-test',action='store_true')
     parser.add_argument('--resume',action='store_true');parser.add_argument('--preflight-child',action='store_true',help=argparse.SUPPRESS)
     args=parser.parse_args()
+    if args.diagnose_run:
+        if not (args.diagnose_run/'PROTOCOL.json').is_file():
+            parser.error('--diagnose-run requires a run directory containing PROTOCOL.json')
+        return diagnose_run(args.diagnose_run)
     if args.diagnose_full:
         import json
         from cmgm_c4.training.progressive import routing_diagnostic
