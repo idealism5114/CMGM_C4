@@ -1,0 +1,113 @@
+"""Recover the interrupted seed-42 progressive ablation and run it in the background."""
+import fcntl
+import hashlib
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+
+
+ROOT = Path(__file__).resolve().parent
+ORIGINAL = ROOT / 'runs/ablations_progressive/seed42_20261124_02'
+WORK = ROOT / 'runs/abl_recovery'
+PROJECT = WORK / 'project'
+RUN = Path('runs/seed42')
+LOG = WORK / 'run.log'
+
+
+def restore_sources(destination, hashes):
+    snapshots = sorted((ROOT / 'runs').glob('*/*/source_snapshot'))
+    for name, expected in hashes.items():
+        path = Path(name)
+        if not path.is_relative_to('src') or '..' in path.parts or path.suffix != '.py':
+            raise ValueError(f'实验协议中的源码路径无效：{name}')
+        relative = path.relative_to('src')
+        for base in [ROOT / 'src', *snapshots]:
+            candidate = base / relative
+            if candidate.is_file():
+                data = candidate.read_bytes()
+                if hashlib.sha256(data).hexdigest() == expected:
+                    break
+        else:
+            # ea90672 contains the training code used at the start of this run.
+            git = shutil.which('git')
+            result = subprocess.run([git, 'show', f'ea90672:{name}'], cwd=ROOT,
+                                    capture_output=True) if git else None
+            if not result or result.returncode or hashlib.sha256(result.stdout).hexdigest() != expected:
+                raise ValueError(f'本地源码、实验快照及 Git 历史中均未找到协议要求的版本：{name}')
+            data = result.stdout
+        target = destination / path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(data)
+
+
+def prepare():
+    protocol_file = ORIGINAL / 'PROTOCOL.json'
+    protocol = json.loads(protocol_file.read_text())
+    if protocol['seeds'] != [42] or list(protocol['profiles']) != ['tuned']:
+        raise ValueError(f'实验协议与单种子恢复任务不符：{protocol_file}')
+    with tempfile.TemporaryDirectory(dir=WORK) as temp:
+        stage = Path(temp) / 'project'
+        stage.mkdir()
+        restore_sources(stage, protocol['source_hashes'])
+        shutil.copytree(ROOT / 'configs', stage / 'configs')
+        if hashlib.sha256((stage / 'configs/project.json').read_bytes()).hexdigest() != protocol['project_sha256']:
+            raise ValueError('configs/project.json 与原实验不一致')
+        for name in ('data', 'initial_states', 'provenance'):
+            source = ROOT / name
+            if not source.is_dir():
+                raise FileNotFoundError(source)
+            (stage / name).symlink_to(source, target_is_directory=True)
+        (stage / 'tools').mkdir()
+        shutil.copy2(ROOT / 'tools/run_c4_ablation.py', stage / 'tools/run_c4_ablation.py')
+        (stage / 'tests').mkdir()
+        for name in ('conftest.py', 'test_progressive_ablation.py'):
+            shutil.copy2(ROOT / 'tests' / name, stage / 'tests' / name)
+        models = Path('tuned/seed42/models')
+        (stage / RUN / models).mkdir(parents=True)
+        shutil.copy2(protocol_file, stage / RUN / 'PROTOCOL.json')
+        for key in ('A', 'B', 'C'):
+            source = ORIGINAL / models / key
+            if not (source / 'COMPLETE.json').is_file():
+                raise ValueError(f'缺少已完成模型记录：{source}')
+            (stage / RUN / models / key).symlink_to(source, target_is_directory=True)
+        stage.rename(PROJECT)
+
+
+def main():
+    WORK.mkdir(parents=True, exist_ok=True)
+    with (WORK / 'launch.lock').open('a') as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            print(f'恢复任务正在运行。查看日志：tail -f {LOG.relative_to(ROOT)}')
+            return
+        if not PROJECT.exists():
+            prepare()
+        output = PROJECT / RUN
+        if (output / 'COMPLETE.json').is_file():
+            print((output / 'REPORT.md').read_text())
+            return
+        protocol = json.loads((output / 'PROTOCOL.json').read_text())
+        command = [sys.executable, '-u', 'tools/run_c4_ablation.py', '--execute', '--resume', '--output', str(RUN)]
+        if 'test' in protocol['report_splits']:
+            command.append('--allow-test')
+        env = dict(os.environ, CMGM_C4_ROOT=str(PROJECT))
+        env.setdefault('CUDA_VISIBLE_DEVICES', '1')
+        with LOG.open('a') as log:
+            # The child keeps the launch lock and its own session after SSH disconnects.
+            child = subprocess.Popen(command, cwd=PROJECT, env=env, stdin=subprocess.DEVNULL,
+                                     stdout=log, stderr=subprocess.STDOUT, start_new_session=True,
+                                     pass_fds=(lock.fileno(),))
+        print(f'后台任务 PID {child.pid}。查看日志：tail -f {LOG.relative_to(ROOT)}')
+        print('完成后再次运行 python resume.py 即可查看百分比报告。')
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except (OSError, ValueError) as error:
+        sys.exit(str(error))
