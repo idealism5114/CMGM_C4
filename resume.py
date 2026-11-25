@@ -1,4 +1,5 @@
 """Recover the interrupted seed-42 progressive ablation and run it in the background."""
+import argparse
 import fcntl
 import hashlib
 import json
@@ -77,7 +78,41 @@ def prepare():
         stage.rename(PROJECT)
 
 
+def show_routing(group):
+    import numpy as np
+
+    diagnostic = json.loads((group / 'ROUTING_VAL.json').read_text())
+    model = group / 'models/E'
+    if diagnostic['checkpoint_sha256'] != json.loads((model / 'models_frozen.json').read_text())['checkpoint_sha256']:
+        raise ValueError('验证缓存的模型记录与路由报告不一致')
+    with np.load(model / 'val_predictions.npz', allow_pickle=False) as cache:
+        weights = cache['routing'][:, 1].astype('float64')
+        experts = cache['expert_prediction'][:, 1].astype('float64')
+        mask = cache['label_valid_mask'][:, 1].astype(bool)
+
+    counts = mask.sum(axis=0)
+    if not counts.all():
+        raise ValueError('部分商品没有有效的 5 日验证标签')
+    # Average over valid dates within each commodity, then equally over commodities.
+    def macro_mean(values):
+        return (np.where(mask, values, 0.).sum(axis=0) / counts).mean()
+
+    mean_weights = np.asarray(diagnostic['train_mean_weights'])
+    forecast_change = ((weights - mean_weights)[..., None] * experts).sum(axis=1)
+    valid_weights = weights[mask.any(axis=1)]
+    print('E 组验证集，5 日预测。权重按缓存中的四个专家顺序列出。')
+    print('各专家权重跨日期标准差（百分点）：', *(f'{s:.8f}' for s in valid_weights.std(axis=0) * 100))
+    print(f'四位专家预测的平均极差（商品等权）：{macro_mean(np.ptp(experts, axis=1)):.10g}')
+    print(f'动态权重相对训练平均权重的平均绝对预测变化（商品等权）：{macro_mean(np.abs(forecast_change)):.10g}')
+    print(f'参照：同一检查点的动态权重 MAE5 为 {diagnostic["VAL5"]["dynamic"]:.10g}')
+
+
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--routing', action='store_true', help='查看已有验证缓存中的权重波动和专家预测差异')
+    if parser.parse_args().routing:
+        show_routing(PROJECT / RUN / 'tuned/seed42')
+        return
     WORK.mkdir(parents=True, exist_ok=True)
     with (WORK / 'launch.lock').open('a') as lock:
         try:
