@@ -19,11 +19,13 @@ def main():
     e.add_argument('--run-dir',type=Path,help='Completed new run; otherwise use migrated frozen checkpoint')
     e.add_argument('--allow-test',action='store_true');e.add_argument('--device',default='cpu');e.add_argument('--output',type=Path,required=True)
     s=sub.add_parser('summarize');s.add_argument('--output',type=Path,default=None);s.add_argument('--runs-dir',type=Path)
-    t=sub.add_parser('train');t.add_argument('--model',default='c4/full');t.add_argument('--device',default='cuda:0')
+    t=sub.add_parser('train');t.add_argument('--model',default='c4v2/full');t.add_argument('--device',default='cuda:0')
     t.add_argument('--output',type=Path,required=True);t.add_argument('--execute',action='store_true');t.add_argument('--resume',action='store_true')
     t.add_argument('--lr',type=float);t.add_argument('--weight-decay',type=float)
     a=p.parse_args();root=project_root();torch.set_num_threads(4)
     if a.command in (None,'list'):
+        from cmgm_c4.models.horizon import BRANCHES
+        for key,label in BRANCHES.items():print('c4v2/'+key,label)
         for k,r in read(root/'configs/registry.json').items():print(k,'epoch',r['best_epoch'],r['selection'])
     elif a.command=='preflight' or (a.command=='train' and not a.execute):
         return subprocess.call([sys.executable,'-m','pytest','-q',str(root/'tests')],cwd=root)

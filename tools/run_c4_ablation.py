@@ -1,4 +1,4 @@
-"""Paired progressive A–E ablations. Use --legacy for the historical Full+12 suite."""
+"""C4 branch ablations. Use --progressive for A–E or --legacy for the historical Full+12 suite."""
 import argparse
 from pathlib import Path
 import subprocess
@@ -36,7 +36,7 @@ def diagnose_run(out):
                 else:
                     print(rel, 'no training record')
                     continue
-                expected = dict(identifier='progressive/'+key, protocol=dict(protocol['training'], seed=seed,
+                expected = dict(identifier=protocol.get('family', 'progressive')+'/'+key, protocol=dict(protocol['training'], seed=seed,
                                 lr=settings['lr'], weight_decay=settings['weight_decay']),
                                 source_hashes=protocol['source_hashes'], dataset_sha256=protocol['dataset_sha256'],
                                 selector=protocol['selector'])
@@ -51,14 +51,18 @@ def diagnose_run(out):
     return int(bool(differences))
 
 
-def preflight(legacy):
+def preflight(legacy, branches=False):
     import torch
-    import pytest
     from cmgm_c4.verification import train_val_guard
     torch.set_num_threads(2)
     # Exclude the old report-format test that intentionally reads historical
     # TEST metric JSONs. All other tests run inside the TEST access sentinel.
     with train_val_guard():
+        if branches:
+            import unittest
+            tests = unittest.defaultTestLoader.discover(str(ROOT/'tests'), pattern='test_branch_ablation.py')
+            return int(not unittest.TextTestRunner().run(tests).wasSuccessful())
+        import pytest
         if legacy:
             return pytest.main(['-q',str(ROOT/'tests'),'-k','not test_summary_uses_historical_json_not_test_arrays and not test_report_uses_split_matched_c4_and_baseline_denominator'])
         return pytest.main(['-q',str(ROOT/'tests/test_progressive_ablation.py')])
@@ -66,7 +70,9 @@ def preflight(legacy):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--output',type=Path)
-    parser.add_argument('--legacy',action='store_true',help='Run the original 13 rows with seed 42')
+    suites = parser.add_mutually_exclusive_group()
+    suites.add_argument('--progressive', action='store_true', help='Run the historical A–E suite')
+    suites.add_argument('--legacy',action='store_true',help='Run the original 13 rows with seed 42')
     parser.add_argument('--seeds',nargs='+',type=int,help='Paired seeds (default 42)')
     parser.add_argument('--sensitivity',action='store_true',help='Also compare D and E with the original optimizer settings')
     parser.add_argument('--diagnose-full',type=Path,metavar='MODEL_DIR',help='Read existing Full TRAIN/VAL prediction caches')
@@ -85,15 +91,23 @@ def main():
         return
     if args.legacy and (args.seeds or args.sensitivity):
         parser.error('--seeds and --sensitivity apply to A–E')
-    if args.preflight_child or not args.execute:return preflight(args.legacy)
+    branches = not (args.legacy or args.progressive or args.sensitivity)
+    if args.resume and args.output and (args.output/'PROTOCOL.json').is_file():
+        import json
+        previous = json.loads((args.output/'PROTOCOL.json').read_text())
+        branches = previous.get('family') == 'c4v2'
+        if branches and (args.progressive or args.sensitivity or args.legacy):
+            parser.error('The existing directory contains the four-row C4 branch experiment')
+    if args.preflight_child or not args.execute:return preflight(args.legacy, branches)
     if args.output is None:parser.error('--execute requires --output')
     if not args.legacy:
         import torch
         from cmgm_c4.training.progressive import run
-        status=preflight(False)
+        status=preflight(False, branches)
         if status:return status
         torch.set_num_threads(4)
-        run(args.output,args.device,args.resume,args.allow_test,args.seeds or [42],args.sensitivity)
+        options = {'branches': True} if branches else {}
+        run(args.output,args.device,args.resume,args.allow_test,args.seeds or [42],args.sensitivity,**options)
         return
     args.output.parent.mkdir(parents=True,exist_ok=True)
     check=subprocess.run([sys.executable,str(Path(__file__).resolve()),'--preflight-child']+(['--legacy'] if args.legacy else []),cwd=ROOT,capture_output=True,text=True)

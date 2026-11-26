@@ -35,7 +35,7 @@ def main():
     # Verify train/eval arithmetic, RNG and gradients against the archived,
     # synthetic original-code reference, without importing the old project.
     torch.set_num_threads(4);ref=torch.load(ROOT/'provenance/legacy_synthetic_reference.pt',map_location='cpu',weights_only=True)
-    m=build(initial=True);parity={}
+    m=build('c4/full',initial=True);parity={}
     for mode in ('eval','train'):
         m.train(mode=='train');m.set_epoch(20);m.zero_grad(set_to_none=True);seed_all(11013)
         p,a=m(**ref['batch'],return_aux=True);pred=prediction_loss(p,ref['target'],torch.ones_like(p,dtype=torch.bool));kl=m.switch_loss();(pred+kl).backward()

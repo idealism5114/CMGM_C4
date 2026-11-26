@@ -16,11 +16,11 @@ cd /home/yangxiaotong/projects/myresearch/CMGM_C4
 
 也可以安装本地包：`python -m pip install -e '.[test]' --no-deps`，并在项目目录使用 `cmgm-c4`。默认 `run.py` 只列出模型；`train` 未指定 `--execute` 时只运行 preflight。
 
-## 固定身份
+## 历史 C4 固定身份
 
 | 项目 | 版本 |
 |---|---|
-| 默认主模型 | `c4/full`；原 ID `moe_phase_m/pred_global_dynamic` |
+| 历史主模型 | `c4/full`；原 ID `moe_phase_m/pred_global_dynamic` |
 | Best epoch / 参数量 | 35 / 567169 |
 | Best checkpoint SHA256 | `952dd88da6fb9be867c48bd089383ab12f4a55cc76fe38be7626d5bf4e6a612a` |
 | 已复现 VAL5 商品 Macro MAE | 0.024297203261564152 |
@@ -76,13 +76,13 @@ runs/              以后显式启动的新训练输出
 
 ```bash
 # 主模型
-../.venv/bin/python run.py train --model c4/full --output runs/c4_seed42_01 --device cuda:0 --execute
+../.venv/bin/python run.py train --model c4v2/full --output runs/c4v2_full_seed42 --device cuda:0 --execute
 # baseline 示例；其余名称通过 list 查看
 ../.venv/bin/python run.py train --model baselines/GRU --output runs/gru_seed42_01 --device cuda:0 --execute
 # 消融示例
 ../.venv/bin/python run.py train --model ablations/no_adaptive_graph --output runs/no_adaptive_graph_seed42_01 --device cuda:0 --execute
 # 中断恢复：相同代码/协议/数据，保留原运行目录
-../.venv/bin/python run.py train --model c4/full --output runs/c4_seed42_01 --device cuda:0 --execute --resume
+../.venv/bin/python run.py train --model c4v2/full --output runs/c4v2_full_seed42 --device cuda:0 --execute --resume
 ```
 
 训练只访问 TRAIN/VAL。完成后保存 best/latest、optimizer/scheduler/RNG/history、最佳模型的 TRAIN/VAL 预测和指标；不自动进入 TEST。新训练只能写入本目录的 `runs/` 或目录外的新路径，不能覆盖迁移档案。
@@ -150,17 +150,30 @@ python tools/verify_c4_baselines.py runs/baselines_model_specific/seed42_01
 
 `REPORT.md`、`VAL_RANKING.csv` 和 `TEST_COMPARISON.csv` 给出 C4 相对各 baseline 的 5 日商品 Macro MAE 降幅，公式为 `(baseline - C4) / baseline × 100%`。正值表示 C4 误差更小，负值表示更大，分母为零时留空。`ALL_HORIZONS.csv` 提供 1、5、10、20 日各项指标的相对变化，Hit 使用越高越好的方向。`PER_COMMODITY_5D.csv` 提供各商品的 5 日 MAE 降幅。
 
-## C4 递进消融与冻结路由诊断
+## 当前主模型和分支消融
+
+`c4v2/full` 是新训练的默认主模型。四个全局可学习专家分数叠加每个样本在 1、5、10、20 日上的调整量，再分别 softmax。调整层初始输出为零。每次只移除一个大模块，单独训练四组模型：
+
+| 模型 | 预测路径 |
+|---|---|
+| Full | 空间与时间分支，四个专家，分周期动态路由 |
+| 去时间分支 | 空间专家与共享预测头，关闭时间编码和时间 KL |
+| 去空间分支 | 近期与长期专家，按周期在两个专家间分配权重 |
+| 去 MoE | 保留两条编码分支，等权平均投影特征后使用共享预测头 |
+
+在 Linux 服务器的项目根目录运行 `bash ablate.sh`。默认使用 GPU 1（遵循已设置的 `CUDA_VISIBLE_DEVICES`）、seed 42、Adam lr 3e-4 和 weight decay 1e-4。后台运行期间可以断开 SSH，再次执行同一命令可查看运行状态、续跑中断任务或显示已完成的报告。日志在 `runs/c4v2_branches/run.log`。四组都按验证集 5 日商品 Macro MAE 选模并锁定后评估测试集；`runs/c4v2_branches/seed42/REPORT.md` 按验证集和测试集分别报告 Full 相对各消融的误差降幅。历史 baseline 表中的 C4 参照为原版本。
+
+## 历史 C4 递进消融与冻结路由诊断
 
 主表固定为 A 仅空间专家、B 空间＋近期＋长期三专家等权、C 四专家等权、D 四专家全局可学习权重、E 原动态路由 Full C4。B→C 加入时空交互专家并重新均分权重。D 的四个 logits 从零开始，softmax 后跨样本和期限共享。D→E 衡量样本相关路由的增量。A 沿用原 `no_temporal`，关闭时间 KL，B–E 使用原时间 KL。A→B 衡量引入整套时间分支后的变化。
 
 ```bash
-# 默认运行合成预检
-python tools/run_c4_ablation.py
+# A–E 合成预检
+python tools/run_c4_ablation.py --progressive
 # 直接使用已有 Full checkpoint 对应的 TRAIN、VAL 预测缓存诊断路由
 python tools/run_c4_ablation.py --diagnose-full runs/ablations_c4_tuned/seed42_20261118_01/models/full_c4
 # 使用默认种子 42 训练 A–E
-python tools/run_c4_ablation.py --execute --output runs/c4_progressive_01
+python tools/run_c4_ablation.py --progressive --execute --output runs/c4_progressive_01
 python tools/verify_c4_ablation.py runs/c4_progressive_01
 ```
 

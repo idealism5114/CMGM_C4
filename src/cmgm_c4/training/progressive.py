@@ -12,6 +12,7 @@ from cmgm_c4.evaluation.evaluate import evaluate
 from cmgm_c4.evaluation.metrics import population
 from cmgm_c4.factory import build, restore_run
 from cmgm_c4.models.progressive import ROWS
+from cmgm_c4.models.horizon import BRANCHES
 from cmgm_c4.reporting import c4_improvement_pct
 from cmgm_c4.verification import train_val_guard
 from .train import train
@@ -50,13 +51,17 @@ def routing_diagnostic(folder):
                 dynamic_gain_vs_train_mean_pct=c4_improvement_pct(scores['train_mean'],scores['dynamic']))
 
 
-def comparison(scores, profile, seed, split, period='all'):
+def comparison(scores, profile, seed, split, period='all', *, branches=False):
     def gain(base, score):
         return None if base is None or score is None else c4_improvement_pct(base,score)
 
     previous = None
     rows = []
     for key, score in scores.items():
+        if branches:
+            rows.append(dict(profile=profile, seed=seed, split=split, period=period, model=key, MAE5=score,
+                             full_gain_vs_model_pct=gain(score, scores['full'])))
+            continue
         rows.append(dict(profile=profile, seed=seed, split=split, period=period, model=key, MAE5=score,
                          gain_vs_previous_pct=gain(previous,score), gain_vs_A_pct=gain(scores.get('A'),score),
                          full_gain_vs_model_pct=gain(score,scores.get('E'))))
@@ -65,6 +70,7 @@ def comparison(scores, profile, seed, split, period='all'):
 
 
 def summarize(out, protocol):
+    branches = protocol.get("family") == "c4v2"
     rows, periods = [], []
     for profile, settings in protocol['profiles'].items():
         for seed in protocol['seeds']:
@@ -96,15 +102,28 @@ def summarize(out, protocol):
                             if valid.any(axis=0).all():
                                 error = np.abs(pred[idx,1].astype('float64')-y[idx,1])
                                 segment[key] = float((np.where(valid,error,0).sum(0)/valid.sum(0)).mean())
-                rows.extend(comparison(scores,profile,seed,split))
+                rows.extend(comparison(scores,profile,seed,split,branches=branches))
                 for i,segment in enumerate(segments,1):
                     dates = np.array_split(reference[0],4)[i-1]
                     periods.extend(dict(r, first_origin=str(dates[0]) if len(dates) else None,
                                         last_origin=str(dates[-1]) if len(dates) else None)
-                                   for r in comparison(segment,profile,seed,split,i))
+                                   for r in comparison(segment,profile,seed,split,i,branches=branches))
     write_csv(out/'PAIRED_SEEDS.csv',rows)
     if periods:
         write_csv(out/'PERIOD_STABILITY_5D.csv',periods)
+    if branches:
+        write_csv(out/'ABLATION_SUMMARY.csv', rows)
+        lines = ['# C4 分支消融', '', '指标为 5 日商品 Macro MAE，越低越好。',
+                 'Full 误差降幅 =（对照 MAE − Full MAE）/ 对照 MAE × 100%。', '',
+                 '| seed | 划分 | 模型 | MAE5 | Full 相对此行误差降幅 |', '|---:|---|---|---:|---:|']
+        for row in rows:
+            gain = row['full_gain_vs_model_pct']
+            percent = '—' if gain is None else f'{gain:+.3f}%'
+            lines.append(f"| {row['seed']} | {row['split']} | {BRANCHES[row['model']]} | {row['MAE5']:.9f} | {percent} |")
+        report = '\n'.join(lines)
+        (out/'REPORT.md').write_text(report + '\n')
+        return report
+
     groups = {}
     for row in rows:
         groups.setdefault((row['profile'],row['split'],row['model']),[]).append(row)
@@ -140,7 +159,7 @@ def summarize(out, protocol):
     return terminal_summary
 
 
-def run(out, device, resume, allow_test, seeds, sensitivity):
+def run(out, device, resume, allow_test, seeds, sensitivity, *, branches=False):
     root = project_root()
     out = Path(out).resolve()
     if not out.is_relative_to(root/'runs') or out == root/'runs':
@@ -148,13 +167,18 @@ def run(out, device, resume, allow_test, seeds, sensitivity):
     if not seeds or len(set(seeds))!=len(seeds) or any(s<0 or s>=2**32 for s in seeds):
         raise ValueError('Expected distinct uint32 seeds')
     cfg = read(root/'configs/project.json')
-    profiles = dict(tuned=dict(lr=3e-4,weight_decay=1e-4,models=list(ROWS)))
+    if branches and sensitivity:
+        raise ValueError('D/E sensitivity applies only to progressive ablations')
+    definitions = BRANCHES if branches else ROWS
+    profiles = dict(tuned=dict(lr=3e-4,weight_decay=1e-4,models=list(definitions)))
     if sensitivity:
         profiles['original'] = dict(lr=1e-4, weight_decay=1e-5, models=['D','E'])
-    protocol = dict(id='C4_PROGRESSIVE_V1', seeds=list(seeds), profiles=profiles, definitions=ROWS,
+    protocol = dict(id='C4_PROGRESSIVE_V1', seeds=list(seeds), profiles=profiles, definitions=definitions,
                     training=cfg['train'], selector=cfg['selector'], source_hashes=runtime_hashes(),
                     project_sha256=sha(root/'configs/project.json'),dataset_sha256=cfg['dataset_manifest_sha256'],
                     report_splits=['val','test'] if allow_test else ['val'])
+    if branches:
+        protocol.update(id='C4_BRANCH_V2', family='c4v2')
     if resume and not (out/'PROTOCOL.json').is_file():
         raise ValueError('Resume requires an existing progressive run')
     out.mkdir(parents=True,exist_ok=resume)
@@ -178,7 +202,7 @@ def _run_locked(out,root,protocol,device,resume):
                 group = out/profile/f'seed{seed}'
                 for key in settings['models']:
                     folder = group/'models'/key
-                    identifier = 'progressive/'+key
+                    identifier = protocol.get('family', 'progressive')+'/'+key
                     if not (folder/'COMPLETE.json').exists():
                         train(identifier,folder,device,resume=folder.exists(),seed=seed,
                               lr=settings['lr'],weight_decay=settings['weight_decay'])
@@ -195,7 +219,8 @@ def _run_locked(out,root,protocol,device,resume):
                             frozen['best_epoch']!=best['epoch'] or sha(folder/'best.pt')!=frozen['checkpoint_sha256']):
                         raise ValueError(f'Invalid VAL checkpoint at {folder}')
                     locks[str(folder.relative_to(out))] = frozen['checkpoint_sha256']
-                save(group/'ROUTING_VAL.json',routing_diagnostic(group/'models/E'))
+                if 'E' in settings['models']:
+                    save(group/'ROUTING_VAL.json',routing_diagnostic(group/'models/E'))
         if runtime_hashes()!=protocol['source_hashes'] or sha(root/'configs/project.json')!=protocol['project_sha256']:
             raise ValueError('Source or config changed during TRAIN/VAL')
         lock = out/'MODELS_FROZEN.json'
@@ -247,7 +272,7 @@ def verify(out):
         profile,seed_dir,_,key = Path(rel).parts
         folder = out/rel
         seed = int(seed_dir.removeprefix('seed'))
-        identifier = 'progressive/'+key
+        identifier = protocol.get('family', 'progressive')+'/'+key
         spec = protocol['profiles'][profile]
         training = dict(protocol['training'],seed=seed,lr=spec['lr'],weight_decay=spec['weight_decay'])
         frozen = read(folder/'models_frozen.json')

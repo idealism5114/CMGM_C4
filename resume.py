@@ -88,6 +88,7 @@ def show_routing(group):
     with np.load(model / 'val_predictions.npz', allow_pickle=False) as cache:
         weights = cache['routing'][:, 1].astype('float64')
         experts = cache['expert_prediction'][:, 1].astype('float64')
+        target = cache['target'][:, 1].astype('float64')
         mask = cache['label_valid_mask'][:, 1].astype(bool)
 
     counts = mask.sum(axis=0)
@@ -105,6 +106,25 @@ def show_routing(group):
     print(f'四位专家预测的平均极差（商品等权）：{macro_mean(np.ptp(experts, axis=1)):.10g}')
     print(f'动态权重相对训练平均权重的平均绝对预测变化（商品等权）：{macro_mean(np.abs(forecast_change)):.10g}')
     print(f'参照：同一检查点的动态权重 MAE5 为 {diagnostic["VAL5"]["dynamic"]:.10g}')
+
+    # Compare selections made with hindsight on the same frozen forecasts.
+    fixed = np.einsum('k,bkc->bc', mean_weights, experts)
+    fixed_error = np.abs(fixed - target)
+    expert_error = np.abs(experts - target[:, None, :])
+    errors = np.concatenate((fixed_error[:, None, :], expert_error), axis=1)
+    weighted_errors = np.where(mask[:, None, :], errors, 0.) / counts
+    scores = weighted_errors.sum(axis=0).mean(axis=1)
+    by_date = weighted_errors.sum(axis=2).min(axis=1).sum() / len(counts)
+    by_date_commodity = weighted_errors.min(axis=1).sum(axis=0).mean()
+    names = ('训练集平均权重', '近期变化专家', '长期记忆专家', '空间结构专家', '时空交互专家')
+    print('同一检查点的验证集 MAE5')
+    for name, score in zip(names, scores):
+        print(f'  {name}  {score:.10g}')
+    print('事后选择使用了验证标签，仅用于判断候选预测的互补空间。')
+    for name, score in (('每个日期共用一个候选', by_date),
+                        ('每个日期和商品各选一个候选', by_date_commodity)):
+        gain = f'，相对训练集平均权重改善 {(scores[0] - score) / scores[0]:.3%}' if scores[0] else ''
+        print(f'  {name}  MAE5 {score:.10g}{gain}')
 
 
 def main():
