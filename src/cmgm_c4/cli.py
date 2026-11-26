@@ -24,8 +24,8 @@ def main():
     t.add_argument('--lr',type=float);t.add_argument('--weight-decay',type=float)
     a=p.parse_args();root=project_root();torch.set_num_threads(4)
     if a.command in (None,'list'):
-        from cmgm_c4.models.horizon import BRANCHES
-        for key,label in BRANCHES.items():print('c4v2/'+key,label)
+        from cmgm_c4.models.horizon import V2_MODELS
+        for key,label in V2_MODELS.items():print('c4v2/'+key,label)
         for k,r in read(root/'configs/registry.json').items():print(k,'epoch',r['best_epoch'],r['selection'])
     elif a.command=='preflight' or (a.command=='train' and not a.execute):
         return subprocess.call([sys.executable,'-m','pytest','-q',str(root/'tests')],cwd=root)

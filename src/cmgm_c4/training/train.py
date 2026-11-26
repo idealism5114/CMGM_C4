@@ -10,7 +10,7 @@ from cmgm_c4.data.dataset import FrozenDataset, loader
 from cmgm_c4.evaluation.evaluate import forward,evaluate
 from cmgm_c4.factory import build
 from cmgm_c4.models.progressive import ROWS
-from cmgm_c4.models.horizon import BRANCHES
+from cmgm_c4.models.horizon import V2_MODELS
 
 
 def effective_protocol(defaults,lr=None,weight_decay=None):
@@ -95,7 +95,7 @@ def baseline_train_loader(dataset, batch_size, horizons):
 
 def train(identifier,out,device='cuda:0',resume=False,*,lr=None,weight_decay=None,seed=None):
     root=project_root();cfg=read(root/'configs/project.json');out=Path(out).resolve()
-    variants = {'progressive/'+row for row in ROWS} | {'c4v2/'+row for row in BRANCHES}
+    variants = {'progressive/'+row for row in ROWS} | {'c4v2/'+row for row in V2_MODELS}
     if identifier not in read(root/'configs/registry.json') and identifier not in variants:
         raise ValueError('Unknown stable experiment: '+identifier)
     protocol=training_protocol(identifier,cfg['train'],lr,weight_decay,root=root)

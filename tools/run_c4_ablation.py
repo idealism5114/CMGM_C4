@@ -51,7 +51,7 @@ def diagnose_run(out):
     return int(bool(differences))
 
 
-def preflight(legacy, branches=False):
+def preflight(legacy, branches=False, components=False):
     import torch
     from cmgm_c4.verification import train_val_guard
     torch.set_num_threads(2)
@@ -60,7 +60,8 @@ def preflight(legacy, branches=False):
     with train_val_guard():
         if branches:
             import unittest
-            tests = unittest.defaultTestLoader.discover(str(ROOT/'tests'), pattern='test_branch_ablation.py')
+            pattern = 'test_component_ablation.py' if components else 'test_branch_ablation.py'
+            tests = unittest.defaultTestLoader.discover(str(ROOT/'tests'), pattern=pattern)
             return int(not unittest.TextTestRunner().run(tests).wasSuccessful())
         import pytest
         if legacy:
@@ -71,6 +72,7 @@ def preflight(legacy, branches=False):
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--output',type=Path)
     suites = parser.add_mutually_exclusive_group()
+    suites.add_argument('--components', action='store_true', help='Run the nine C4v2 component removals against the frozen Full')
     suites.add_argument('--progressive', action='store_true', help='Run the historical A–E suite')
     suites.add_argument('--legacy',action='store_true',help='Run the original 13 rows with seed 42')
     parser.add_argument('--seeds',nargs='+',type=int,help='Paired seeds (default 42)')
@@ -91,22 +93,30 @@ def main():
         return
     if args.legacy and (args.seeds or args.sensitivity):
         parser.error('--seeds and --sensitivity apply to A–E')
+    components = args.components
+    if components and args.sensitivity:
+        parser.error('--sensitivity applies to A–E')
     branches = not (args.legacy or args.progressive or args.sensitivity)
     if args.resume and args.output and (args.output/'PROTOCOL.json').is_file():
         import json
         previous = json.loads((args.output/'PROTOCOL.json').read_text())
+        if args.components and previous['id'] != 'C4_COMPONENT_V2':
+            parser.error('Use a separate output directory for component ablations')
+        components = previous['id'] == 'C4_COMPONENT_V2'
         branches = previous.get('family') == 'c4v2'
         if branches and (args.progressive or args.sensitivity or args.legacy):
-            parser.error('The existing directory contains the four-row C4 branch experiment')
-    if args.preflight_child or not args.execute:return preflight(args.legacy, branches)
+            parser.error('The existing directory contains a C4v2 experiment')
+    if args.preflight_child or not args.execute:return preflight(args.legacy, branches, components)
     if args.output is None:parser.error('--execute requires --output')
     if not args.legacy:
         import torch
         from cmgm_c4.training.progressive import run
-        status=preflight(False, branches)
+        status=preflight(False, branches, components)
         if status:return status
         torch.set_num_threads(4)
         options = {'branches': True} if branches else {}
+        if components:
+            options['components'] = True
         run(args.output,args.device,args.resume,args.allow_test,args.seeds or [42],args.sensitivity,**options)
         return
     args.output.parent.mkdir(parents=True,exist_ok=True)

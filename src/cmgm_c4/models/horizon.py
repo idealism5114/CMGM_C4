@@ -15,6 +15,20 @@ BRANCHES = {
 }
 
 
+COMPONENTS = {
+    'no_spatial_temporal_attention': '空间分支时间注意力改为有效日期均值',
+    'no_adaptive_graph': '自适应图改为固定全连接图',
+    'no_edge_attn_mixhop': '边注意力 MixHop 改为普通 MixHop',
+    'no_rpe': '去相对位置编码',
+    'no_adaptive_regime_routing': '时间状态切换改为均匀概率',
+    'no_regime_specific_transition': '各状态共享转移函数',
+    'no_microstate': '最终读出移除微状态（保留近期专家输入）',
+    'no_balanced_readout': '去平衡读出的分量归一化',
+    'no_dynamic_routing': '四专家固定等权',
+}
+V2_MODELS = {**BRANCHES, **COMPONENTS}
+
+
 class HorizonRouter(C4Router):
     def __init__(self, original):
         super().__init__()
@@ -39,12 +53,12 @@ class HorizonRouter(C4Router):
 
 class HorizonC4(C4Ablation):
     def __init__(self, row, shape, inactive, initial_state=None):
-        if row not in BRANCHES:
+        if row not in V2_MODELS:
             raise ValueError(row)
         super().__init__('full_c4' if row in ('full', 'no_moe') else row,
                          initial_state=initial_state, **shape)
         self.variant = 'c4v2/' + row
-        if row in ('no_temporal', 'no_spatial'):
+        if row not in ('full', 'no_moe'):
             self.freeze_inactive(inactive[row])
         if row == 'no_moe':
             # The backbone's equal-fusion path feeds the same head directly.
@@ -55,6 +69,8 @@ class HorizonC4(C4Ablation):
             del self.router
         else:
             self.router = HorizonRouter(self.router)
+            if row == 'no_dynamic_routing':
+                self.router.requires_grad_(False)
             if row == 'no_spatial':
                 self.router.norm_s.requires_grad_(False)
 

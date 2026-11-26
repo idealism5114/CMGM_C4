@@ -12,7 +12,7 @@ from cmgm_c4.evaluation.metrics import population
 
 def verify(out):
     out=Path(out).resolve()
-    if (out/'PROTOCOL.json').is_file() and read(out/'PROTOCOL.json').get('id') in ('C4_PROGRESSIVE_V1','C4_BRANCH_V2'):
+    if (out/'PROTOCOL.json').is_file() and read(out/'PROTOCOL.json').get('id') in ('C4_PROGRESSIVE_V1','C4_BRANCH_V2','C4_COMPONENT_V2'):
         from cmgm_c4.training.progressive import verify as verify_progressive
         return verify_progressive(out)
     if not (out/'COMPLETE.json').exists():raise ValueError('Wait for all13 completion before reading results')

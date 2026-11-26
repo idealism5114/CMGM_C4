@@ -12,7 +12,7 @@ from cmgm_c4.evaluation.evaluate import evaluate
 from cmgm_c4.evaluation.metrics import population
 from cmgm_c4.factory import build, restore_run
 from cmgm_c4.models.progressive import ROWS
-from cmgm_c4.models.horizon import BRANCHES
+from cmgm_c4.models.horizon import BRANCHES, COMPONENTS, V2_MODELS
 from cmgm_c4.reporting import c4_improvement_pct
 from cmgm_c4.verification import train_val_guard
 from .train import train
@@ -69,8 +69,37 @@ def comparison(scores, profile, seed, split, period='all', *, branches=False):
     return rows
 
 
+def component_reference(root, protocol):
+    """Pin the completed branch run's exact Full checkpoint and training protocol."""
+    path = Path('runs/c4v2_branches/seed42')
+    reference = root / path
+    if not (reference/'COMPLETE.json').is_file():
+        raise ValueError(f'组件消融需要已完成的新版分支实验：{reference}')
+    source = read(reference/'PROTOCOL.json')
+    profile = source['profiles']['tuned']
+    if (source['id'] != 'C4_BRANCH_V2' or source['seeds'] != protocol['seeds']
+            or not set(protocol['report_splits']).issubset(source['report_splits'])
+            or any(source[k] != protocol[k] for k in ('selector', 'training', 'dataset_sha256', 'project_sha256'))
+            or any(profile[k] != protocol['profiles']['tuned'][k] for k in ('lr', 'weight_decay'))):
+        raise ValueError('新版 Full 的数据、随机种子或训练协议与组件消融不匹配')
+    lock = reference/'MODELS_FROZEN.json'
+    complete = read(reference/'COMPLETE.json')
+    lock_hash = sha(lock)
+    if lock_hash != complete['lock_sha256'] or ('test' in protocol['report_splits'] and not complete['TEST_evaluated']):
+        raise ValueError('新版 Full 的冻结记录不完整')
+    full_key = 'tuned/seed42/models/full'
+    digest = read(lock)[full_key]
+    frozen = read(reference/full_key/'models_frozen.json')
+    if (frozen['identifier'] != 'c4v2/full' or frozen['selection'] != source['selector']
+            or frozen['checkpoint_sha256'] != digest or sha(reference/full_key/'best.pt') != digest):
+        raise ValueError('新版 Full 的 checkpoint 与已完成的分支实验不匹配')
+    return dict(run=str(path), protocol_sha256=sha(reference/'PROTOCOL.json'),
+                lock_sha256=lock_hash, checkpoint_sha256=digest)
+
+
 def summarize(out, protocol):
     branches = protocol.get("family") == "c4v2"
+    reference_full = protocol.get("reference_full")
     rows, periods = [], []
     for profile, settings in protocol['profiles'].items():
         for seed in protocol['seeds']:
@@ -79,8 +108,16 @@ def summarize(out, protocol):
                 scores = {}
                 segments = [{} for _ in range(4)]
                 reference = None
-                for key in settings['models']:
-                    folder = group/'models'/key if split=='val' else group/'test'/key
+                models = ['full', *settings['models']] if reference_full else settings['models']
+                for key in models:
+                    source_group = group
+                    if reference_full and key == 'full':
+                        source_group = project_root()/reference_full['run']/profile/f'seed{seed}'
+                        if split == 'test':
+                            stamp = read(source_group/'test/full/COMPLETE.json')
+                            if stamp != {k: reference_full[k] for k in ('lock_sha256', 'checkpoint_sha256')}:
+                                raise ValueError('新版 Full 的 TEST 缓存与冻结记录不匹配')
+                    folder = source_group/'models'/key if split=='val' else source_group/'test'/key
                     filename = 'val_predictions.npz' if split=='val' else 'predictions.npz'
                     with np.load(folder/filename) as cache:
                         dates, y, mask = (cache[k] for k in ('origin_dates','target','label_valid_mask'))
@@ -113,13 +150,16 @@ def summarize(out, protocol):
         write_csv(out/'PERIOD_STABILITY_5D.csv',periods)
     if branches:
         write_csv(out/'ABLATION_SUMMARY.csv', rows)
-        lines = ['# C4 分支消融', '', '指标为 5 日商品 Macro MAE，越低越好。',
+        title = '# C4 组件消融' if reference_full else '# C4 分支消融'
+        lines = [title, '', '指标为 5 日商品 Macro MAE，越低越好。',
                  'Full 误差降幅 =（对照 MAE − Full MAE）/ 对照 MAE × 100%。', '',
                  '| seed | 划分 | 模型 | MAE5 | Full 相对此行误差降幅 |', '|---:|---|---|---:|---:|']
         for row in rows:
             gain = row['full_gain_vs_model_pct']
             percent = '—' if gain is None else f'{gain:+.3f}%'
-            lines.append(f"| {row['seed']} | {row['split']} | {BRANCHES[row['model']]} | {row['MAE5']:.9f} | {percent} |")
+            lines.append(f"| {row['seed']} | {row['split']} | {V2_MODELS[row['model']]} | {row['MAE5']:.9f} | {percent} |")
+        if reference_full:
+            lines.extend(['', f"Full 沿用已完成实验 {reference_full['run']} 中同一冻结检查点的预测。"])
         report = '\n'.join(lines)
         (out/'REPORT.md').write_text(report + '\n')
         return report
@@ -159,7 +199,7 @@ def summarize(out, protocol):
     return terminal_summary
 
 
-def run(out, device, resume, allow_test, seeds, sensitivity, *, branches=False):
+def run(out, device, resume, allow_test, seeds, sensitivity, *, branches=False, components=False):
     root = project_root()
     out = Path(out).resolve()
     if not out.is_relative_to(root/'runs') or out == root/'runs':
@@ -167,9 +207,15 @@ def run(out, device, resume, allow_test, seeds, sensitivity, *, branches=False):
     if not seeds or len(set(seeds))!=len(seeds) or any(s<0 or s>=2**32 for s in seeds):
         raise ValueError('Expected distinct uint32 seeds')
     cfg = read(root/'configs/project.json')
+    if components:
+        branches = True
+        if seeds != [42]:
+            raise ValueError('组件对照使用已完成 Full 的种子 42')
     if branches and sensitivity:
         raise ValueError('D/E sensitivity applies only to progressive ablations')
     definitions = BRANCHES if branches else ROWS
+    if components:
+        definitions = COMPONENTS
     profiles = dict(tuned=dict(lr=3e-4,weight_decay=1e-4,models=list(definitions)))
     if sensitivity:
         profiles['original'] = dict(lr=1e-4, weight_decay=1e-5, models=['D','E'])
@@ -179,6 +225,10 @@ def run(out, device, resume, allow_test, seeds, sensitivity, *, branches=False):
                     report_splits=['val','test'] if allow_test else ['val'])
     if branches:
         protocol.update(id='C4_BRANCH_V2', family='c4v2')
+    if components:
+        protocol.update(id='C4_COMPONENT_V2', reference_full=component_reference(root, protocol))
+        if out.is_relative_to(root/protocol['reference_full']['run']):
+            raise ValueError('组件消融需要独立于原分支实验的输出目录')
     if resume and not (out/'PROTOCOL.json').is_file():
         raise ValueError('Resume requires an existing progressive run')
     out.mkdir(parents=True,exist_ok=resume)
@@ -245,6 +295,8 @@ def _run_locked(out,root,protocol,device,resume):
             np.savez_compressed(dest/'predictions.npz',**arrays)
             save(dest/'metrics.json',metrics)
             save(dest/'COMPLETE.json',stamp)
+    if 'reference_full' in protocol and component_reference(root, protocol) != protocol['reference_full']:
+        raise ValueError('Full 参照在组件实验期间发生变化')
     terminal_summary=summarize(out,protocol)
     save(out/'COMPLETE.json',dict(models=len(locks),TEST_evaluated=allow_test,lock_sha256=sha(lock)))
     print(terminal_summary,flush=True)
@@ -254,6 +306,8 @@ def verify(out):
     """Check frozen identities, paired initializations and metrics against split labels."""
     out = Path(out)
     protocol = read(out/'PROTOCOL.json')
+    if 'reference_full' in protocol and component_reference(project_root(), protocol) != protocol['reference_full']:
+        raise ValueError('Full 参照与组件实验结果不匹配')
     complete = read(out/'COMPLETE.json')
     lock = out/'MODELS_FROZEN.json'
     locks = read(lock)

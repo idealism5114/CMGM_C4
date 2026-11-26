@@ -3,7 +3,7 @@ import torch
 from cmgm_c4.common import project_root,read,sha,seed_all
 from cmgm_c4.models.c4 import C4Model
 from cmgm_c4.models.ablations import C4Ablation
-from cmgm_c4.models.horizon import BRANCHES, HorizonC4
+from cmgm_c4.models.horizon import V2_MODELS, HorizonC4
 from cmgm_c4.models.progressive import ROWS, configure
 from cmgm_c4.baselines.adapter import prepared_model
 
@@ -11,7 +11,7 @@ from cmgm_c4.baselines.adapter import prepared_model
 def build(identifier='c4v2/full',initial=False,device='cpu',*,seed=42):
     root=project_root();cfg=read(root/'configs/project.json');registry=read(root/'configs/registry.json')
     progressive = identifier in {'progressive/'+row for row in ROWS}
-    if identifier in {'c4v2/'+row for row in BRANCHES}:
+    if identifier in {'c4v2/'+row for row in V2_MODELS}:
         seed_all(seed)
         initial_state = build('c4/full', initial=True).state_dict() if initial and seed == 42 else None
         seed_all(seed)
